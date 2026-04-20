@@ -779,10 +779,11 @@ function analyzeCompatibility(){
         inocente: 72, explorador: 82, sabio: 48, heroe: 58,
         forajido: 85, mago: 62, corriente: 68, amante: 60,
         bufon: 65, cuidador: 62, creador: 78, gobernante: 42,
-        ermitano: 35, guerrero: 40, visionario: 48, sanador: 58
-      }
+ermitano: 35, guerrero: 40, visionario: 48, sanador: 58
       }
     },
+
+ 
 
     cuidador: {
       nombre: 'El Cuidador',
@@ -1463,7 +1464,12 @@ function analyzeCompatibility(){
     tensiones.unshift('La tensión libertad-seguridad es profunda: uno necesita lo que el otro teme');
   if (ansA.conflicto?.v === 'reactivo' && ansB.conflicto?.v === 'evitador')
     tensiones.unshift('Cuando hay conflicto, uno explota y el otro desaparece — un ciclo difícil de romper');
-
+  if (ansA.espiritualidad?.v === 'central' && ansB.espiritualidad?.v === 'ninguna')
+    tensiones.unshift('La diferencia espiritual es profunda — uno busca sentido trascendente, el otro lo rechaza');
+  if (ansA.cambio?.v === 'resistente' && ansB.cambio?.v === 'buscador')
+    tensiones.unshift('Ante el cambio son opuestos: uno lo busca activamente, el otro lo teme — choque cotidiano');
+  if (ansA.humor?.v === 'central' && ansB.humor?.v === 'serio')
+    tensiones.unshift('El humor es lenguaje para uno y ruido para el otro — diferencia que se siente todos los días');
   if (afinidad >= 80) fortalezas.push(`La combinación ${A.nombre}/${B.nombre} es una de las más sinérgicas en la teoría jungiana`);
   if (tensiones.length === 0) tensiones.push('El principal riesgo en vínculos compatibles es la complacencia — todo fluye hasta que algo los presiona');
   if (fortalezas.length === 0) fortalezas.push('Su diferencia puede ser su mayor riqueza si ambos eligen verla así conscientemente');
@@ -1501,7 +1507,7 @@ function analyzeCompatibility(){
   };
 
   const polaridades = Object.entries(polMaps).map(([dim, cfg])=>({
-    dimension: {energia:'Energía social',decision:'Toma de decisiones',emociones:'Gestión emocional',ritmo:'Ritmo de vida',limites:'Límites'}[dim],
+    dimension: {espiritualidad:'Espiritualidad',humor:'Humor',energia:'Energía social',decision:'Toma de decisiones',emociones:'Gestión emocional',ritmo:'Ritmo de vida',limites:'Límites'}[dim],
     label_a: cfg.labels[ansA[dim]?.v] || '—',
     label_b: cfg.labels[ansB[dim]?.v] || '—',
     pos: (cfg.pos[ansA[dim]?.v] || 0) - (cfg.pos[ansB[dim]?.v] || 0)
