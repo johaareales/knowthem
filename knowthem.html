@@ -274,7 +274,7 @@ textarea.q-inp::placeholder{color:var(--muted);}
     </div>
   </div>
   <button class="btn-main" id="btnStart" onclick="startQuiz()" style="opacity:.3;pointer-events:none;" disabled>Comenzar perfilado →</button>
-  <p style="font-size:.62rem;color:var(--muted);margin-top:12px;">13 preguntas por perfil · ~12 minutos en total</p>
+  <p style="font-size:.62rem;color:var(--muted);margin-top:12px;">16 preguntas por perfil · ~15 minutos en total</p>
 </div>
 
 <!-- QUESTION -->
@@ -892,7 +892,8 @@ function analyzeCompatibility(){
   function detectarArquetipo(ans) {
     const s = {
       inocente:0, explorador:0, sabio:0, heroe:0, forajido:0, mago:0,
-      corriente:0, amante:0, bufon:0, cuidador:0, creador:0, gobernante:0
+      corriente:0, amante:0, bufon:0, cuidador:0, creador:0, gobernante:0,
+      ermitano:0, guerrero:0, visionario:0, sanador:0
     };
 
     // ENERGÍA SOCIAL
@@ -997,6 +998,36 @@ function analyzeCompatibility(){
       indefinido:  {mago:3, forajido:2, creador:2, explorador:1}
     };
     if (ans.metas) apply(s, mtM[ans.metas.v]);
+
+   // ESPIRITUALIDAD
+    const espM = {
+      central:    {ermitano:5, sanador:4, inocente:3, mago:2, cuidador:1},
+      personal:   {ermitano:4, mago:3, sabio:2, sanador:2, explorador:1},
+      filosofica: {sabio:5, ermitano:3, mago:3, visionario:2, creador:1},
+      momentos:   {forajido:3, amante:3, bufon:2, explorador:2, heroe:1},
+      ninguna:    {gobernante:3, sabio:3, heroe:2, guerrero:2, corriente:1}
+    };
+    if (ans.espiritualidad) apply(s, espM[ans.espiritualidad.v]);
+
+    // HUMOR
+    const humM = {
+      central:    {bufon:5, forajido:3, explorador:3, corriente:2, amante:1},
+      moderado:   {corriente:4, heroe:3, cuidador:3, inocente:2, sabio:1},
+      negro:      {forajido:5, bufon:4, creador:3, mago:2, ermitano:1},
+      confianza:  {inocente:4, amante:4, cuidador:3, guerrero:2, corriente:1},
+      serio:      {sabio:4, ermitano:4, gobernante:3, guerrero:3, visionario:2}
+    };
+    if (ans.humor) apply(s, humM[ans.humor.v]);
+
+    // CAMBIO / ADAPTABILIDAD
+    const camM = {
+      fluido:     {explorador:5, bufon:4, mago:3, forajido:2, sanador:1},
+      gradual:    {sabio:4, corriente:4, cuidador:3, heroe:2, guerrero:1},
+      resistente: {gobernante:4, inocente:4, corriente:3, guerrero:3, cuidador:1},
+      buscador:   {forajido:5, explorador:4, bufon:3, visionario:3, creador:1},
+      selectivo:  {mago:4, visionario:3, ermitano:3, sabio:2, creador:2}
+    };
+    if (ans.cambio) apply(s, camM[ans.cambio.v]);
 
     // EXIGENCIA (slider 1–10)
     if (ans.exigencia) {
@@ -1278,9 +1309,77 @@ function analyzeCompatibility(){
     'inocente-mago':        'El Mago fascina al Inocente con su visión. El Inocente da al Mago una pureza que rara vez encuentra. El riesgo es que el Mago, inconsciente, use esa ingenuidad.',
     'inocente-sabio':       'El Sabio puede parecer frío para el Inocente. El Inocente puede parecer ingenuo para el Sabio. Con respeto mutuo, el Sabio aporta claridad y el Inocente aporta calidez.',
     'mago-mago':            'Dos Magos crean una dinámica de alta intensidad intelectual y transformación. El riesgo es que compitan por quién tiene la visión correcta o se pierdan en ideas sin ejecutar.',
-    'sabio-sabio':          'Profundidad intelectual sin límite. Conversaciones transformadoras. El riesgo es que ninguno baje al terreno emocional cuando el vínculo lo necesita.'
-  };
+   'sabio-sabio':          'Profundidad intelectual sin límite. Conversaciones transformadoras. El riesgo es que ninguno baje al terreno emocional cuando el vínculo lo necesita.',
 
+    // ── ERMITAÑO ──
+    'ermitano-ermitano':    'Dos Ermitaños crean un vínculo de silencio compartido que muy pocos comprenden. Pueden ser el par más autocontenido de todos. El riesgo: ninguno pide ayuda cuando la necesita.',
+    'ermitano-explorador':  'El Explorador respeta la soledad del Ermitaño más que otros. El Ermitaño aprecia la autenticidad del Explorador. Funciona si el Explorador no exige más presencia de la que el Ermitaño puede dar.',
+    'ermitano-sabio':       'La combinación más intelectualmente densa. Conversaciones que otros no pueden seguir. El riesgo es que construyan un mundo tan cerrado que no deje entrar nada nuevo.',
+    'ermitano-mago':        'Dos buscadores de lo invisible. Se entienden en niveles que otros no alcanzan. El Mago puede sacar al Ermitaño de su cueva; el Ermitaño puede dar profundidad al Mago.',
+    'ermitano-creador':     'El silencio del Ermitaño alimenta la creatividad. El Creador da forma a lo que el Ermitaño ve. Un vínculo productivo y profundo si se dan el espacio que ambos necesitan.',
+    'ermitano-visionario':  'Los dos ven lo que otros no ven — uno hacia adentro, el otro hacia adelante. Pueden complementarse extraordinariamente si canalizan esas visiones hacia algo compartido.',
+    'ermitano-sanador':     'Profundidad emocional y espiritual alta. El Sanador puede llegar donde otros no llegan con el Ermitaño. El Ermitaño da al Sanador la soledad que este también necesita pero raramente pide.',
+    'ermitano-inocente':    'El Inocente puede sentirse ignorado por el Ermitaño. El Ermitaño puede sentirse agotado por la necesidad de conexión del Inocente. Requiere mucha paciencia mutua.',
+    'ermitano-heroe':       'El Héroe quiere movimiento, el Ermitaño quiere quietud. Pueden complementarse si el Héroe aprecia la sabiduría del Ermitaño y el Ermitaño respeta la acción del Héroe.',
+    'ermitano-forajido':    'Dos personas que rechazan el mundo de maneras distintas. El Forajido lo rompe, el Ermitaño lo trasciende. Pueden entenderse profundamente o no encontrar punto de contacto.',
+    'ermitano-amante':      'El Amante necesita más presencia de la que el Ermitaño puede dar. El Ermitaño puede sentirse invadido. Un vínculo posible solo con límites muy claros y mucho respeto.',
+    'ermitano-cuidador':    'El Cuidador quiere cuidar, el Ermitaño raramente lo permite. El Cuidador puede sentirse rechazado. El Ermitaño puede sentirse controlado. Necesitan definir cómo se cuidan sin invadir.',
+    'ermitano-bufon':       'El Bufón puede sacar al Ermitaño de su seriedad con humor genuino. El Ermitaño puede dar profundidad al Bufón que este evita. Una dinámica inusual con potencial real.',
+    'ermitano-corriente':   'El Corriente puede sentirse excluido por la distancia del Ermitaño. El Ermitaño puede sentir que el Corriente no llega a su profundidad. Necesitan encontrar un terreno medio concreto.',
+    'ermitano-gobernante':  'El Gobernante quiere presencia y colaboración, el Ermitaño da lo que puede cuando puede. Pueden respetarse desde la distancia si el Gobernante no exige más de lo que el Ermitaño tiene.',
+    'ermitano-guerrero':    'Dos personas de código interno fuerte. Se respetan sin necesitar explicaciones. Pueden coexistir en silencio productivo. El riesgo: ninguno cede cuando hay conflicto real.',
+
+    // ── GUERRERO ──
+    'guerrero-guerrero':    'Dos Guerreros juntos son un par de máxima lealtad y mínimo drama. Si comparten el mismo código, son irrompibles. Si sus códigos chocan, el conflicto es profundo y silencioso.',
+    'guerrero-heroe':       'El Guerrero tiene disciplina, el Héroe tiene coraje. Juntos son extraordinariamente efectivos. El riesgo: el Héroe busca reconocimiento, el Guerrero lo rechaza — pueden no entenderse.',
+    'guerrero-gobernante':  'Disciplina más liderazgo. Un equipo formidable si el Gobernante respeta el código del Guerrero y el Guerrero acepta la jerarquía del Gobernante.',
+    'guerrero-sabio':       'El Guerrero actúa desde valores, el Sabio desde conocimiento. Se complementan bien. El Sabio puede ver al Guerrero como rígido; el Guerrero puede ver al Sabio como teórico.',
+    'guerrero-cuidador':    'El Guerrero protege desde afuera con disciplina, el Cuidador desde adentro con empatía. Roles distintos que pueden ser muy complementarios si se respetan mutuamente.',
+    'guerrero-corriente':   'Dos personas confiables que valoran la estabilidad. Sin drama. El Guerrero puede parecer demasiado duro para el Corriente; el Corriente puede parecer demasiado blando para el Guerrero.',
+    'guerrero-sanador':     'El Guerrero carga con su dolor solo, el Sanador quiere ayudarlo a procesarlo. Una dinámica de alta tensión y alta recompensa si el Guerrero aprende a recibir.',
+    'guerrero-visionario':  'El Guerrero ejecuta con disciplina, el Visionario apunta al futuro. Un equipo efectivo si el Visionario da dirección clara y el Guerrero no exige que el futuro sea predecible.',
+    'guerrero-creador':     'El Guerrero quiere estructura, el Creador quiere proceso libre. Pueden chocar en el método aunque compartan el objetivo. Requieren respeto activo hacia el estilo del otro.',
+    'guerrero-forajido':    'Dos personas de código fuerte pero códigos distintos. El Guerrero respeta las reglas que él mismo eligió; el Forajido rompe todas. Fascinación mutua con riesgo de choque profundo.',
+    'guerrero-explorador':  'El Guerrero tiene raíces, el Explorador necesita movimiento. Pueden complementarse si el Guerrero no interpreta la libertad del Explorador como falta de compromiso.',
+    'guerrero-mago':        'El Guerrero desconfía de lo que no puede verificar; el Mago vive en lo intangible. Tensión productiva si el Mago aterriza su visión y el Guerrero abre su marco.',
+    'guerrero-amante':      'El Guerrero expresa amor con actos, no con palabras. El Amante necesita las dos cosas. Un vínculo posible si el Amante aprende a leer los actos y el Guerrero aprende a verbalizarlos.',
+    'guerrero-inocente':    'El Guerrero puede parecer demasiado duro para el Inocente. El Inocente puede parecer demasiado ingenuo para el Guerrero. Con paciencia, el Guerrero protege y el Inocente suaviza.',
+    'guerrero-bufon':       'El Guerrero se toma todo en serio, el Bufón nada. Pueden equilibrarse si el Guerrero aprende a soltar y el Bufón aprende a ser serio cuando importa.',
+
+    // ── VISIONARIO ──
+    'visionario-visionario':'Dos Visionarios pueden mover el mundo o perder el contacto con él completamente. Si tienen la misma dirección, son imparables. Si tienen visiones distintas, el choque es total.',
+    'visionario-mago':      'La combinación más transformadora posible. Visión sistémica más capacidad de materializar. Pueden cambiar realidades. El riesgo: ninguno ancla en el presente.',
+    'visionario-creador':   'El Visionario ve el futuro, el Creador lo construye. Una de las duplas más productivas. El riesgo es que el Visionario cambie de dirección antes de que el Creador termine.',
+    'visionario-sabio':     'Futuro más profundidad analítica. Se potencian mutuamente. El Sabio puede ralentizar al Visionario con análisis; el Visionario puede impacientar al Sabio con su velocidad.',
+    'visionario-heroe':     'El Visionario apunta, el Héroe ejecuta. Una dupla efectiva si el Héroe confía en la visión y el Visionario respeta el proceso de ejecución.',
+    'visionario-explorador':'Dos personas que viven en el movimiento. Se entienden de manera natural. El riesgo es que ninguno construya nada concreto — siempre hay un horizonte nuevo.',
+    'visionario-forajido':  'El Visionario rompe el futuro, el Forajido rompe el presente. Pueden ser revolucionarios juntos o destruirse mutuamente si sus energías no tienen dirección común.',
+    'visionario-gobernante':'El Visionario quiere transformar, el Gobernante quiere controlar. Tensión estructural. Pueden ser extraordinariamente efectivos si definen con claridad quién decide qué.',
+    'visionario-sanador':   'El Visionario mira hacia adelante, el Sanador mira hacia adentro. Perspectivas distintas que pueden complementarse si ambos aprenden a valorar lo que el otro ve.',
+    'visionario-ermitano':  'Dos buscadores de lo profundo con direcciones distintas. El Ermitaño busca hacia adentro, el Visionario hacia adelante. Un vínculo de alta resonancia intelectual.',
+    'visionario-corriente': 'El Visionario puede sentir que el Corriente no lo sigue. El Corriente puede sentir que el Visionario no lo incluye. Necesitan encontrar un propósito compartido y concreto.',
+    'visionario-cuidador':  'El Cuidador sostiene al Visionario en el presente mientras este construye el futuro. Un vínculo nutritivo si el Visionario no da al Cuidador por sentado.',
+    'visionario-amante':    'El Visionario puede sacrificar la intimidad por la visión. El Amante necesita presencia. Un vínculo posible solo si el Visionario aprende a estar en el presente con el Amante.',
+    'visionario-inocente':  'El Inocente cree en el Visionario con una pureza que lo alimenta. El Visionario puede sin querer dejar atrás al Inocente. Necesitan ritmo compartido.',
+    'visionario-bufon':     'El Visionario puede frustrarse con la levedad del Bufón. El Bufón puede aliviar la intensidad del Visionario. Un equilibrio posible si ambos aprenden del otro.',
+
+    // ── SANADOR ──
+    'sanador-sanador':      'Dos Sanadores crean un vínculo de empatía profunda. El riesgo mayor es que ambos den sin recibir y terminen agotados. Necesitan aprender a sanarse mutuamente.',
+    'sanador-cuidador':     'Dos personas que ponen al otro primero. Un vínculo de alta ternura. El riesgo es que ninguno pida lo que necesita y ambos terminen en silencio agotado.',
+    'sanador-amante':       'Profundidad emocional máxima. El Sanador entiende el dolor del Amante; el Amante da al Sanador la conexión que merece. Una de las combinaciones más emocionalmente ricas.',
+    'sanador-inocente':     'El Sanador protege la inocencia del Inocente sin infantilizarlo. El Inocente da al Sanador esperanza genuina. Un vínculo cálido con alta compatibilidad natural.',
+    'sanador-mago':         'El Mago transforma desde afuera, el Sanador desde adentro. Se complementan profundamente si el Mago no usa la capacidad del Sanador como herramienta.',
+    'sanador-creador':      'El Sanador nutre el proceso creativo. El Creador da forma al mundo interior del Sanador. Un vínculo fértil si el Creador no se cierra en su mundo y el Sanador no se pierde en el del otro.',
+    'sanador-explorador':   'El Sanador puede sentirse abandonado por la libertad del Explorador. El Explorador puede sentirse sofocado por la profundidad emocional del Sanador. Requieren negociación activa.',
+    'sanador-forajido':     'El Forajido lleva heridas que el Sanador quiere tocar. El Forajido puede rechazar ese cuidado o depender de él en exceso. Una dinámica de alto potencial y alto riesgo.',
+    'sanador-heroe':        'El Héroe no pide ayuda; el Sanador la ofrece sin pedir permiso. Tensión productiva si el Héroe aprende a recibir y el Sanador aprende a respetar la independencia del Héroe.',
+    'sanador-sabio':        'El Sabio analiza el dolor, el Sanador lo acompaña. Perspectivas complementarias. El Sabio puede parecer frío para el Sanador; el Sanador puede parecer demasiado emocional para el Sabio.',
+    'sanador-gobernante':   'El Gobernante raramente muestra vulnerabilidad; el Sanador la invita. Un vínculo que puede transformar al Gobernante si este lo permite, o frustrarse si lo rechaza.',
+    'sanador-bufon':        'El Sanador ve el dolor detrás del humor del Bufón. El Bufón puede sentirse expuesto o liberado. Una dinámica inusual donde el Sanador puede llegar donde otros no llegan.',
+    'sanador-corriente':    'Dos personas que priorizan el bienestar del otro. Alta compatibilidad natural. El riesgo es la misma comodidad que impide que ambos crezcan individualmente.',
+    'sanador-visionario':   'El Sanador ancla al Visionario en el presente emocional. El Visionario da al Sanador dirección hacia adelante. Un vínculo complementario si se dan el espacio que cada uno necesita.',
+    'sanador-guerrero':     'El Guerrero carga con su dolor en silencio; el Sanador quiere acompañarlo. Un vínculo de alta recompensa si el Guerrero aprende a recibir cuidado sin verlo como debilidad.'
+  };
   // ────────────────────────────────────────────────────────────────
   // 5. CALCULAR SCORES FINALES
   // ────────────────────────────────────────────────────────────────
