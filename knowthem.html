@@ -401,7 +401,31 @@ const Qs=[
     {e:'🔮',t:'No lo sé todavía',s:'En proceso de definirlo',v:'indefinido'},
   ]},
   {id:'exigencia',cat:'Carácter',text:'Del 1 al 10, ¿qué tan exigente eres contigo mismo/a?',hint:'El nivel de autoexigencia afecta profundamente cómo alguien se relaciona.',type:'slider',min:1,max:10,default:5,labels:['Muy flexible','Muy perfeccionista'],descs:{1:'Muy relajado/a',2:'Bastante flexible',3:'Flexible y adaptable',4:'Moderadamente exigente',5:'Equilibrado',6:'Bastante exigente',7:'Muy exigente',8:'Altamente perfeccionista',9:'Perfeccionista intenso',10:'Exigencia máxima'}},
-  {id:'vision',cat:'Visión',text:'¿Qué es lo más importante que alguien debe saber de ti para conectar contigo de verdad?',hint:'Esta respuesta vale más que todas las anteriores juntas. Sin filtros.',type:'text',placeholder:'Ej: Soy muy leal pero me cuesta confiar. Necesito espacio pero no abandono. Tengo metas grandes y quiero a alguien que también las tenga…',maxLength:350},
+ {id:'vision',cat:'Visión',text:'¿Qué es lo más importante que alguien debe saber de ti para conectar contigo de verdad?',hint:'Esta respuesta vale más que todas las anteriores juntas. Sin filtros.',type:'text',placeholder:'Ej: Soy muy leal pero me cuesta confiar. Necesito espacio pero no abandono. Tengo metas grandes y quiero a alguien que también las tenga…',maxLength:350},
+
+  {id:'espiritualidad',cat:'Espiritualidad',text:'¿Qué lugar ocupa la espiritualidad o el sentido de vida en tu cotidiano?',hint:'No es sobre religión — es sobre cómo te relacionas con lo que no se puede controlar.',type:'options',options:[
+    {e:'🙏',t:'Central y activa',s:'Medito, oro, o tengo práctica espiritual regular',v:'central'},
+    {e:'🌿',t:'Presente pero personal',s:'Creo en algo mayor, no lo practico en grupo',v:'personal'},
+    {e:'🔍',t:'Filosófica y racional',s:'Me hago las preguntas grandes desde la razón',v:'filosofica'},
+    {e:'⚡',t:'Espiritual en momentos',s:'Lo siento en crisis o en experiencias intensas',v:'momentos'},
+    {e:'🚫',t:'No forma parte de mi vida',s:'Prefiero lo concreto y verificable',v:'ninguna'},
+  ]},
+
+  {id:'humor',cat:'Humor y juego',text:'¿Cómo es tu relación con el humor en vínculos cercanos?',hint:'El humor es uno de los predictores más subestimados de compatibilidad real.',type:'options',options:[
+    {e:'😂',t:'El humor es mi lenguaje principal',s:'Si no nos reímos, algo falta',v:'central'},
+    {e:'😊',t:'Me encanta pero no es lo más importante',s:'Valoro el humor sin depender de él',v:'moderado'},
+    {e:'🎭',t:'Humor negro e irreverente',s:'Me río de lo que otros evitan',v:'negro'},
+    {e:'🤝',t:'Solo con confianza',s:'No soy gracioso/a con desconocidos, sí con los míos',v:'confianza'},
+    {e:'🧘',t:'Prefiero la profundidad',s:'El humor me parece bien, no es mi prioridad',v:'serio'},
+  ]},
+
+  {id:'cambio',cat:'Adaptabilidad',text:'¿Cómo reaccionas ante cambios grandes e imprevistos en tu vida?',hint:'La tolerancia al cambio define con quién puedes construir algo — y con quién no.',type:'options',options:[
+    {e:'🌊',t:'Me adapto rápido y bien',s:'El cambio me activa más que me paraliza',v:'fluido'},
+    {e:'⚙️',t:'Me adapto pero necesito tiempo',s:'Proceso primero, luego me muevo',v:'gradual'},
+    {e:'🏔️',t:'Prefiero la estabilidad fuertemente',s:'Los cambios me generan mucho estrés',v:'resistente'},
+    {e:'🔥',t:'El cambio me energiza',s:'La rutina me asfixia, necesito movimiento',v:'buscador'},
+    {e:'🌀',t:'Depende del tipo de cambio',s:'Algunos me energizan, otros me paralizan',v:'selectivo'},
+  ]},
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -791,7 +815,72 @@ function analyzeCompatibility(){
       afinidad: {
         inocente: 52, explorador: 38, sabio: 78, heroe: 82,
         forajido: 32, mago: 60, corriente: 65, amante: 55,
-        bufon: 42, cuidador: 60, creador: 48, gobernante: 58
+        bufon: 42, cuidador: 60, creador: 48, gobernante: 58,
+        ermitano: 55, guerrero: 80, visionario: 65, sanador: 50
+      }
+    },
+
+    ermitano: {
+      nombre: 'El Ermitaño',
+      emoji: '🕯️',
+      desc: 'Buscador interior que encuentra verdad en el silencio. Prefiere la profundidad de uno a la superficialidad de muchos. No huye del mundo — lo trasciende conscientemente.',
+      deseo: 'Comprensión profunda, silencio fértil, autenticidad sin audiencia',
+      sombra: 'Aislamiento patológico, arrogancia espiritual, incapacidad de recibir',
+      rasgos_pos: ['Profundidad real', 'Autoconocimiento alto', 'Presencia silenciosa', 'Sin necesidad de validación', 'Sabiduría práctica'],
+      rasgos_neg: ['Se aísla en crisis', 'Difícil de alcanzar', 'Puede parecer frío', 'Rechaza lo superficial brutalmente'],
+      afinidad: {
+        inocente: 48, explorador: 72, sabio: 90, heroe: 45,
+        forajido: 62, mago: 85, corriente: 42, amante: 55,
+        bufon: 35, cuidador: 58, creador: 80, gobernante: 55,
+        ermitano: 75, guerrero: 48, visionario: 88, sanador: 70
+      }
+    },
+
+    guerrero: {
+      nombre: 'El Guerrero',
+      emoji: '🗡️',
+      desc: 'Disciplinado y directo, vive por un código interno que no negocia. Diferente al Héroe en que no busca reconocimiento — busca integridad. Su mayor miedo es traicionarse a sí mismo.',
+      deseo: 'Honor, disciplina, vivir según sus valores sin excusas',
+      sombra: 'Rigidez moral, incapacidad de perdonar, dureza emocional',
+      rasgos_pos: ['Disciplina real', 'Integridad sin poses', 'Confiable al 100%', 'Directo sin crueldad', 'Lealtad inquebrantable'],
+      rasgos_neg: ['Inflexible moralmente', 'Duro consigo y con otros', 'Dificultad para perdonar', 'Emociones reprimidas'],
+      afinidad: {
+        inocente: 50, explorador: 55, sabio: 70, heroe: 82,
+        forajido: 60, mago: 58, corriente: 72, amante: 52,
+        bufon: 40, cuidador: 65, creador: 48, gobernante: 80,
+        ermitano: 48, guerrero: 68, visionario: 60, sanador: 62
+      }
+    },
+
+    visionario: {
+      nombre: 'El Visionario',
+      emoji: '🌌',
+      desc: 'Ve futuros que otros no pueden imaginar todavía. Vive permanentemente adelantado a su tiempo. Su mayor miedo es quedarse atrapado en el presente sin poder construir el futuro que ve.',
+      deseo: 'Construir el futuro, inspirar cambio a escala, dejar una huella que dure décadas',
+      sombra: 'Desconexión del presente, impaciencia brutal, deja personas atrás sin querer',
+      rasgos_pos: ['Pensamiento de largo plazo', 'Inspiración magnética', 'Tolerancia alta a la incertidumbre', 'Innovación estructural', 'Visión sistémica'],
+      rasgos_neg: ['Impaciente con el presente', 'Difícil de seguir', 'Puede ignorar lo inmediato', 'Relaciones sacrificadas por la visión'],
+      afinidad: {
+        inocente: 45, explorador: 82, sabio: 85, heroe: 65,
+        forajido: 72, mago: 92, corriente: 40, amante: 52,
+        bufon: 48, cuidador: 55, creador: 90, gobernante: 65,
+        ermitano: 88, guerrero: 60, visionario: 70, sanador: 58
+      }
+    },
+
+    sanador: {
+      nombre: 'El Sanador',
+      emoji: '🌊',
+      desc: 'Transforma el dolor propio y ajeno en comprensión. No evita las heridas — las trabaja. Su mayor miedo es causar daño sin darse cuenta o no poder ayudar cuando alguien lo necesita.',
+      deseo: 'Sanar, integrar, acompañar a otros en su sombra sin perderse en ella',
+      sombra: 'Absorbe el dolor ajeno, límites difusos, se convierte en víctima de su propia empatía',
+      rasgos_pos: ['Empatía profunda sin fusión', 'Presencia en el dolor', 'Integración emocional', 'No juzga', 'Transforma dinámicas'],
+      rasgos_neg: ['Absorbe energía negativa', 'Límites difusos', 'Se agota ayudando', 'Puede atraer personas dañadas'],
+      afinidad: {
+        inocente: 80, explorador: 55, sabio: 68, heroe: 58,
+        forajido: 52, mago: 72, corriente: 78, amante: 90,
+        bufon: 58, cuidador: 88, creador: 62, gobernante: 50,
+        ermitano: 70, guerrero: 62, visionario: 58, sanador: 82
       }
     }
   };
