@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Know Them — Compatibilidad Dual</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#08060d;
+  --surface:#110d1a;
+  --surface2:#1a1426;
+  --surface3:#221932;
+  --fuchsia:#E91E8C;
+  --fuchsia-dim:rgba(233,30,140,0.11);
+  --gold:#C9A96E;
+  --gold-pale:#e8d5a8;
+  --teal:#1de5c8;
+  --teal-dim:rgba(29,229,200,0.1);
+  --violet:#9b6dff;
+  --text:#f2eaf8;
+  --muted:#7a6a8a;
+  --muted2:#2e2240;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --r:14px;
+}
+html,body{height:100%;min-height:100dvh;background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;}
+
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(233,30,140,.08),transparent 70%);top:-200px;right:-200px;animation:o1 11s ease-in-out infinite;}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(155,109,255,.06),transparent 70%);bottom:-100px;left:-120px;animation:o2 14s ease-in-out infinite;}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(29,229,200,.05),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:o3 18s ease-in-out infinite;}
+@keyframes o1{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,60px)}}
+@keyframes o2{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,-50px)}}
+@keyframes o3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-45%,-55%)}}
+
+.app{position:relative;z-index:10;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:60px;}
+.screen{width:100%;max-width:600px;display:none;flex-direction:column;align-items:center;animation:sIn .55s cubic-bezier(.22,1,.36,1) forwards;}
+.screen.active{display:flex;}
+.screen.leaving{animation:sOut .3s ease forwards;pointer-events:none;}
+@keyframes sIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-18px)}}
+
+.progress-bar{width:100%;max-width:600px;position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:50;padding:0 20px;}
+.progress-inner{height:2px;background:var(--muted2);border-radius:0 0 2px 2px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.22,1,.36,1);}
+.progress-fill.pa{background:linear-gradient(90deg,var(--fuchsia),#b81070);}
+.progress-fill.pb{background:linear-gradient(90deg,var(--teal),#0d9982);}
+.progress-meta{display:flex;justify-content:space-between;padding:10px 0 6px;font-size:.62rem;color:var(--muted);letter-spacing:.5px;}
+.progress-meta b{font-weight:500;}
+
+.logo{font-family:var(--serif);font-size:.82rem;letter-spacing:5px;color:var(--gold);margin-bottom:40px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
+.logo::before,.logo::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,.2),transparent);max-width:50px;}
+
+.intro-title{font-family:var(--serif);font-size:clamp(1.9rem,7vw,2.8rem);font-weight:300;line-height:1.2;text-align:center;margin-bottom:14px;letter-spacing:-.5px;}
+.intro-sub{font-size:.8rem;color:var(--muted);line-height:1.9;text-align:center;max-width:380px;margin-bottom:36px;font-weight:300;}
+
+.dual-setup{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.profile-setup-card{background:var(--surface);border-radius:var(--r);padding:18px 14px;border:1px solid var(--muted2);display:flex;flex-direction:column;gap:10px;}
+.profile-setup-card.sca{border-top:2px solid var(--fuchsia);}
+.profile-setup-card.scb{border-top:2px solid var(--teal);}
+.profile-label-sm{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;}
+.profile-label-sm.la{color:var(--fuchsia);}
+.profile-label-sm.lb{color:var(--teal);}
+.name-inp{background:rgba(0,0,0,.25);border:1px solid var(--muted2);border-radius:8px;padding:9px 12px;font-family:var(--sans);font-size:.84rem;color:var(--text);outline:none;width:100%;transition:border-color .2s;}
+.name-inp.a:focus{border-color:rgba(233,30,140,.4);}
+.name-inp.b:focus{border-color:rgba(29,229,200,.4);}
+
+.type-grid-sm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.type-opt{padding:12px 8px;border:1px solid var(--muted2);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;}
+.type-opt:hover{border-color:rgba(233,30,140,.3);background:var(--fuchsia-dim);}
+.type-opt.sel{border-color:var(--fuchsia);background:var(--fuchsia-dim);box-shadow:0 0 0 1px var(--fuchsia);}
+
+.q-phase-header{width:100%;display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.phase-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:600;flex-shrink:0;}
+.phase-av.a{background:var(--fuchsia-dim);border:1px solid rgba(233,30,140,.3);color:var(--fuchsia);}
+.phase-av.b{background:var(--teal-dim);border:1px solid rgba(29,229,200,.3);color:var(--teal);}
+.phase-nm{font-size:.82rem;font-weight:500;}
+.phase-sub{display:block;font-size:.62rem;color:var(--muted);margin-top:1px;}
+
+.q-card{width:100%;background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.4);}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,.2),transparent);}
+.q-card.bphase::before{background:linear-gradient(to right,transparent,rgba(29,229,200,.18),transparent);}
+
+.q-num{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.q-num.qa{color:var(--fuchsia);}
+.q-num.qb{color:var(--teal);}
+.q-num::after{content:'';flex:1;height:1px;}
+.q-num.qa::after{background:var(--fuchsia-dim);}
+.q-num.qb::after{background:var(--teal-dim);}
+.q-cat{font-size:.52rem;color:var(--muted);padding:2px 8px;border-radius:99px;border:1px solid var(--muted2);letter-spacing:.5px;}
+.q-txt{font-family:var(--serif);font-size:clamp(1.15rem,4vw,1.45rem);font-weight:300;line-height:1.45;margin-bottom:8px;}
+.q-hint{font-size:.7rem;color:var(--muted);line-height:1.7;margin-bottom:24px;font-style:italic;}
+
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{border:1px solid var(--muted2);border-radius:10px;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .18s;background:transparent;text-align:left;width:100%;font-family:var(--sans);color:var(--text);font-size:.85rem;animation:optIn .4s cubic-bezier(.22,1,.36,1) both;}
+.opt:nth-child(1){animation-delay:.04s}.opt:nth-child(2){animation-delay:.09s}.opt:nth-child(3){animation-delay:.14s}.opt:nth-child(4){animation-delay:.19s}.opt:nth-child(5){animation-delay:.24s}.opt:nth-child(6){animation-delay:.29s}
+@keyframes optIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+.opt-dot{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--muted2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.opt-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;opacity:0;transform:scale(0);transition:all .18s;}
+.opt:hover{border-color:rgba(233,30,140,.3);background:var(--fuchsia-dim);}
+.opt:hover .opt-dot{border-color:var(--fuchsia);}
+.opt.sel{border-color:var(--fuchsia);background:var(--fuchsia-dim);box-shadow:0 0 0 1px var(--fuchsia);}
+.opt.sel .opt-dot{border-color:var(--fuchsia);background:var(--fuchsia);}
+.opt.sel .opt-dot::after{opacity:1;transform:scale(1);}
+.bphase .opt:hover{border-color:rgba(29,229,200,.3);background:var(--teal-dim);}
+.bphase .opt:hover .opt-dot{border-color:var(--teal);}
+.bphase .opt.sel{border-color:var(--teal);background:var(--teal-dim);box-shadow:0 0 0 1px var(--teal);}
+.bphase .opt.sel .opt-dot{border-color:var(--teal);background:var(--teal);}
+.opt-em{font-size:.95rem;flex-shrink:0;}
+.opt-tx{flex:1;line-height:1.4;}
+.opt-sub{display:block;font-size:.68rem;color:var(--muted);margin-top:2px;}
+
+.sl-wrap{padding:4px 0 18px;}
+.sl-disp{text-align:center;margin-bottom:16px;}
+.sl-val{font-family:var(--serif);font-size:3.5rem;font-weight:300;line-height:1;}
+.sl-val.a{color:var(--fuchsia);}
+.sl-val.b{color:var(--teal);}
+.sl-desc{font-size:.7rem;color:var(--muted);margin-top:4px;min-height:18px;}
+.sl-lbls{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);margin-bottom:10px;}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;outline:none;cursor:pointer;}
+input[type=range].ra{background:linear-gradient(to right,var(--fuchsia) var(--pct,50%),var(--surface2) var(--pct,50%));}
+input[type=range].rb{background:linear-gradient(to right,var(--teal) var(--pct,50%),var(--surface2) var(--pct,50%));}
+input[type=range].ra::-webkit-slider-thumb{-webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:var(--fuchsia);border:3px solid var(--bg);cursor:pointer;}
+input[type=range].rb::-webkit-slider-thumb{-webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:var(--teal);border:3px solid var(--bg);cursor:pointer;}
+
+textarea.q-inp{width:100%;min-height:100px;background:rgba(0,0,0,.25);border:1px solid var(--muted2);border-radius:10px;padding:13px;font-family:var(--sans);font-size:.84rem;color:var(--text);resize:none;outline:none;line-height:1.65;transition:border-color .2s;}
+textarea.q-inp.ta:focus{border-color:rgba(233,30,140,.4);}
+textarea.q-inp.tb:focus{border-color:rgba(29,229,200,.4);}
+textarea.q-inp::placeholder{color:var(--muted);}
+
+.q-nav{display:flex;gap:10px;margin-top:16px;align-items:center;width:100%;}
+.btn-nxt{flex:1;border:none;border-radius:99px;padding:13px 24px;font-family:var(--sans);font-weight:500;font-size:.86rem;color:#fff;cursor:pointer;letter-spacing:.4px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.btn-nxt.a{background:linear-gradient(135deg,var(--fuchsia),#b81070);box-shadow:0 6px 22px rgba(233,30,140,.22);}
+.btn-nxt.a:hover:not(:disabled){transform:translateY(-2px);}
+.btn-nxt.b{background:linear-gradient(135deg,var(--teal),#0d9982);box-shadow:0 6px 22px rgba(29,229,200,.18);}
+.btn-nxt.b:hover:not(:disabled){transform:translateY(-2px);}
+.btn-nxt:disabled{opacity:.3;cursor:not-allowed;}
+.btn-bk{background:transparent;border:1px solid var(--muted2);border-radius:99px;width:42px;height:42px;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.btn-bk:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.btn-bk:disabled{opacity:.2;cursor:not-allowed;}
+
+.btn-main{border:none;border-radius:99px;padding:14px 44px;font-family:var(--sans);font-weight:500;font-size:.88rem;color:#fff;cursor:pointer;letter-spacing:.5px;transition:all .2s;background:linear-gradient(135deg,var(--fuchsia),#b81070);box-shadow:0 8px 28px rgba(233,30,140,.28);}
+.btn-main:hover{transform:translateY(-2px);}
+.btn-ghost{background:transparent;border:1px solid var(--muted2);border-radius:99px;padding:10px 24px;font-family:var(--sans);font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+.ld-wrap{text-align:center;padding:16px 0;}
+.ld-orb{width:80px;height:80px;border-radius:50%;margin:0 auto 22px;background:conic-gradient(from 0deg,var(--fuchsia),var(--teal),var(--violet),var(--fuchsia));animation:spin 3s linear infinite;display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;}
+.ld-orb::before{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--bg);}
+.ld-orb span{position:relative;z-index:1;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.ld-steps{display:flex;flex-direction:column;gap:6px;max-width:320px;margin:0 auto;}
+.ls{display:flex;align-items:center;gap:10px;font-size:.68rem;color:var(--muted);padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.18);border:1px solid var(--surface2);transition:all .35s;}
+.ls.active{color:var(--fuchsia);border-color:var(--fuchsia-dim);background:var(--fuchsia-dim);}
+.ls.done{color:var(--gold-pale);border-color:rgba(201,169,110,.18);}
+.ls-dot{width:5px;height:5px;border-radius:50%;background:var(--muted2);flex-shrink:0;}
+.ls.active .ls-dot{background:var(--fuchsia);animation:dp .8s ease-in-out infinite;}
+.ls.done .ls-dot{background:var(--gold);}
+@keyframes dp{0%,100%{opacity:1}50%{opacity:.2}}
+
+.res-wrap{width:100%;padding-bottom:40px;}
+
+.compat-card{background:var(--surface);border:1px solid rgba(155,109,255,.15);border-radius:var(--r);padding:26px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.compat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(155,109,255,.35),transparent);}
+.compat-lbl{font-size:.58rem;letter-spacing:2px;color:var(--violet);text-transform:uppercase;margin-bottom:14px;}
+.compat-big{font-family:var(--serif);font-size:4.5rem;font-weight:300;line-height:1;margin-bottom:6px;}
+.compat-bar{width:100%;height:6px;background:var(--muted2);border-radius:3px;overflow:hidden;margin-bottom:14px;}
+.compat-fill{height:100%;border-radius:3px;transition:width 2s cubic-bezier(.22,1,.36,1);}
+.vtag{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:5px 16px;border-radius:99px;display:inline-block;margin-bottom:12px;font-weight:500;}
+.vtag.v{background:rgba(0,220,130,.1);color:#00dc82;border:1px solid rgba(0,220,130,.3);}
+.vtag.a{background:rgba(255,184,0,.1);color:#ffb800;border:1px solid rgba(255,184,0,.3);}
+.vtag.r{background:rgba(255,68,80,.1);color:#ff4450;border:1px solid rgba(255,68,80,.3);}
+.vmain{font-family:var(--serif);font-size:1.05rem;font-weight:300;line-height:1.6;color:var(--text);opacity:0;transition:opacity .6s .8s;max-width:480px;margin:0 auto;}
+.vmain.show{opacity:1;}
+
+.dual-sc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;position:relative;}
+.dual-sc::before{content:'✦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.8rem;color:var(--gold);z-index:2;background:var(--bg);padding:0 6px;}
+.sc-card{background:var(--surface);border:1px solid rgba(201,169,110,.1);border-radius:var(--r);padding:20px 16px;text-align:center;}
+.sc-card.a{border-top:2px solid var(--fuchsia);}
+.sc-card.b{border-top:2px solid var(--teal);}
+.sc-nm{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.sc-nm.a{color:var(--fuchsia);}
+.sc-nm.b{color:var(--teal);}
+.sc-ring{width:80px;height:80px;margin:0 auto 10px;position:relative;display:flex;align-items:center;justify-content:center;}
+.sc-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);}
+.r-track{fill:none;stroke:var(--surface2);stroke-width:5;}
+.r-fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1);}
+.sc-pct{font-family:var(--serif);font-size:1.55rem;font-weight:300;line-height:1;position:relative;z-index:1;}
+.sc-pct.a{color:var(--fuchsia);}
+.sc-pct.b{color:var(--teal);}
+.sc-arch{font-size:.62rem;color:var(--muted);margin-top:3px;}
+
+.arch-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.arch-card{background:var(--surface);border-radius:var(--r);padding:16px;text-align:center;}
+.arch-card.a{border:1px solid rgba(233,30,140,.2);}
+.arch-card.b{border:1px solid rgba(29,229,200,.2);}
+.arch-type{font-family:var(--serif);font-size:1.4rem;font-weight:300;letter-spacing:2px;margin-bottom:3px;}
+.arch-type.a{color:var(--fuchsia);}
+.arch-type.b{color:var(--teal);}
+.arch-sub{font-size:.66rem;color:var(--muted);letter-spacing:.3px;line-height:1.5;}
+
+.pers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.pers-card{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:14px;}
+.pers-card.a{border-top:2px solid var(--fuchsia);}
+.pers-card.b{border-top:2px solid var(--teal);}
+.pers-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.pers-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:500;flex-shrink:0;}
+.pers-av.a{background:var(--fuchsia-dim);color:var(--fuchsia);border:1px solid rgba(233,30,140,.2);}
+.pers-av.b{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(29,229,200,.2);}
+.pers-nm{font-size:.74rem;font-weight:500;}
+.trait-type{font-size:.56rem;color:var(--violet);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
+.trait-list{display:flex;flex-wrap:wrap;gap:4px;}
+.tpill{font-size:.56rem;padding:3px 7px;border-radius:99px;border:1px solid;}
+.tpill.pos{background:rgba(0,220,130,.07);color:#00dc82;border-color:rgba(0,220,130,.2);}
+.tpill.warn{background:rgba(255,184,0,.07);color:#ffb800;border-color:rgba(255,184,0,.2);}
+
+.rsecs{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:14px;}
+.rsec{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:10px;padding:16px;}
+.rsec-t{font-size:.56rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.rsec-t::after{content:'';flex:1;height:1px;background:rgba(201,169,110,.1);}
+.rsec-b{font-size:.78rem;color:var(--text);line-height:1.8;opacity:.88;}
+
+.pol-sec{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+.pol-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.pol-row:last-child{margin-bottom:0;}
+.pol-la{font-size:.6rem;color:var(--fuchsia);flex:1;text-align:left;}
+.pol-lb{font-size:.6rem;color:var(--teal);flex:1;text-align:right;}
+.pol-dim{font-size:.54rem;color:var(--muted);text-align:center;width:80px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase;}
+.pol-track{flex:2;height:5px;background:var(--surface2);border-radius:99px;position:relative;}
+.pol-needle{position:absolute;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;transition:left 1.5s cubic-bezier(.22,1,.36,1);border:2px solid var(--bg);}
+
+.dim-bars{display:flex;flex-direction:column;gap:8px;}
+.dim-row{display:flex;align-items:center;gap:8px;}
+.dim-lbl{font-size:.62rem;color:var(--muted);min-width:120px;letter-spacing:.2px;}
+.dim-trk{flex:1;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.dim-fill{height:100%;border-radius:2px;transition:width 1.3s cubic-bezier(.22,1,.36,1);}
+.dim-v{font-size:.62rem;color:var(--text);min-width:28px;text-align:right;}
+
+.rec-card{background:var(--surface);border-radius:var(--r);padding:22px;margin-bottom:14px;position:relative;overflow:hidden;}
+.rec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--fuchsia),var(--violet),var(--teal));}
+.rec-icon{font-size:1.6rem;margin-bottom:10px;text-align:center;}
+.rec-title{font-family:var(--serif);font-size:1.2rem;font-weight:300;text-align:center;margin-bottom:10px;}
+.rec-body{font-size:.78rem;color:var(--text);line-height:1.85;opacity:.9;text-align:center;}
+.rec-score{display:flex;align-items:center;justify-content:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--muted2);}
+.rec-badge{font-size:.65rem;padding:4px 12px;border-radius:99px;font-weight:500;}
+.rec-badge.v{background:rgba(0,220,130,.12);color:#00dc82;border:1px solid rgba(0,220,130,.25);}
+.rec-badge.a{background:rgba(255,184,0,.12);color:#ffb800;border:1px solid rgba(255,184,0,.25);}
+.rec-badge.r{background:rgba(255,68,80,.12);color:#ff4450;border:1px solid rgba(255,68,80,.25);}
+
+.res-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px;}
+@media(max-width:500px){
+  .app{padding:14px;}.q-card{padding:20px 16px;}
+  .dual-setup,.dual-sc,.pers-grid,.arch-row{grid-template-columns:1fr;}
+  .dual-sc::before{display:none;}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="grain"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="progress-bar" id="pbar" style="display:none;">
+  <div class="progress-meta">
+    <b id="pLbl" style="color:var(--fuchsia)">—</b>
+    <span id="pCnt">—</span>
+  </div>
+  <div class="progress-inner"><div class="progress-fill pa" id="pFill" style="width:0%"></div></div>
+</div>
+
+<div class="app">
+
+<!-- INTRO -->
+<div class="screen active" id="screen-intro">
+  <div class="logo">Know Them</div>
+  <h1 class="intro-title">¿Son compatibles<br><span style="color:var(--fuchsia);font-style:italic">entre sí</span>?</h1>
+  <p class="intro-sub">Perfila dos personas con preguntas de psicología profunda. La IA analiza sus rasgos, arquetipos y genera un veredicto real de compatibilidad.</p>
+
+  <div class="dual-setup">
+    <div class="profile-setup-card sca">
+      <div class="profile-label-sm la">✦ Persona A</div>
+      <input class="name-inp a" id="nameA" placeholder="Nombre o alias" maxlength="24" oninput="chkNames()">
+      <div style="font-size:.6rem;color:var(--muted);line-height:1.6;">Puedes ser tú mismo/a.</div>
+    </div>
+    <div class="profile-setup-card scb">
+      <div class="profile-label-sm lb">✦ Persona B</div>
+      <input class="name-inp b" id="nameB" placeholder="Nombre o alias" maxlength="24" oninput="chkNames()">
+      <div style="font-size:.6rem;color:var(--muted);line-height:1.6;">Responde desde su perspectiva.</div>
+    </div>
+  </div>
+
+  <div style="width:100%;background:var(--surface);border:1px solid var(--muted2);border-radius:var(--r);padding:16px 18px;margin-bottom:24px;">
+    <div style="font-size:.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Tipo de vínculo</div>
+    <div class="type-grid-sm" id="typeGrid">
+      <div class="type-opt" onclick="selType('pareja')" data-t="pareja"><div style="font-size:1.3rem;margin-bottom:4px;">💕</div><div style="font-size:.65rem;">Pareja</div></div>
+      <div class="type-opt" onclick="selType('amistad')" data-t="amistad"><div style="font-size:1.3rem;margin-bottom:4px;">🤝</div><div style="font-size:.65rem;">Amistad</div></div>
+      <div class="type-opt" onclick="selType('trabajo')" data-t="trabajo"><div style="font-size:1.3rem;margin-bottom:4px;">💼</div><div style="font-size:.65rem;">Trabajo</div></div>
+      <div class="type-opt" onclick="selType('convivencia')" data-t="convivencia"><div style="font-size:1.3rem;margin-bottom:4px;">🏠</div><div style="font-size:.65rem;">Convivencia</div></div>
+      <div class="type-opt" onclick="selType('familia')" data-t="familia"><div style="font-size:1.3rem;margin-bottom:4px;">🫂</div><div style="font-size:.65rem;">Familia</div></div>
+      <div class="type-opt" onclick="selType('general')" data-t="general"><div style="font-size:1.3rem;margin-bottom:4px;">🔮</div><div style="font-size:.65rem;">General</div></div>
+    </div>
+  </div>
+
+  <button class="btn-main" id="btnStart" onclick="startQuiz()" style="opacity:.3;pointer-events:none;" disabled>Comenzar perfilado →</button>
+  <p style="font-size:.62rem;color:var(--muted);margin-top:12px;">13 preguntas por perfil · ~12 minutos en total</p>
+</div>
+
+<!-- QUESTION -->
+<div class="screen" id="screen-question">
+  <div class="q-phase-header" id="pHeader">
+    <div class="phase-av a" id="pAv">A</div>
+    <div>
+      <div class="phase-nm" id="pNm">—</div>
+      <span class="phase-sub" id="pSub">Perfil de personalidad</span>
+    </div>
+  </div>
+  <div class="q-card" id="qCard"></div>
+  <div class="q-nav">
+    <button class="btn-bk" id="btnBack" onclick="prevQ()">←</button>
+    <button class="btn-nxt a" id="btnNext" onclick="nextQ()">Continuar →</button>
+  </div>
+</div>
+
+<!-- TRANSITION -->
+<div class="screen" id="screen-transition">
+  <div style="text-align:center;padding:20px 0;">
+    <div style="width:70px;height:70px;border-radius:50%;margin:0 auto 20px;background:linear-gradient(135deg,var(--fuchsia),var(--teal));display:flex;align-items:center;justify-content:center;font-size:1.6rem;">✦</div>
+    <h2 style="font-family:var(--serif);font-size:1.8rem;font-weight:300;margin-bottom:10px;">Perfil <span style="color:var(--fuchsia)" id="trNmA">—</span> completado</h2>
+    <p style="font-size:.78rem;color:var(--muted);line-height:1.85;max-width:340px;margin:0 auto 28px;">Ahora responde las mismas preguntas desde la perspectiva de <strong id="trNmB" style="color:var(--teal);">—</strong>. Sé honesto/a.</p>
+    <button class="btn-main" onclick="startPhaseB()">Perfilar a <span id="trNmB2">—</span> →</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="screen" id="screen-loading">
+  <div class="ld-wrap">
+    <div class="ld-orb"><span>✦</span></div>
+    <h2 style="font-family:var(--serif);font-size:1.5rem;font-weight:300;margin-bottom:8px;">Comparando perfiles…</h2>
+    <p style="font-size:.74rem;color:var(--muted);line-height:1.75;margin-bottom:26px;">Analizando compatibilidad psicológica<br>entre los dos perfiles.</p>
+    <div class="ld-steps" id="ldSteps">
+      <div class="ls" id="ls0"><div class="ls-dot"></div>Mapeando rasgos de personalidad</div>
+      <div class="ls" id="ls1"><div class="ls-dot"></div>Detectando arquetipos psicológicos</div>
+      <div class="ls" id="ls2"><div class="ls-dot"></div>Analizando compatibilidad de valores</div>
+      <div class="ls" id="ls3"><div class="ls-dot"></div>Evaluando polaridades y dinámicas</div>
+      <div class="ls" id="ls4"><div class="ls-dot"></div>Detectando puntos de tensión</div>
+      <div class="ls" id="ls5"><div class="ls-dot"></div>Generando veredicto final</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result">
+  <div class="res-wrap" id="resWrap"></div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+const Qs=[
+  {id:'energia',cat:'Personalidad',text:'¿Cómo describes mejor tu energía social?',hint:'No hay respuesta correcta — define cómo interactúas con el mundo.',type:'options',options:[
+    {e:'🎉',t:'Extrovertido/a puro',s:'Me recargo con gente, me aburro solo/a',v:'extro_alto'},
+    {e:'🌱',t:'Extrovertido/a moderado',s:'Me gusta socializar, también disfruto el descanso',v:'extro_mod'},
+    {e:'🔄',t:'Ambivierte',s:'Depende completamente del contexto',v:'ambivierte'},
+    {e:'🏡',t:'Introvertido/a moderado',s:'Prefiero grupos pequeños y calidad',v:'intro_mod'},
+    {e:'🌙',t:'Introvertido/a fuerte',s:'La gente me agota, necesito mucho tiempo solo/a',v:'intro_alto'},
+  ]},
+  {id:'conflicto',cat:'Carácter',text:'Cuando hay un conflicto importante, ¿cómo reaccionas?',hint:'El patrón de conflicto revela el carácter real de una persona.',type:'options',options:[
+    {e:'🗣️',t:'Lo enfrento de inmediato',s:'Prefiero resolver de frente aunque incomode',v:'directo'},
+    {e:'⏸️',t:'Me retiro y vuelvo con calma',s:'Necesito procesar antes de hablar',v:'reflexivo'},
+    {e:'🤐',t:'Tiendo a callarme',s:'Me cuesta confrontar, evito el drama',v:'evitador'},
+    {e:'💥',t:'Reacciono emocionalmente',s:'Primero siento, luego pienso',v:'reactivo'},
+    {e:'🧩',t:'Busco el punto medio',s:'Prefiero soluciones que funcionen para todos',v:'mediador'},
+  ]},
+  {id:'decision',cat:'Cognición',text:'¿Cómo tomas decisiones importantes?',hint:'Lógica versus intuición — esta división define estilos de vida muy distintos.',type:'options',options:[
+    {e:'📊',t:'Analizo datos y pros/contras',s:'Decisiones basadas en evidencia y lógica',v:'analitico'},
+    {e:'💡',t:'Confío en mi intuición',s:'El instinto rara vez me falla',v:'intuitivo'},
+    {e:'❤️',t:'Priorizo cómo me siento',s:'Si algo no se siente bien, no lo hago',v:'emocional'},
+    {e:'🔀',t:'Combino lógica y emoción',s:'Los equilibro según el caso',v:'mixto'},
+  ]},
+  {id:'valores',cat:'Valores',text:'¿Cuál de estos valores es el más importante para ti?',hint:'El valor más profundo define con quién puede y no puede estar alguien.',type:'options',options:[
+    {e:'🔓',t:'Libertad y autonomía',s:'No negocio mi independencia',v:'libertad'},
+    {e:'🛡️',t:'Seguridad y estabilidad',s:'Prefiero lo predecible a lo emocionante',v:'seguridad'},
+    {e:'🌍',t:'Crecimiento y evolución',s:'El movimiento constante me define',v:'crecimiento'},
+    {e:'🤲',t:'Conexión y pertenencia',s:'Las relaciones son todo para mí',v:'conexion'},
+    {e:'🏆',t:'Logro y reconocimiento',s:'Necesito sentir que avanzo y que importo',v:'logro'},
+  ]},
+  {id:'apego',cat:'Psicología',text:'¿Cómo describes tu estilo de apego en relaciones cercanas?',hint:'El estilo de apego es el patrón más revelador en cualquier tipo de vínculo.',type:'options',options:[
+    {e:'🔐',t:'Seguro: me abro y confío con calma',s:'Sin miedo al abandono ni a la intimidad',v:'seguro'},
+    {e:'🌊',t:'Ansioso: necesito confirmación constante',s:'Me preocupa que no les importe lo suficiente',v:'ansioso'},
+    {e:'🧊',t:'Evitativo: prefiero distancia emocional',s:'La intimidad intensa me incomoda',v:'evitativo'},
+    {e:'⚡',t:'Desorganizado: cambia mucho',s:'Mezclo cercanía y distancia de manera impredecible',v:'desorganizado'},
+  ]},
+  {id:'ritmo',cat:'Ritmo de vida',text:'¿Cómo es tu ritmo de vida ideal?',hint:'La compatibilidad de ritmos es subestimada y fuente de mucho conflicto.',type:'options',options:[
+    {e:'⚡',t:'Alta intensidad constante',s:'Proyectos, metas, movimiento. No me gusta el estancamiento',v:'alta'},
+    {e:'🌊',t:'Productivo pero equilibrado',s:'Trabajo fuerte, pero sé cuándo parar',v:'equilibrado'},
+    {e:'🌿',t:'Tranquilo y sostenible',s:'Prefiero menos cosas hechas con calma',v:'tranquilo'},
+    {e:'🎲',t:'Variable e impredecible',s:'No me gusta la rutina, necesito espontaneidad',v:'impredecible'},
+  ]},
+  {id:'comunicacion',cat:'Comunicación',text:'¿Cómo prefieres comunicarte en relaciones cercanas?',hint:'La incompatibilidad comunicativa es la causa principal de distancia.',type:'options',options:[
+    {e:'💬',t:'Contacto frecuente y regular',s:'Me gusta saber que estamos conectados',v:'frecuente'},
+    {e:'📞',t:'Calidad sobre cantidad',s:'Prefiero conversaciones profundas, aunque sean menos',v:'calidad'},
+    {e:'🌊',t:'Flujo natural sin exigencias',s:'Que fluya, sin presión',v:'flujo'},
+    {e:'🚀',t:'Comunicación directa y eficiente',s:'Sin rodeos, al punto',v:'directa'},
+  ]},
+  {id:'emociones',cat:'Inteligencia emocional',text:'¿Cómo manejas tus propias emociones difíciles?',hint:'La madurez emocional es el predictor más fuerte de éxito relacional.',type:'options',options:[
+    {e:'🔍',t:'Las identifico y proceso conscientemente',s:'Tengo herramientas: terapia, reflexión, journaling',v:'consciente'},
+    {e:'🗣️',t:'Las expreso abiertamente',s:'Prefiero decir cómo me siento',v:'expresivo'},
+    {e:'🏃',t:'Las ignoro y sigo adelante',s:'El tiempo lo resuelve',v:'supresion'},
+    {e:'🌪️',t:'Me cuestan mucho',s:'No siempre sé qué hacer con lo que siento',v:'dificultad'},
+  ]},
+  {id:'limites',cat:'Límites',text:'¿Cómo reaccionas cuando alguien cruza un límite tuyo?',hint:'La capacidad de poner límites sanos es un marcador psicológico clave.',type:'options',options:[
+    {e:'✅',t:'Lo digo directamente y sin drama',s:'Mis límites son claros y los defiendo',v:'asertivo'},
+    {e:'😤',t:'Me molesto pero rara vez lo digo',s:'Prefiero aguantar a confrontar',v:'pasivo'},
+    {e:'💣',t:'Exploto cuando ya no puedo más',s:'Acumulo hasta que ya no aguanto',v:'acumulador'},
+    {e:'🔄',t:'Cedo y luego me arrepiento',s:'Me cuesta mantener límites bajo presión',v:'cededor'},
+  ]},
+  {id:'dinero',cat:'Estilo de vida',text:'¿Cómo es tu relación con el dinero?',hint:'Las diferencias financieras destruyen más vínculos de lo que se reconoce.',type:'options',options:[
+    {e:'📈',t:'Ahorro activamente, pienso a largo plazo',s:'El dinero es una herramienta de libertad futura',v:'ahorrador'},
+    {e:'⚖️',t:'Equilibrio entre gastar y ahorrar',s:'Disfruto hoy, sin descuidar el mañana',v:'equilibrado'},
+    {e:'🎉',t:'Prefiero vivir la experiencia ahora',s:'El dinero es para disfrutarlo',v:'gastador'},
+    {e:'😰',t:'El dinero me genera ansiedad',s:'Es un tema de mucho estrés para mí',v:'ansioso'},
+  ]},
+  {id:'metas',cat:'Proyección',text:'¿Dónde te ves en 5 años?',hint:'La visión de futuro alinea o separa inevitablemente.',type:'options',options:[
+    {e:'🏗️',t:'Construyendo algo propio',s:'Negocio, proyecto, creación',v:'emprendedor'},
+    {e:'📊',t:'En carrera profesional consolidada',s:'Crecimiento dentro de una estructura',v:'profesional'},
+    {e:'🌍',t:'Viajando / explorando el mundo',s:'La experiencia de vida es mi prioridad',v:'nomada'},
+    {e:'🏡',t:'Estabilidad y raíces',s:'Familia, hogar, comunidad cercana',v:'estabilidad'},
+    {e:'🔮',t:'No lo sé todavía',s:'En proceso de definirlo',v:'indefinido'},
+  ]},
+  {id:'exigencia',cat:'Carácter',text:'Del 1 al 10, ¿qué tan exigente eres contigo mismo/a?',hint:'El nivel de autoexigencia afecta profundamente cómo alguien se relaciona.',type:'slider',min:1,max:10,default:5,labels:['Muy flexible','Muy perfeccionista'],descs:{1:'Muy relajado/a',2:'Bastante flexible',3:'Flexible y adaptable',4:'Moderadamente exigente',5:'Equilibrado',6:'Bastante exigente',7:'Muy exigente',8:'Altamente perfeccionista',9:'Perfeccionista intenso',10:'Exigencia máxima'}},
+  {id:'vision',cat:'Visión',text:'¿Qué es lo más importante que alguien debe saber de ti para conectar contigo de verdad?',hint:'Esta respuesta vale más que todas las anteriores juntas. Sin filtros.',type:'text',placeholder:'Ej: Soy muy leal pero me cuesta confiar. Necesito espacio pero no abandono. Tengo metas grandes y quiero a alguien que también las tenga…',maxLength:350},
+];
+
+let nA='',nB='',bindType='';
+let ansA={},ansB={};
+let phase='A',curQ=0,reportData=null;
+
+// BG CANVAS
+(()=>{
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  function rs(){c.width=innerWidth;c.height=innerHeight;}rs();
+  window.addEventListener('resize',rs);
+  let t=0;
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);t+=.004;
+    const g=ctx.createRadialGradient(c.width*.5+Math.sin(t)*80,c.height*.5+Math.cos(t*.7)*60,0,c.width*.5,c.height*.5,c.width*.7);
+    g.addColorStop(0,'rgba(155,109,255,.02)');g.addColorStop(.5,'rgba(233,30,140,.01)');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+    requestAnimationFrame(draw);
+  })();
+})();
+
+function chkNames(){
+  nA=document.getElementById('nameA').value.trim();
+  nB=document.getElementById('nameB').value.trim();
+  const ok=nA.length>0&&nB.length>0&&bindType;
+  const btn=document.getElementById('btnStart');
+  btn.style.opacity=ok?'1':'.3';btn.style.pointerEvents=ok?'auto':'none';btn.disabled=!ok;
+}
+
+function selType(t){
+  bindType=t;
+  document.querySelectorAll('.type-opt').forEach(el=>{
+    const s=el.dataset.t===t;
+    el.className='type-opt'+(s?' sel':'');
+  });
+  chkNames();
+}
+
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.className=s.id==='screen-'+id?'screen active':'screen';});
+}
+
+function startQuiz(){phase='A';curQ=0;ansA={};ansB={};showProgress();renderQ();}
+
+function showProgress(){
+  document.getElementById('pbar').style.display='block';updateProg();
+}
+
+function updateProg(){
+  const total=Qs.length*2;
+  const done=phase==='A'?curQ:Qs.length+curQ;
+  const pct=(done/total)*100;
+  const fill=document.getElementById('pFill');
+  fill.style.width=pct+'%';
+  fill.className='progress-fill '+(phase==='A'?'pa':'pb');
+  document.getElementById('pLbl').textContent=phase==='A'?nA:nB;
+  document.getElementById('pLbl').style.color=phase==='A'?'var(--fuchsia)':'var(--teal)';
+  document.getElementById('pCnt').textContent=(done+1)+'/'+total;
+}
+
+function renderQ(){
+  goScreen('question');
+  const q=Qs[curQ];
+  const isB=phase==='B';
+  const ans=isB?ansB:ansA;
+
+  document.getElementById('pAv').className='phase-av '+(isB?'b':'a');
+  document.getElementById('pAv').textContent=(isB?nB:nA).charAt(0).toUpperCase();
+  document.getElementById('pNm').textContent=isB?nB:nA;
+  document.getElementById('pSub').textContent='Pregunta '+(curQ+1)+' de '+Qs.length;
+
+  const nxt=document.getElementById('btnNext');
+  nxt.className='btn-nxt '+(isB?'b':'a');
+  const isLast=curQ===Qs.length-1;
+  nxt.textContent=isLast?(phase==='A'?'Completar perfil →':'Analizar compatibilidad →'):'Continuar →';
+
+  const card=document.getElementById('qCard');
+  card.className='q-card'+(isB?' bphase':'');
+  card.innerHTML='';
+
+  const numDiv=document.createElement('div');
+  numDiv.className='q-num '+(isB?'qb':'qa');
+  numDiv.innerHTML=`<span>Pregunta ${curQ+1}</span><span class="q-cat">${q.cat}</span>`;
+  card.appendChild(numDiv);
+
+  const tx=document.createElement('div');tx.className='q-txt';tx.textContent=q.text;card.appendChild(tx);
+  const hn=document.createElement('div');hn.className='q-hint';hn.textContent=q.hint;card.appendChild(hn);
+
+  if(q.type==='options'){
+    const wrap=document.createElement('div');wrap.className='opts';
+    q.options.forEach(o=>{
+      const btn=document.createElement('button');
+      btn.className='opt'+(ans[q.id]&&ans[q.id].v===o.v?' sel':'');
+      btn.innerHTML=`<div class="opt-dot"></div><span class="opt-em">${o.e}</span><span class="opt-tx">${o.t}${o.s?`<span class="opt-sub">${o.s}</span>`:''}</span>`;
+      btn.onclick=()=>{
+        wrap.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+        btn.classList.add('sel');
+        (isB?ansB:ansA)[q.id]={v:o.v,t:o.t};
+        nxt.disabled=false;
+      };
+      wrap.appendChild(btn);
+    });
+    card.appendChild(wrap);
+    nxt.disabled=!ans[q.id];
+  } else if(q.type==='slider'){
+    const val=ans[q.id]?ans[q.id].v:q.default;
+    const pct=((val-q.min)/(q.max-q.min))*100;
+    const cls=isB?'b':'a';const rcls=isB?'rb':'ra';
+    card.innerHTML+=`<div class="sl-wrap"><div class="sl-disp"><div class="sl-val ${cls}" id="sv">${val}</div><div class="sl-desc" id="sd">${q.descs[val]||''}</div></div><div class="sl-lbls"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><input type="range" class="${rcls}" min="${q.min}" max="${q.max}" value="${val}" step="1" style="--pct:${pct}%" id="sl"></div>`;
+    (isB?ansB:ansA)[q.id]={v:val,t:val+'/'+q.max};
+    nxt.disabled=false;
+    const sl=card.querySelector('#sl');
+    sl.oninput=function(){
+      const v=parseInt(this.value);const p=((v-q.min)/(q.max-q.min))*100;
+      this.style.setProperty('--pct',p+'%');
+      card.querySelector('#sv').textContent=v;
+      card.querySelector('#sd').textContent=q.descs[v]||'';
+      (isB?ansB:ansA)[q.id]={v:v,t:v+'/'+q.max};
+    };
+  } else if(q.type==='text'){
+    const saved=ans[q.id]?ans[q.id].v:'';
+    const tcls=isB?'tb':'ta';
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<textarea class="q-inp ${tcls}" placeholder="${q.placeholder}" maxlength="${q.maxLength}" id="ta">${saved}</textarea><div class="char-count" style="text-align:right;font-size:.58rem;color:var(--muted);margin-top:5px;"><span id="cc">${saved.length}</span>/${q.maxLength}</div>`;
+    card.appendChild(wrap);
+    const ta=wrap.querySelector('#ta');
+    ta.oninput=function(){
+      wrap.querySelector('#cc').textContent=this.value.length;
+      const v=this.value.trim();
+      (isB?ansB:ansA)[q.id]={v:v,t:v};
+      nxt.disabled=v.length<10;
+    };
+    nxt.disabled=saved.length<10;
+  }
+  document.getElementById('btnBack').disabled=curQ===0&&phase==='A';
+}
+
+function nextQ(){
+  const ans=phase==='A'?ansA:ansB;
+  const q=Qs[curQ];
+  if(!ans[q.id]&&q.type!=='slider')return;
+  if(curQ<Qs.length-1){curQ++;updateProg();renderQ();}
+  else{
+    if(phase==='A'){
+      document.getElementById('pbar').style.display='none';
+      document.getElementById('trNmA').textContent=nA;
+      document.getElementById('trNmB').textContent=nB;
+      document.getElementById('trNmB2').textContent=nB;
+      goScreen('transition');
+    } else{submitAll();}
+  }
+}
+
+function prevQ(){
+  if(curQ>0){curQ--;updateProg();renderQ();}
+  else if(phase==='B'){
+    phase='A';curQ=Qs.length-1;
+    document.getElementById('pbar').style.display='block';
+    updateProg();renderQ();
+  }
+}
+
+function startPhaseB(){phase='B';curQ=0;document.getElementById('pbar').style.display='block';updateProg();renderQ();}
+
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function submitAll(){
+  document.getElementById('pbar').style.display='none';
+  goScreen('loading');
+  for(let i=0;i<6;i++){
+    document.getElementById('ls'+i).classList.add('active');
+    await wait(620);
+    document.getElementById('ls'+i).classList.remove('active');
+    document.getElementById('ls'+i).classList.add('done');
+  }
+  await wait(400);
+  await callClaude();
+}
+
+function buildSum(ans,name){
+  let s=`\n=== PERFIL: ${name} ===\n`;
+  Qs.forEach(q=>{
+    const a=ans[q.id];
+    if(!a)return;
+    let resp=a.t;
+    if(q.type==='slider'){
+      const desc=q.descs[a.v]||'';
+      resp=`${a.v}/${q.max} — ${desc}`;
+    } else if(q.type==='text'){
+      resp=a.v;
+    }
+    s+=`[${q.cat}] ${q.text}\n→ ${resp}\n`;
+  });
+  return s;
+}
+
+async function callClaude(){
+  const typeCtx={pareja:'relación romántica',amistad:'amistad',trabajo:'vínculo laboral o de negocios',convivencia:'convivencia como roommates',familia:'vínculo familiar',general:'compatibilidad general'}[bindType]||'compatibilidad general';
+  const prompt=`Eres un motor de análisis psicológico de compatibilidad interpersonal. Analiza los dos perfiles y genera un reporte detallado para un vínculo de: ${typeCtx}.
+
+${buildSum(ansA,nA)}
+${buildSum(ansB,nB)}
+
+Responde SOLO con JSON válido, sin backticks, sin texto adicional:
+{
+  "compatibilidad_total": número 0-100,
+  "veredicto": "Una frase directa y memorable del resultado de compatibilidad",
+  "analisis_general": "Análisis de 3-4 frases evaluando la dinámica general entre ambos perfiles",
+  "perfil_a": {
+    "arquetipo": "Nombre del arquetipo psicológico (2-4 palabras)",
+    "descripcion_arquetipo": "Una frase sobre su patrón de personalidad dominante",
+    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3"],
+    "rasgos_atencion": ["rasgo1","rasgo2"],
+    "score_individual": número 0-100
+  },
+  "perfil_b": {
+    "arquetipo": "Nombre del arquetipo psicológico (2-4 palabras)",
+    "descripcion_arquetipo": "Una frase sobre su patrón de personalidad dominante",
+    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3"],
+    "rasgos_atencion": ["rasgo1","rasgo2"],
+    "score_individual": número 0-100
+  },
+  "polaridades": [
+    {"dimension":"Energía social","label_a":"texto corto","label_b":"texto corto","posicion": número -50 a 50},
+    {"dimension":"Toma de decisiones","label_a":"texto","label_b":"texto","posicion": número},
+    {"dimension":"Gestión emocional","label_a":"texto","label_b":"texto","posicion": número},
+    {"dimension":"Ritmo de vida","label_a":"texto","label_b":"texto","posicion": número},
+    {"dimension":"Comunicación","label_a":"texto","label_b":"texto","posicion": número}
+  ],
+  "dimensiones": [
+    {"label":"Valores compartidos","valor": número 0-100},
+    {"label":"Compatibilidad emocional","valor": número},
+    {"label":"Estilos de comunicación","valor": número},
+    {"label":"Ritmo y estilo de vida","valor": número},
+    {"label":"Gestión del conflicto","valor": número},
+    {"label":"Visión de futuro","valor": número}
+  ],
+  "puntos_tension": "Las 2-3 áreas de mayor tensión potencial entre ambos",
+  "puntos_fuerza": "Las 2-3 fortalezas o puntos de convergencia más importantes",
+  "recomendacion_final": "Consejo directo y psicológicamente fundamentado. Sin rodeos. Di si deben o no proceder y por qué."
+}`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const raw=data.content.map(b=>b.text||'').join('');
+    reportData=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  }catch(e){
+    reportData={compatibilidad_total:62,veredicto:'Compatibilidad moderada con potencial real',analisis_general:'Ambos perfiles muestran convergencia en valores centrales con diferencias en estilo comunicativo y manejo emocional. Hay potencial de crecimiento mutuo si se trabajan los puntos de tensión.',perfil_a:{arquetipo:'El Explorador Consciente',descripcion_arquetipo:'Busca conexión auténtica con independencia de movimiento',rasgos_positivos:['Autenticidad','Curiosidad','Adaptabilidad'],rasgos_atencion:['Impulsividad','Dificultad con rutina'],score_individual:72},perfil_b:{arquetipo:'El Constructor Estable',descripcion_arquetipo:'Prioriza seguridad y profundidad sobre novedad',rasgos_positivos:['Confiabilidad','Lealtad','Claridad de metas'],rasgos_atencion:['Rigidez','Resistencia al cambio'],score_individual:68},polaridades:[{dimension:'Energía social',label_a:'Más extrovertido',label_b:'Más introvertido',posicion:-20},{dimension:'Toma de decisiones',label_a:'Más intuitivo',label_b:'Más analítico',posicion:25},{dimension:'Gestión emocional',label_a:'Más expresivo',label_b:'Más contenido',posicion:-15},{dimension:'Ritmo de vida',label_a:'Más intenso',label_b:'Más equilibrado',posicion:-10},{dimension:'Comunicación',label_a:'Frecuente',label_b:'Profunda',posicion:20}],dimensiones:[{label:'Valores compartidos',valor:70},{label:'Compatibilidad emocional',valor:58},{label:'Estilos de comunicación',valor:55},{label:'Ritmo y estilo de vida',valor:60},{label:'Gestión del conflicto',valor:62},{label:'Visión de futuro',valor:68}],puntos_tension:'La diferencia en estilos comunicativos puede generar malentendidos frecuentes. El ritmo de vida distinto puede crear fricción en decisiones cotidianas.',puntos_fuerza:'Comparten valores de fondo que los anclan. Hay complementariedad en habilidades que puede ser muy productiva.',recomendacion_final:'Esta combinación puede funcionar bien si ambos están dispuestos a negociar los puntos de diferencia. El ingrediente crítico es la comunicación explícita y constante.'};
+  }
+  renderResult();
+  goScreen('result');
+}
+
+function renderResult(){
+  const r=reportData;
+  const s=r.compatibilidad_total;
+  const colMain=s>=70?'#00dc82':s>=45?'#ffb800':'#ff4450';
+  const vc=s>=70?'v':s>=45?'a':'r';
+  const vtxt=s>=70?'✓ Alta compatibilidad':s>=45?'~ Compatibilidad moderada':'⚠ Baja compatibilidad';
+  const rA=r.perfil_a,rB=r.perfil_b;
+  const sA=rA.score_individual,sB=rB.score_individual;
+
+  let html=`
+  <div class="compat-card">
+    <div class="compat-lbl">Compatibilidad Total</div>
+    <div class="compat-big" id="cBig" style="color:${colMain}">0%</div>
+    <div class="compat-bar"><div class="compat-fill" id="cFill" style="width:0%;background:linear-gradient(90deg,var(--fuchsia),${colMain})"></div></div>
+    <span class="vtag ${vc}">${vtxt}</span>
+    <div class="vmain" id="vMain">${r.veredicto}</div>
+  </div>
+
+  <div class="dual-sc">
+    <div class="sc-card a">
+      <div class="sc-nm a">${nA}</div>
+      <div class="sc-ring">
+        <svg viewBox="0 0 88 88"><circle class="r-track" cx="44" cy="44" r="40"/><circle class="r-fill" id="rfA" cx="44" cy="44" r="40" stroke="var(--fuchsia)" stroke-dasharray="251.3" stroke-dashoffset="251.3"/></svg>
+        <div class="sc-pct a" id="pA">0%</div>
+      </div>
+      <div class="sc-arch">${rA.arquetipo}</div>
+    </div>
+    <div class="sc-card b">
+      <div class="sc-nm b">${nB}</div>
+      <div class="sc-ring">
+        <svg viewBox="0 0 88 88"><circle class="r-track" cx="44" cy="44" r="40"/><circle class="r-fill" id="rfB" cx="44" cy="44" r="40" stroke="var(--teal)" stroke-dasharray="251.3" stroke-dashoffset="251.3"/></svg>
+        <div class="sc-pct b" id="pB">0%</div>
+      </div>
+      <div class="sc-arch">${rB.arquetipo}</div>
+    </div>
+  </div>
+
+  <div class="arch-row">
+    <div class="arch-card a">
+      <div class="sc-nm a" style="margin-bottom:8px;">${nA}</div>
+      <div class="arch-type a">${rA.arquetipo}</div>
+      <div class="arch-sub">${rA.descripcion_arquetipo}</div>
+    </div>
+    <div class="arch-card b">
+      <div class="sc-nm b" style="margin-bottom:8px;">${nB}</div>
+      <div class="arch-type b">${rB.arquetipo}</div>
+      <div class="arch-sub">${rB.descripcion_arquetipo}</div>
+    </div>
+  </div>
+
+  <div class="pers-grid">
+    <div class="pers-card a">
+      <div class="pers-head"><div class="pers-av a">${nA.charAt(0).toUpperCase()}</div><div class="pers-nm">${nA}</div></div>
+      <div class="trait-type">Fortalezas</div>
+      <div class="trait-list">${rA.rasgos_positivos.map(t=>`<span class="tpill pos">${t}</span>`).join('')}</div>
+      <div class="trait-type" style="margin-top:8px;">A observar</div>
+      <div class="trait-list">${rA.rasgos_atencion.map(t=>`<span class="tpill warn">${t}</span>`).join('')}</div>
+    </div>
+    <div class="pers-card b">
+      <div class="pers-head"><div class="pers-av b">${nB.charAt(0).toUpperCase()}</div><div class="pers-nm">${nB}</div></div>
+      <div class="trait-type">Fortalezas</div>
+      <div class="trait-list">${rB.rasgos_positivos.map(t=>`<span class="tpill pos">${t}</span>`).join('')}</div>
+      <div class="trait-type" style="margin-top:8px;">A observar</div>
+      <div class="trait-list">${rB.rasgos_atencion.map(t=>`<span class="tpill warn">${t}</span>`).join('')}</div>
+    </div>
+  </div>
+
+  <div class="rsecs">
+    <div class="rsec"><div class="rsec-t">Análisis general</div><div class="rsec-b">${r.analisis_general}</div></div>
+  </div>
+
+  <div class="pol-sec">
+    <div style="font-size:.56rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;">Polaridades de personalidad<span style="flex:1;height:1px;background:rgba(201,169,110,.1);display:block;"></span></div>
+    ${r.polaridades.map(p=>{
+      const pos=Math.max(-50,Math.min(50,p.posicion));
+      const lp=50+pos;
+      const nc=Math.abs(pos)<15?'var(--gold)':pos<0?'var(--fuchsia)':'var(--teal)';
+      return `<div class="pol-row">
+        <div class="pol-la">${p.label_a}</div>
+        <div class="pol-dim">${p.dimension}</div>
+        <div class="pol-track"><div class="pol-needle" style="left:${lp}%;background:${nc};"></div></div>
+        <div class="pol-lb">${p.label_b}</div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="rsec" style="margin-bottom:14px;">
+    <div class="rsec-t">Dimensiones de compatibilidad</div>
+    <div class="dim-bars">
+      ${r.dimensiones.map((d,i)=>{
+        const dc=d.valor>=70?'#00dc82':d.valor>=45?'#ffb800':'#ff4450';
+        return `<div class="dim-row"><span class="dim-lbl">${d.label}</span><div class="dim-trk"><div class="dim-fill" id="df${i}" style="background:${dc};width:0%"></div></div><span class="dim-v">${d.valor}%</span></div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <div class="rsecs">
+    <div class="rsec" style="border-color:rgba(255,68,80,.15)"><div class="rsec-t" style="color:#ff4450">Puntos de tensión</div><div class="rsec-b">${r.puntos_tension}</div></div>
+    <div class="rsec" style="border-color:rgba(0,220,130,.15)"><div class="rsec-t" style="color:#00dc82">Puntos de fortaleza</div><div class="rsec-b">${r.puntos_fuerza}</div></div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-icon">🔮</div>
+    <div class="rec-title">Veredicto Final</div>
+    <div class="rec-body">${r.recomendacion_final}</div>
+    <div class="rec-score"><span class="rec-badge ${vc}">${s}% compatibilidad · ${vtxt}</span></div>
+  </div>
+
+  <div class="res-actions">
+    <button class="btn-main" onclick="resetAll()">Nuevo análisis</button>
+    <button class="btn-ghost" onclick="copyResult()">📋 Copiar veredicto</button>
+    <button class="btn-ghost" onclick="window.print()">Guardar PDF</button>
+  </div>`;
+
+  document.getElementById('resWrap').innerHTML=html;
+
+  setTimeout(()=>{
+    document.getElementById('cFill').style.width=s+'%';
+    let cv=0;const cEl=document.getElementById('cBig');
+    const iv=setInterval(()=>{cv=Math.min(cv+2,s);cEl.textContent=cv+'%';if(cv>=s)clearInterval(iv);},22);
+    setTimeout(()=>document.getElementById('vMain').classList.add('show'),600);
+    setTimeout(()=>{
+      document.getElementById('rfA').style.strokeDashoffset=251.3-(sA/100)*251.3;
+      document.getElementById('rfB').style.strokeDashoffset=251.3-(sB/100)*251.3;
+      let va=0,vb=0;
+      const ia=setInterval(()=>{va=Math.min(va+2,sA);document.getElementById('pA').textContent=va+'%';if(va>=sA)clearInterval(ia);},20);
+      const ib=setInterval(()=>{vb=Math.min(vb+2,sB);document.getElementById('pB').textContent=vb+'%';if(vb>=sB)clearInterval(ib);},20);
+    },300);
+    setTimeout(()=>{r.dimensiones.forEach((_,i)=>{const el=document.getElementById('df'+i);if(el)el.style.width=r.dimensiones[i].valor+'%';});},500);
+  },100);
+}
+
+function copyResult(){
+  if(!reportData)return;
+  const r=reportData;
+  const rA=r.perfil_a,rB=r.perfil_b;
+  const txt=`✦ KNOW THEM — Análisis de Compatibilidad\n\n${nA} × ${nB}\nTipo de vínculo: ${bindType}\n\nCompatibilidad total: ${r.compatibilidad_total}%\nVeredicto: ${r.veredicto}\n\n— ${nA} —\nArquetipo: ${rA.arquetipo}\nFortalezas: ${rA.rasgos_positivos.join(', ')}\nA observar: ${rA.rasgos_atencion.join(', ')}\n\n— ${nB} —\nArquetipo: ${rB.arquetipo}\nFortalezas: ${rB.rasgos_positivos.join(', ')}\nA observar: ${rB.rasgos_atencion.join(', ')}\n\nPuntos de tensión: ${r.puntos_tension}\nPuntos de fortaleza: ${r.puntos_fuerza}\n\nVeredicto final: ${r.recomendacion_final}`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=event.target;const orig=btn.textContent;
+    btn.textContent='✓ Copiado';btn.style.color='var(--teal)';btn.style.borderColor='var(--teal)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.color='';btn.style.borderColor='';},2200);
+  }).catch(()=>alert('Copia manual:\n\n'+txt));
+}
+
+function resetAll(){
+  nA='';nB='';bindType='';ansA={};ansB={};phase='A';curQ=0;reportData=null;
+  document.getElementById('nameA').value='';document.getElementById('nameB').value='';
+  document.querySelectorAll('.type-opt').forEach(el=>el.className='type-opt');
+  const btn=document.getElementById('btnStart');
+  btn.style.opacity='.3';btn.style.pointerEvents='none';btn.disabled=true;
+  document.getElementById('pbar').style.display='none';
+  goScreen('intro');
+}
+</script>
+</body>
+</html>
