@@ -601,156 +601,744 @@ async function submitAll(){
 }
 
 // ─── COMPATIBILITY ENGINE ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════
+// MOTOR COMPLETO — TODAS LAS COMBINACIONES POSIBLES
+// Reemplaza la función analyzeCompatibility() en el HTML
+// ══════════════════════════════════════════════════════════════════
+
 function analyzeCompatibility(){
-  const ARQUETIPOS={
-    inocente:{nombre:'El Inocente',emoji:'🌸',desc:'Optimista nato que busca seguridad y pureza en todo vínculo.',rasgos_pos:['Optimismo genuino','Lealtad incondicional','Genera confianza','Visión positiva'],rasgos_neg:['Evita conflictos','Idealiza personas','Ingenuo ante señales'],afinidad:{inocente:85,explorador:72,sabio:68,heroe:60,forajido:45,mago:70,corriente:80,amante:88,bufon:75,cuidador:90,creador:65,gobernante:55}},
-    explorador:{nombre:'El Explorador',emoji:'🧭',desc:'Busca libertad y autenticidad, huye de la conformidad a toda costa.',rasgos_pos:['Autenticidad radical','Adaptabilidad','Curiosidad infinita','Independencia'],rasgos_neg:['Compromiso difícil','Inquietud crónica','Evita rutinas'],afinidad:{inocente:72,explorador:65,sabio:78,heroe:70,forajido:82,mago:85,corriente:50,amante:68,bufon:80,cuidador:55,creador:88,gobernante:42}},
-    sabio:{nombre:'El Sabio',emoji:'🦉',desc:'Analítico y reflexivo, busca la verdad por encima de cualquier comodidad.',rasgos_pos:['Pensamiento profundo','Objetividad','Consejo certero','Perspectiva lúcida'],rasgos_neg:['Distancia emocional','Análisis paralizante','Crítico excesivo'],afinidad:{inocente:68,explorador:78,sabio:72,heroe:65,forajido:70,mago:88,corriente:60,amante:55,bufon:52,cuidador:62,creador:80,gobernante:75}},
-    heroe:{nombre:'El Héroe',emoji:'⚔️',desc:'Competitivo y valiente, necesita demostrar su valía constantemente.',rasgos_pos:['Determinación','Coraje real','Protector','Inspirador'],rasgos_neg:['Ego sensible','Competitivo en exceso','Dificultad para pedir ayuda'],afinidad:{inocente:60,explorador:70,sabio:65,heroe:55,forajido:75,mago:68,corriente:72,amante:70,bufon:60,cuidador:65,creador:62,gobernante:80}},
-    forajido:{nombre:'El Forajido',emoji:'🔥',desc:'Rebelde que rompe reglas y teme profundamente la mediocridad.',rasgos_pos:['Autenticidad feroz','Valentía disruptiva','Sin filtros','Lealtad selectiva'],rasgos_neg:['Autodestructivo a veces','Provocador','Resistencia a la autoridad'],afinidad:{inocente:45,explorador:82,sabio:70,heroe:75,forajido:60,mago:78,corriente:40,amante:65,bufon:82,cuidador:48,creador:85,gobernante:35}},
-    mago:{nombre:'El Mago',emoji:'✨',desc:'Visionario que transforma la realidad y busca conocimiento profundo.',rasgos_pos:['Visión transformadora','Carisma magnético','Intuición aguda','Cataliza cambios'],rasgos_neg:['Manipulador potencial','Idealista peligroso','Difícil de entender'],afinidad:{inocente:70,explorador:85,sabio:88,heroe:68,forajido:78,mago:70,corriente:55,amante:75,bufon:65,cuidador:68,creador:90,gobernante:62}},
-    corriente:{nombre:'El Hombre Corriente',emoji:'🤝',desc:'Pragmático que quiere pertenecer sin destacar demasiado.',rasgos_pos:['Confiable','Empático con todos','Sin pretensiones','Estabilizador'],rasgos_neg:['Evita destacar','Conformista','Dificultad con cambios'],afinidad:{inocente:80,explorador:50,sabio:60,heroe:72,forajido:40,mago:55,corriente:82,amante:78,bufon:70,cuidador:88,creador:52,gobernante:68}},
-    amante:{nombre:'El Amante',emoji:'💫',desc:'Busca conexión profunda e intensa, el abandono es su mayor temor.',rasgos_pos:['Conexión profunda','Pasión genuina','Presencia total','Sensibilidad alta'],rasgos_neg:['Dependencia emocional','Celos potenciales','Necesita confirmación'],afinidad:{inocente:88,explorador:68,sabio:55,heroe:70,forajido:65,mago:75,corriente:78,amante:72,bufon:62,cuidador:85,creador:70,gobernante:58}},
-    bufon:{nombre:'El Bufón',emoji:'🎭',desc:'Vive el presente con humor, el aburrimiento es su enemigo existencial.',rasgos_pos:['Humor sanador','Espontaneidad','Descomprime tensiones','Vive el presente'],rasgos_neg:['Evita profundidad','Irresponsable a veces','Huye del dolor'],afinidad:{inocente:75,explorador:80,sabio:52,heroe:60,forajido:82,mago:65,corriente:70,amante:62,bufon:68,cuidador:65,creador:75,gobernante:45}},
-    cuidador:{nombre:'El Cuidador',emoji:'🌿',desc:'Altruista y protector, teme el egoísmo propio y el abandono ajeno.',rasgos_pos:['Generosidad real','Empatía profunda','Presencia estable','Apoyo incondicional'],rasgos_neg:['Descuida sus propias necesidades','Mártir potencial','Codependencia'],afinidad:{inocente:90,explorador:55,sabio:62,heroe:65,forajido:48,mago:68,corriente:88,amante:85,bufon:65,cuidador:75,creador:60,gobernante:62}},
-    creador:{nombre:'El Creador',emoji:'🎨',desc:'Imaginativo que necesita expresarse, la mediocridad creativa lo destruye.',rasgos_pos:['Originalidad','Visión estética','Expresión auténtica','Innovador'],rasgos_neg:['Perfeccionismo paralizante','Temperamental','Mundo propio'],afinidad:{inocente:65,explorador:88,sabio:80,heroe:62,forajido:85,mago:90,corriente:52,amante:70,bufon:75,cuidador:60,creador:68,gobernante:50}},
-    gobernante:{nombre:'El Gobernante',emoji:'👑',desc:'Líder natural que busca control y orden, el caos lo desestabiliza.',rasgos_pos:['Liderazgo natural','Organización','Visión estratégica','Responsabilidad'],rasgos_neg:['Controlador','Inflexible','Dificultad delegando'],afinidad:{inocente:55,explorador:42,sabio:75,heroe:80,forajido:35,mago:62,corriente:68,amante:58,bufon:45,cuidador:62,creador:50,gobernante:60}}
+
+  // ────────────────────────────────────────────────────────────────
+  // 1. LOS 12 ARQUETIPOS JUNGIANOS
+  //    Cada uno con: descripción larga, rasgos, sombra, deseo
+  //    y tabla de afinidad con los otros 11 (0–100)
+  // ────────────────────────────────────────────────────────────────
+  const ARQUETIPOS = {
+
+    inocente: {
+      nombre: 'El Inocente',
+      emoji: '🌸',
+      desc: 'Optimista nato que busca bondad en todo. Confía en los demás de manera natural y cree que el mundo es fundamentalmente seguro. Su mayor miedo es ser traicionado o corrompido.',
+      deseo: 'Ser feliz, pertenecer, sentir que el mundo es bueno',
+      sombra: 'Negación de la realidad, ingenuidad peligrosa, dependencia excesiva',
+      rasgos_pos: ['Optimismo genuino', 'Lealtad incondicional', 'Genera confianza', 'Visión positiva', 'Inocencia desarmante'],
+      rasgos_neg: ['Evita conflictos', 'Idealiza personas', 'Ingenuo ante señales', 'Dependiente emocionalmente'],
+      afinidad: {
+        inocente: 80, explorador: 68, sabio: 62, heroe: 58,
+        forajido: 40, mago: 66, corriente: 85, amante: 90,
+        bufon: 72, cuidador: 92, creador: 60, gobernante: 52
+      }
+    },
+
+    explorador: {
+      nombre: 'El Explorador',
+      emoji: '🧭',
+      desc: 'Busca libertad, autenticidad y experiencias nuevas. Huye de la conformidad y la mediocridad. Necesita movimiento constante para sentirse vivo. Su mayor miedo es el atrapamiento.',
+      deseo: 'Vivir plenamente, encontrarse a sí mismo, explorar sin límites',
+      sombra: 'Huida compulsiva, incapacidad de comprometerse, soledad autoinfligida',
+      rasgos_pos: ['Autenticidad radical', 'Adaptabilidad alta', 'Curiosidad insaciable', 'Independencia real', 'Apertura mental'],
+      rasgos_neg: ['Compromiso difícil', 'Inquietud crónica', 'Evita rutinas', 'Abandona cuando se aburre'],
+      afinidad: {
+        inocente: 68, explorador: 62, sabio: 80, heroe: 66,
+        forajido: 85, mago: 88, corriente: 48, amante: 65,
+        bufon: 82, cuidador: 52, creador: 90, gobernante: 38
+      }
+    },
+
+    sabio: {
+      nombre: 'El Sabio',
+      emoji: '🦉',
+      desc: 'Busca la verdad por encima de cualquier comodidad. Analítico, reflexivo y objetivo. Confía en el conocimiento como brújula para la vida. Su mayor miedo es la ignorancia o el engaño.',
+      deseo: 'Encontrar la verdad, comprender el mundo, compartir su conocimiento',
+      sombra: 'Frialdad emocional, análisis paralizante, arrogancia intelectual',
+      rasgos_pos: ['Pensamiento profundo', 'Objetividad real', 'Consejo certero', 'Perspectiva lúcida', 'Paciencia analítica'],
+      rasgos_neg: ['Distancia emocional', 'Análisis paralizante', 'Crítico excesivo', 'Desconecta de lo emocional'],
+      afinidad: {
+        inocente: 62, explorador: 80, sabio: 70, heroe: 62,
+        forajido: 68, mago: 90, corriente: 58, amante: 52,
+        bufon: 48, cuidador: 60, creador: 82, gobernante: 78
+      }
+    },
+
+    heroe: {
+      nombre: 'El Héroe',
+      emoji: '⚔️',
+      desc: 'Determinado y valiente, necesita demostrar su valía superando obstáculos. Protege a los suyos y no se rinde ante la adversidad. Su mayor miedo es la cobardía o la derrota.',
+      deseo: 'Probar su valor, dejar huella, superar límites',
+      sombra: 'Ego frágil, competitividad tóxica, dificultad para pedir ayuda',
+      rasgos_pos: ['Determinación feroz', 'Coraje real', 'Protector natural', 'Inspira a otros', 'Resiliencia alta'],
+      rasgos_neg: ['Ego sensible', 'Competitivo en exceso', 'Dificultad para pedir ayuda', 'Puede sacrificar relaciones por metas'],
+      afinidad: {
+        inocente: 58, explorador: 66, sabio: 62, heroe: 52,
+        forajido: 72, mago: 65, corriente: 70, amante: 68,
+        bufon: 58, cuidador: 62, creador: 60, gobernante: 82
+      }
+    },
+
+    forajido: {
+      nombre: 'El Forajido',
+      emoji: '🔥',
+      desc: 'Rebelde que rompe reglas y sistemas. Teme la mediocridad más que cualquier otra cosa. Profundamente auténtico, a veces autodestructivo. Su mayor miedo es ser irrelevante o controlado.',
+      deseo: 'Romper lo que no funciona, ser radicalmente libre, dejar su marca',
+      sombra: 'Autodestrucción, provocación sin propósito, rechazo de toda estructura',
+      rasgos_pos: ['Autenticidad feroz', 'Valentía disruptiva', 'Sin filtros', 'Lealtad selectiva pero profunda', 'Carisma magnético'],
+      rasgos_neg: ['Autodestructivo a veces', 'Provocador compulsivo', 'Resistencia a toda autoridad', 'Quema puentes'],
+      afinidad: {
+        inocente: 40, explorador: 85, sabio: 68, heroe: 72,
+        forajido: 58, mago: 80, corriente: 38, amante: 62,
+        bufon: 85, cuidador: 45, creador: 88, gobernante: 32
+      }
+    },
+
+    mago: {
+      nombre: 'El Mago',
+      emoji: '✨',
+      desc: 'Visionario que transforma la realidad. Combina intuición, conocimiento profundo y carisma. Ve conexiones que otros no ven. Su mayor miedo es tener consecuencias negativas no intencionadas.',
+      deseo: 'Hacer que las cosas sucedan, transformar la realidad, entender lo invisible',
+      sombra: 'Manipulación, poder sin ética, promesas que no cumple',
+      rasgos_pos: ['Visión transformadora', 'Carisma magnético', 'Intuición aguda', 'Cataliza cambios', 'Pensamiento sistémico'],
+      rasgos_neg: ['Manipulador potencial', 'Idealista peligroso', 'Difícil de entender', 'Puede usar el poder mal'],
+      afinidad: {
+        inocente: 66, explorador: 88, sabio: 90, heroe: 65,
+        forajido: 80, mago: 68, corriente: 52, amante: 72,
+        bufon: 62, cuidador: 65, creador: 92, gobernante: 60
+      }
+    },
+
+    corriente: {
+      nombre: 'El Hombre Corriente',
+      emoji: '🤝',
+      desc: 'Pragmático que quiere pertenecer sin destacar en exceso. Valora la igualdad, la conexión real y la vida sin pretensiones. Su mayor miedo es sobresalir tanto que quede excluido.',
+      deseo: 'Pertenecer, ser aceptado como es, conexiones reales sin poses',
+      sombra: 'Mediocridad por miedo, conformismo excesivo, resentimiento oculto',
+      rasgos_pos: ['Confiable', 'Empático con todos', 'Sin pretensiones', 'Estabilizador grupal', 'Honestidad directa'],
+      rasgos_neg: ['Evita destacar', 'Conformista', 'Dificultad con cambios', 'Puede resentirse en silencio'],
+      afinidad: {
+        inocente: 85, explorador: 48, sabio: 58, heroe: 70,
+        forajido: 38, mago: 52, corriente: 80, amante: 80,
+        bufon: 68, cuidador: 90, creador: 50, gobernante: 65
+      }
+    },
+
+    amante: {
+      nombre: 'El Amante',
+      emoji: '💫',
+      desc: 'Busca conexión profunda, belleza e intensidad emocional. El amor es su religión. Necesita intimidad verdadera y teme el abandono más que cualquier otra cosa.',
+      deseo: 'Amor profundo, conexión real, vivir con intensidad y pasión',
+      sombra: 'Dependencia emocional, celos, pérdida de identidad en el otro',
+      rasgos_pos: ['Conexión profunda', 'Pasión genuina', 'Presencia total', 'Sensibilidad alta', 'Fidelidad emocional'],
+      rasgos_neg: ['Dependencia emocional', 'Celos potenciales', 'Necesita confirmación constante', 'Se pierde en el otro'],
+      afinidad: {
+        inocente: 90, explorador: 65, sabio: 52, heroe: 68,
+        forajido: 62, mago: 72, corriente: 80, amante: 70,
+        bufon: 60, cuidador: 88, creador: 68, gobernante: 55
+      }
+    },
+
+    bufon: {
+      nombre: 'El Bufón',
+      emoji: '🎭',
+      desc: 'Vive el presente con humor e irreverencia. Transforma el dolor en risa. El aburrimiento es su enemigo existencial. Su mayor miedo es el aburrimiento o ser ignorado.',
+      deseo: 'Vivir el presente, hacer reír, romper la seriedad innecesaria',
+      sombra: 'Evita profundidad, usa el humor para huir, irresponsable',
+      rasgos_pos: ['Humor sanador', 'Espontaneidad real', 'Descomprime tensiones', 'Vive el presente', 'Contagia alegría'],
+      rasgos_neg: ['Evita profundidad', 'Irresponsable a veces', 'Huye del dolor', 'No toma nada en serio'],
+      afinidad: {
+        inocente: 72, explorador: 82, sabio: 48, heroe: 58,
+        forajido: 85, mago: 62, corriente: 68, amante: 60,
+        bufon: 65, cuidador: 62, creador: 78, gobernante: 42
+      }
+    },
+
+    cuidador: {
+      nombre: 'El Cuidador',
+      emoji: '🌿',
+      desc: 'Altruista que pone las necesidades de otros antes que las propias. Protege y nutre de manera natural. Su mayor miedo es el egoísmo propio o dejar de ser necesario.',
+      deseo: 'Cuidar, proteger, ser necesario para quienes ama',
+      sombra: 'Mártir, codependencia, descuida sus propias necesidades',
+      rasgos_pos: ['Generosidad real', 'Empatía profunda', 'Presencia estable', 'Apoyo incondicional', 'Confiabilidad total'],
+      rasgos_neg: ['Descuida sus propias necesidades', 'Mártir potencial', 'Codependencia', 'Se agota dando'],
+      afinidad: {
+        inocente: 92, explorador: 52, sabio: 60, heroe: 62,
+        forajido: 45, mago: 65, corriente: 90, amante: 88,
+        bufon: 62, cuidador: 72, creador: 58, gobernante: 60
+      }
+    },
+
+    creador: {
+      nombre: 'El Creador',
+      emoji: '🎨',
+      desc: 'Imaginativo que necesita expresarse para existir. Vive para materializar su visión interior. La mediocridad creativa lo destruye. Su mayor miedo es tener una visión mediocre.',
+      deseo: 'Crear algo con valor duradero, expresarse sin límites, dejar su obra',
+      sombra: 'Perfeccionismo paralizante, temperamento, mundo propio que excluye a otros',
+      rasgos_pos: ['Originalidad profunda', 'Visión estética', 'Expresión auténtica', 'Innovación constante', 'Profundidad creativa'],
+      rasgos_neg: ['Perfeccionismo paralizante', 'Temperamental', 'Mundo propio', 'Puede ser difícil de alcanzar'],
+      afinidad: {
+        inocente: 60, explorador: 90, sabio: 82, heroe: 60,
+        forajido: 88, mago: 92, corriente: 50, amante: 68,
+        bufon: 78, cuidador: 58, creador: 65, gobernante: 48
+      }
+    },
+
+    gobernante: {
+      nombre: 'El Gobernante',
+      emoji: '👑',
+      desc: 'Líder natural que busca control, orden y excelencia. Construye imperios y sistemas que duran. Su mayor miedo es el caos, perder el control o ser destronado.',
+      deseo: 'Liderar, crear orden, construir algo que dure, dejar legado',
+      sombra: 'Control excesivo, tiranía, incapacidad de delegar',
+      rasgos_pos: ['Liderazgo natural', 'Organización alta', 'Visión estratégica', 'Responsabilidad real', 'Construye estructuras sólidas'],
+      rasgos_neg: ['Controlador', 'Inflexible', 'Dificultad delegando', 'Puede ser autoritario'],
+      afinidad: {
+        inocente: 52, explorador: 38, sabio: 78, heroe: 82,
+        forajido: 32, mago: 60, corriente: 65, amante: 55,
+        bufon: 42, cuidador: 60, creador: 48, gobernante: 58
+      }
+    }
   };
 
-  function detectarArquetipo(ans){
-    const scores={inocente:0,explorador:0,sabio:0,heroe:0,forajido:0,mago:0,corriente:0,amante:0,bufon:0,cuidador:0,creador:0,gobernante:0};
-    const mapas={
-      energia:{extro_alto:{bufon:3,amante:2,heroe:2},extro_mod:{corriente:3,cuidador:2,amante:1},ambivierte:{mago:2,sabio:2,creador:2},intro_mod:{sabio:3,creador:2,gobernante:1},intro_alto:{forajido:3,sabio:2,creador:2}},
-      conflicto:{directo:{heroe:3,forajido:2,gobernante:2},reflexivo:{sabio:3,mago:2,creador:1},evitador:{inocente:3,cuidador:2,corriente:1},reactivo:{amante:3,forajido:2,bufon:1},mediador:{corriente:3,cuidador:3,sabio:1}},
-      decision:{analitico:{sabio:4,gobernante:2,heroe:1},intuitivo:{mago:4,explorador:2,creador:2},emocional:{amante:4,cuidador:2,inocente:1},mixto:{corriente:2,sabio:2,mago:1}},
-      valores:{libertad:{explorador:4,forajido:3,bufon:2},seguridad:{inocente:4,corriente:3,cuidador:2},crecimiento:{heroe:3,mago:3,creador:3,explorador:2},conexion:{amante:4,cuidador:3,corriente:2},logro:{heroe:4,gobernante:3,forajido:2}},
-      apego:{seguro:{inocente:3,corriente:3,cuidador:2,amante:2},ansioso:{amante:4,cuidador:2,inocente:1},evitativo:{forajido:3,explorador:3,gobernante:2},desorganizado:{forajido:2,mago:2,creador:2}},
-      ritmo:{alta:{heroe:3,gobernante:2,forajido:2},equilibrado:{corriente:3,sabio:2,cuidador:2},tranquilo:{inocente:3,sabio:2,cuidador:2},impredecible:{explorador:3,bufon:3,forajido:2}},
-      comunicacion:{frecuente:{amante:3,cuidador:2,inocente:2},calidad:{sabio:3,mago:3,creador:2},flujo:{explorador:3,bufon:2,forajido:2},directa:{heroe:3,gobernante:3,forajido:2}},
-      emociones:{consciente:{sabio:3,mago:2,creador:2},expresivo:{amante:3,bufon:2,cuidador:2},supresion:{heroe:2,gobernante:2,forajido:1},dificultad:{forajido:2,amante:1,inocente:1}},
-      limites:{asertivo:{heroe:3,gobernante:3,forajido:2},pasivo:{inocente:2,corriente:2,cuidador:1},acumulador:{forajido:3,amante:2,heroe:1},cededor:{cuidador:3,inocente:2,amante:1}},
-      dinero:{ahorrador:{gobernante:3,sabio:2,heroe:2},equilibrado:{corriente:3,sabio:2,cuidador:1},gastador:{bufon:3,explorador:2,amante:2},ansioso:{inocente:2,amante:1,cuidador:1}},
-      metas:{emprendedor:{creador:3,heroe:3,forajido:2,mago:2},profesional:{gobernante:3,heroe:2,sabio:2},nomada:{explorador:4,bufon:3,forajido:2},estabilidad:{inocente:3,corriente:3,cuidador:2},indefinido:{mago:2,forajido:1,creador:1}}
+  // ────────────────────────────────────────────────────────────────
+  // 2. DETECCIÓN DE ARQUETIPO
+  //    13 preguntas × respuestas múltiples → puntuación acumulada
+  // ────────────────────────────────────────────────────────────────
+  function detectarArquetipo(ans) {
+    const s = {
+      inocente:0, explorador:0, sabio:0, heroe:0, forajido:0, mago:0,
+      corriente:0, amante:0, bufon:0, cuidador:0, creador:0, gobernante:0
     };
-    Object.entries(mapas).forEach(([dim,opts])=>{
-      if(ans[dim]){const m=opts[ans[dim].v];if(m)Object.entries(m).forEach(([k,v])=>scores[k]+=v);}
-    });
-    if(ans.exigencia){const v=ans.exigencia.v;if(v>=8){scores.heroe+=3;scores.gobernante+=2;scores.creador+=2;}else if(v>=6){scores.heroe+=1;scores.sabio+=1;scores.creador+=1;}else if(v<=3){scores.bufon+=2;scores.inocente+=2;scores.explorador+=1;}}
-    return Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+
+    // ENERGÍA SOCIAL
+    const enM = {
+      extro_alto:   {bufon:4, amante:3, heroe:2, corriente:1},
+      extro_mod:    {corriente:4, cuidador:3, amante:2, inocente:1},
+      ambivierte:   {mago:3, sabio:3, creador:3, heroe:1},
+      intro_mod:    {sabio:4, creador:3, gobernante:2, mago:1},
+      intro_alto:   {forajido:4, sabio:3, creador:2, mago:2}
+    };
+    if (ans.energia) apply(s, enM[ans.energia.v]);
+
+    // CONFLICTO
+    const cfM = {
+      directo:   {heroe:4, forajido:3, gobernante:3, mago:1},
+      reflexivo: {sabio:4, mago:3, creador:2, inocente:1},
+      evitador:  {inocente:4, cuidador:3, corriente:2, amante:1},
+      reactivo:  {amante:4, forajido:3, bufon:2, creador:1},
+      mediador:  {corriente:4, cuidador:4, sabio:2, inocente:1}
+    };
+    if (ans.conflicto) apply(s, cfM[ans.conflicto.v]);
+
+    // DECISIÓN
+    const dcM = {
+      analitico: {sabio:5, gobernante:3, heroe:2},
+      intuitivo: {mago:5, explorador:3, creador:3, bufon:1},
+      emocional: {amante:5, cuidador:3, inocente:2},
+      mixto:     {corriente:3, sabio:2, mago:2, heroe:1}
+    };
+    if (ans.decision) apply(s, dcM[ans.decision.v]);
+
+    // VALORES
+    const vlM = {
+      libertad:   {explorador:5, forajido:4, bufon:3, mago:1},
+      seguridad:  {inocente:5, corriente:4, cuidador:3},
+      crecimiento:{heroe:4, mago:4, creador:4, explorador:2},
+      conexion:   {amante:5, cuidador:4, corriente:3, inocente:1},
+      logro:      {heroe:5, gobernante:4, forajido:2, mago:1}
+    };
+    if (ans.valores) apply(s, vlM[ans.valores.v]);
+
+    // APEGO
+    const apM = {
+      seguro:        {inocente:4, corriente:4, cuidador:3, amante:2},
+      ansioso:       {amante:5, cuidador:3, inocente:2, forajido:1},
+      evitativo:     {forajido:4, explorador:4, gobernante:3, sabio:1},
+      desorganizado: {forajido:3, mago:3, creador:3, amante:2}
+    };
+    if (ans.apego) apply(s, apM[ans.apego.v]);
+
+    // RITMO
+    const rtM = {
+      alta:         {heroe:4, gobernante:3, forajido:3, mago:1},
+      equilibrado:  {corriente:4, sabio:3, cuidador:3, heroe:1},
+      tranquilo:    {inocente:4, sabio:3, cuidador:3, corriente:1},
+      impredecible: {explorador:4, bufon:4, forajido:3, mago:1}
+    };
+    if (ans.ritmo) apply(s, rtM[ans.ritmo.v]);
+
+    // COMUNICACIÓN
+    const cmM = {
+      frecuente: {amante:4, cuidador:3, inocente:3, corriente:1},
+      calidad:   {sabio:4, mago:4, creador:3, explorador:1},
+      flujo:     {explorador:4, bufon:3, forajido:3, mago:1},
+      directa:   {heroe:4, gobernante:4, forajido:3, sabio:1}
+    };
+    if (ans.comunicacion) apply(s, cmM[ans.comunicacion.v]);
+
+    // EMOCIONES
+    const emM = {
+      consciente: {sabio:4, mago:3, creador:3, heroe:1},
+      expresivo:  {amante:4, bufon:3, cuidador:3, inocente:1},
+      supresion:  {heroe:3, gobernante:3, forajido:2, sabio:1},
+      dificultad: {forajido:3, amante:2, inocente:2, bufon:1}
+    };
+    if (ans.emociones) apply(s, emM[ans.emociones.v]);
+
+    // LÍMITES
+    const lmM = {
+      asertivo:    {heroe:4, gobernante:4, forajido:3, sabio:1},
+      pasivo:      {inocente:3, corriente:3, cuidador:2, amante:1},
+      acumulador:  {forajido:4, amante:3, heroe:2, creador:1},
+      cededor:     {cuidador:4, inocente:3, amante:3, corriente:1}
+    };
+    if (ans.limites) apply(s, lmM[ans.limites.v]);
+
+    // DINERO
+    const diM = {
+      ahorrador:   {gobernante:4, sabio:3, heroe:3, corriente:1},
+      equilibrado: {corriente:4, sabio:3, cuidador:2, heroe:1},
+      gastador:    {bufon:4, explorador:3, amante:3, forajido:1},
+      ansioso:     {inocente:3, amante:2, cuidador:2, corriente:1}
+    };
+    if (ans.dinero) apply(s, diM[ans.dinero.v]);
+
+    // METAS
+    const mtM = {
+      emprendedor: {creador:4, heroe:4, forajido:3, mago:3},
+      profesional: {gobernante:4, heroe:3, sabio:3, corriente:1},
+      nomada:      {explorador:5, bufon:4, forajido:3, mago:1},
+      estabilidad: {inocente:4, corriente:4, cuidador:3, amante:1},
+      indefinido:  {mago:3, forajido:2, creador:2, explorador:1}
+    };
+    if (ans.metas) apply(s, mtM[ans.metas.v]);
+
+    // EXIGENCIA (slider 1–10)
+    if (ans.exigencia) {
+      const v = ans.exigencia.v;
+      if (v >= 9)      { s.heroe+=4; s.gobernante+=3; s.creador+=3; s.forajido+=1; }
+      else if (v >= 7) { s.heroe+=2; s.gobernante+=2; s.creador+=2; s.sabio+=1; }
+      else if (v >= 5) { s.corriente+=2; s.sabio+=1; s.heroe+=1; }
+      else if (v >= 3) { s.bufon+=2; s.inocente+=2; s.explorador+=1; }
+      else             { s.bufon+=3; s.inocente+=3; s.explorador+=2; }
+    }
+
+    return Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];
   }
 
-  function calcDims(aA,aB){
-    const dims={};
-    // Valores
-    const vmap={libertad:0,seguridad:1,crecimiento:2,conexion:3,logro:4};
-    const vdiff=aA.valores&&aB.valores?Math.abs((vmap[aA.valores.v]||0)-(vmap[aB.valores.v]||0)):2;
-    dims.valores=vdiff===0?95:vdiff===1?78:vdiff===2?58:vdiff===3?38:22;
-    // Apego
-    const emoMap={'seguro-seguro':90,'seguro-ansioso':65,'seguro-evitativo':60,'seguro-desorganizado':55,'ansioso-ansioso':42,'ansioso-evitativo':30,'ansioso-desorganizado':38,'evitativo-evitativo':50,'evitativo-desorganizado':45,'desorganizado-desorganizado':35};
-    const eKey=aA.apego&&aB.apego?[aA.apego.v,aB.apego.v].sort().join('-'):null;
-    dims.emocional=eKey?emoMap[eKey]||55:55;
-    // Comunicación
-    const comMap={'frecuente-frecuente':88,'calidad-calidad':85,'flujo-flujo':75,'directa-directa':80,'frecuente-calidad':70,'frecuente-flujo':52,'frecuente-directa':62,'calidad-flujo':65,'calidad-directa':72,'flujo-directa':58};
-    const cKey=aA.comunicacion&&aB.comunicacion?[aA.comunicacion.v,aB.comunicacion.v].sort().join('-'):null;
-    dims.comunicacion=cKey?comMap[cKey]||55:55;
-    // Ritmo
-    const ritMap={'alta-alta':80,'alta-equilibrado':72,'alta-tranquilo':38,'alta-impredecible':65,'equilibrado-equilibrado':88,'equilibrado-tranquilo':68,'equilibrado-impredecible':60,'tranquilo-tranquilo':85,'tranquilo-impredecible':42,'impredecible-impredecible':70};
-    const rKey=aA.ritmo&&aB.ritmo?[aA.ritmo.v,aB.ritmo.v].sort().join('-'):null;
-    dims.ritmo=rKey?ritMap[rKey]||55:55;
-    // Conflicto
-    const confMap={'directo-directo':72,'directo-reflexivo':82,'directo-evitador':52,'directo-reactivo':45,'directo-mediador':80,'reflexivo-reflexivo':78,'reflexivo-evitador':60,'reflexivo-reactivo':55,'reflexivo-mediador':85,'evitador-evitador':48,'evitador-reactivo':35,'evitador-mediador':65,'reactivo-reactivo':38,'reactivo-mediador':55,'mediador-mediador':88};
-    const fKey=aA.conflicto&&aB.conflicto?[aA.conflicto.v,aB.conflicto.v].sort().join('-'):null;
-    dims.conflicto=fKey?confMap[fKey]||55:55;
-    // Futuro
-    const futMap={'emprendedor-emprendedor':85,'emprendedor-profesional':75,'emprendedor-nomada':68,'emprendedor-estabilidad':50,'emprendedor-indefinido':55,'profesional-profesional':82,'profesional-nomada':52,'profesional-estabilidad':72,'profesional-indefinido':58,'nomada-nomada':78,'nomada-estabilidad':42,'nomada-indefinido':65,'estabilidad-estabilidad':88,'estabilidad-indefinido':50,'indefinido-indefinido':55};
-    const mKey=aA.metas&&aB.metas?[aA.metas.v,aB.metas.v].sort().join('-'):null;
-    dims.futuro=mKey?futMap[mKey]||55:55;
+  function apply(scores, map) {
+    if (!map) return;
+    Object.entries(map).forEach(([k,v]) => { if (scores[k] !== undefined) scores[k] += v; });
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  // 3. TODAS LAS COMBINACIONES DE COMPATIBILIDAD POR DIMENSIÓN
+  // ────────────────────────────────────────────────────────────────
+  function calcDims(aA, aB) {
+    const dims = {};
+
+    // ── VALORES (25 combinaciones únicas) ────────────────────────
+    const valMap = {
+      'libertad-libertad':     92,
+      'libertad-seguridad':    28,
+      'libertad-crecimiento':  78,
+      'libertad-conexion':     55,
+      'libertad-logro':        65,
+      'seguridad-seguridad':   88,
+      'seguridad-crecimiento': 45,
+      'seguridad-conexion':    72,
+      'seguridad-logro':       52,
+      'crecimiento-crecimiento': 85,
+      'crecimiento-conexion':  68,
+      'crecimiento-logro':     80,
+      'conexion-conexion':     90,
+      'conexion-logro':        58,
+      'logro-logro':           75
+    };
+    dims.valores = pairScore(valMap, aA.valores?.v, aB.valores?.v, 55);
+
+    // ── APEGO (10 combinaciones únicas) ──────────────────────────
+    const apegoMap = {
+      'ansioso-ansioso':           35,
+      'ansioso-desorganizado':     38,
+      'ansioso-evitativo':         22,
+      'ansioso-seguro':            60,
+      'desorganizado-desorganizado': 32,
+      'desorganizado-evitativo':   42,
+      'desorganizado-seguro':      52,
+      'evitativo-evitativo':       50,
+      'evitativo-seguro':          58,
+      'seguro-seguro':             92
+    };
+    dims.emocional = pairScore(apegoMap, aA.apego?.v, aB.apego?.v, 50);
+
+    // ── COMUNICACIÓN (10 combinaciones únicas) ───────────────────
+    const comMap = {
+      'calidad-calidad':     88,
+      'calidad-directa':     75,
+      'calidad-flujo':       68,
+      'calidad-frecuente':   72,
+      'directa-directa':     82,
+      'directa-flujo':       58,
+      'directa-frecuente':   62,
+      'flujo-flujo':         78,
+      'flujo-frecuente':     50,
+      'frecuente-frecuente': 85
+    };
+    dims.comunicacion = pairScore(comMap, aA.comunicacion?.v, aB.comunicacion?.v, 55);
+
+    // ── RITMO (10 combinaciones únicas) ──────────────────────────
+    const ritmoMap = {
+      'alta-alta':                 82,
+      'alta-equilibrado':          70,
+      'alta-impredecible':         68,
+      'alta-tranquilo':            32,
+      'equilibrado-equilibrado':   90,
+      'equilibrado-impredecible':  58,
+      'equilibrado-tranquilo':     72,
+      'impredecible-impredecible': 74,
+      'impredecible-tranquilo':    38,
+      'tranquilo-tranquilo':       88
+    };
+    dims.ritmo = pairScore(ritmoMap, aA.ritmo?.v, aB.ritmo?.v, 55);
+
+    // ── CONFLICTO (15 combinaciones únicas) ──────────────────────
+    const confMap = {
+      'directo-directo':     70,
+      'directo-evitador':    48,
+      'directo-mediador':    82,
+      'directo-reactivo':    42,
+      'directo-reflexivo':   85,
+      'evitador-evitador':   45,
+      'evitador-mediador':   62,
+      'evitador-reactivo':   32,
+      'evitador-reflexivo':  58,
+      'mediador-mediador':   90,
+      'mediador-reactivo':   55,
+      'mediador-reflexivo':  88,
+      'reactivo-reactivo':   35,
+      'reactivo-reflexivo':  50,
+      'reflexivo-reflexivo': 80
+    };
+    dims.conflicto = pairScore(confMap, aA.conflicto?.v, aB.conflicto?.v, 50);
+
+    // ── METAS / FUTURO (15 combinaciones únicas) ─────────────────
+    const metasMap = {
+      'emprendedor-emprendedor': 88,
+      'emprendedor-estabilidad': 45,
+      'emprendedor-indefinido':  58,
+      'emprendedor-nomada':      70,
+      'emprendedor-profesional': 78,
+      'estabilidad-estabilidad': 90,
+      'estabilidad-indefinido':  48,
+      'estabilidad-nomada':      38,
+      'estabilidad-profesional': 75,
+      'indefinido-indefinido':   52,
+      'indefinido-nomada':       65,
+      'indefinido-profesional':  55,
+      'nomada-nomada':           80,
+      'nomada-profesional':      50,
+      'profesional-profesional': 85
+    };
+    dims.futuro = pairScore(metasMap, aA.metas?.v, aB.metas?.v, 55);
+
+    // ── DECISIÓN — bonus/malus sobre score total ─────────────────
+    // No es dimensión propia, pero afecta la calidad del análisis
+    const decBonus = {
+      'analitico-analitico': 5,
+      'intuitivo-intuitivo': 4,
+      'emocional-emocional': 3,
+      'mixto-mixto':         3,
+      'analitico-mixto':     2,
+      'intuitivo-mixto':     2,
+      'emocional-mixto':     2,
+      'analitico-emocional': -4,
+      'analitico-intuitivo': -2,
+      'intuitivo-emocional':  1
+    };
+    const dKey = [aA.decision?.v, aB.decision?.v].filter(Boolean).sort().join('-');
+    dims._decBonus = decBonus[dKey] || 0;
+
+    // ── ENERGÍA — bonus/malus ─────────────────────────────────────
+    const enBonus = {
+      'extro_alto-extro_alto':  3,
+      'extro_alto-extro_mod':   4,
+      'extro_alto-ambivierte':  2,
+      'extro_alto-intro_mod':  -1,
+      'extro_alto-intro_alto': -4,
+      'extro_mod-extro_mod':    4,
+      'extro_mod-ambivierte':   3,
+      'extro_mod-intro_mod':    1,
+      'extro_mod-intro_alto':  -2,
+      'ambivierte-ambivierte':  5,
+      'ambivierte-intro_mod':   3,
+      'ambivierte-intro_alto':  1,
+      'intro_mod-intro_mod':    4,
+      'intro_mod-intro_alto':   3,
+      'intro_alto-intro_alto':  4
+    };
+    const eKey2 = [aA.energia?.v, aB.energia?.v].filter(Boolean).sort().join('-');
+    dims._enBonus = enBonus[eKey2] || 0;
+
+    // ── LÍMITES — bonus/malus ─────────────────────────────────────
+    const lmBonus = {
+      'asertivo-asertivo':    3,
+      'asertivo-pasivo':     -2,
+      'asertivo-acumulador':  1,
+      'asertivo-cededor':    -1,
+      'pasivo-pasivo':       -4,
+      'pasivo-acumulador':   -3,
+      'pasivo-cededor':      -2,
+      'acumulador-acumulador':-5,
+      'acumulador-cededor':  -3,
+      'cededor-cededor':     -2
+    };
+    const lKey = [aA.limites?.v, aB.limites?.v].filter(Boolean).sort().join('-');
+    dims._lmBonus = lmBonus[lKey] || 0;
+
+    // ── EXIGENCIA — diferencia ────────────────────────────────────
+    const exA = aA.exigencia?.v || 5;
+    const exB = aB.exigencia?.v || 5;
+    const exDiff = Math.abs(exA - exB);
+    dims._exBonus = exDiff <= 1 ? 4 : exDiff <= 3 ? 1 : exDiff <= 5 ? -2 : -5;
+
     return dims;
   }
 
-  const arcA=detectarArquetipo(ansA);
-  const arcB=detectarArquetipo(ansB);
-  const dims=calcDims(ansA,ansB);
-  const A=ARQUETIPOS[arcA],B=ARQUETIPOS[arcB];
-  const totalScore=Math.round(Object.values(dims).reduce((s,v)=>s+v,0)/6);
-  const afin=A.afinidad[arcB]||55;
-  const compatTotal=Math.min(98,Math.round((totalScore*0.55)+(afin*0.45)));
-  const scoreA=Math.min(98,Math.round((totalScore*0.6)+(afin*0.4)));
-  const scoreB=Math.min(98,Math.round((totalScore*0.6)+((A.afinidad[arcB]||55)*0.4)));
+  // Función auxiliar: busca ambas direcciones en el mapa
+  function pairScore(map, vA, vB, fallback) {
+    if (!vA || !vB) return fallback;
+    const k1 = [vA, vB].sort().join('-');
+    const k2 = [vB, vA].sort().join('-');
+    return map[k1] ?? map[k2] ?? fallback;
+  }
 
-  // Dinámica
-  const dinamicas={'inocente-amante':'Una combinación de alta ternura — el Inocente da pureza, el Amante profundidad. Riesgo: idealización mutua.','inocente-cuidador':'Dos personas que priorizan el bienestar del otro. Equilibrio casi perfecto si aprenden a recibir también.','explorador-mago':'Chispa intelectual y espiritual intensa. Se potencian mutuamente pero pueden perder el ancla.','explorador-creador':'Una dupla creativa explosiva. Se inspiran pero pueden competir por espacio propio.','explorador-forajido':'Libertad al cuadrado. Pueden ser el par más auténtico o el más inestable dependiendo de su madurez.','sabio-mago':'Combinación intelectual de altísimo nivel. Conversaciones transformadoras, pero poca tierra emocional.','heroe-gobernante':'Dos líderes en el mismo espacio. Gran potencia si van hacia el mismo objetivo, guerra si compiten.','heroe-forajido':'Energía explosiva. Se atraen por la intensidad pero chocan en cómo canalizan esa energía.','forajido-creador':'La combinación más disruptiva. Creatividad sin filtros, pero necesitan estructuras mínimas.','mago-creador':'Visión más expresión. Probablemente la pareja más transformadora de los 12 arquetipos.','corriente-cuidador':'Estabilidad emocional sólida. No el más emocionante, pero sí uno de los más seguros.','amante-cuidador':'Dos personas diseñadas para el amor profundo. El reto es no perderse en el otro.','bufon-explorador':'Espontaneidad y libertad en estado puro. Divertidos juntos pero pueden evitar temas serios.','gobernante-sabio':'Estrategia más análisis. Formidables en proyectos, deben cuidar la calidez emocional.'};
-  const dKey=[arcA,arcB].sort().join('-');
-  const dinamica=dinamicas[dKey]||`${A.nombre} y ${B.nombre} crean una dinámica donde la complementariedad es el hilo conductor. Su compatibilidad depende de cuánto estén dispuestos a ceder en sus diferencias clave.`;
+  // ────────────────────────────────────────────────────────────────
+  // 4. DINÁMICAS ENTRE ARQUETIPOS (todas las 66 combinaciones)
+  // ────────────────────────────────────────────────────────────────
+  const DINAMICAS = {
+    'amante-amante':        'Dos Amantes juntos crean un vínculo de intensidad máxima. La pasión es real, pero el riesgo de codependencia es igual de alto. Necesitan espacio individual para no consumirse.',
+    'amante-bufon':         'El Amante busca profundidad, el Bufón evita la seriedad. Pueden complementarse si el Bufón aprende a ser vulnerable y el Amante aprende a reír. De lo contrario, la distancia emocional crece.',
+    'amante-corriente':     'Vínculo cálido y estable. El Corriente da tierra, el Amante da profundidad. Funcionan bien si el Corriente no se siente ahogado por la intensidad emocional del Amante.',
+    'amante-creador':       'Conexión estética y emocional intensa. Ambos viven para la profundidad. El riesgo es que ninguno ancle al otro en la realidad práctica.',
+    'amante-cuidador':      'Combinación diseñada para el amor profundo. Ambos priorizan al otro. El reto mayor: ninguno de los dos aprende a pedir para sí mismo.',
+    'amante-explorador':    'El Amante quiere intensidad constante, el Explorador necesita libertad. Pueden chocar si uno interpreta la libertad del otro como abandono.',
+    'amante-forajido':      'Atracción magnética. El Forajido fascina al Amante con su autenticidad feroz. El riesgo: el Forajido puede sentirse atrapado por la intensidad emocional del Amante.',
+    'amante-gobernante':    'El Gobernante trae estructura, el Amante profundidad emocional. Funciona si el Gobernante no usa el control como sustituto de la intimidad.',
+    'amante-heroe':         'Pasión más determinación. El Héroe protege, el Amante profundiza. El riesgo está en que el Héroe priorice metas sobre la conexión emocional.',
+    'amante-inocente':      'Una de las combinaciones más tiernas. Dos personas que dan sin medir. El riesgo es la idealización mutua que choca con la realidad.',
+    'amante-mago':          'Profundidad emocional más visión transformadora. Se entienden en niveles que otros no alcanzan. El Mago puede resultar emocionalmente esquivo para el Amante.',
+    'amante-sabio':         'El Amante quiere sentir, el Sabio quiere entender. Pueden enseñarse mutuamente, pero necesitan esfuerzo activo para no frustrarse con sus diferencias.',
+    'bufon-bufon':          'Dos Bufones crean alegría constante, pero también evitan lo profundo. Funciona muy bien hasta que llega una crisis real que ambos quieren ignorar.',
+    'bufon-corriente':      'Calidez y humor fácil. El Corriente pone estructura, el Bufón pone chispa. Riesgo: el Bufón puede desestabilizar la rutina del Corriente.',
+    'bufon-creador':        'Combinación creativa y espontánea. Se inspiran mutuamente. Ninguno de los dos ancla bien en la realidad, lo que puede generar caos productivo o improductivo.',
+    'bufon-cuidador':       'El Cuidador cuida, el Bufón alegra. Un vínculo cálido si el Cuidador no se frustra con la falta de seriedad del Bufón ante momentos importantes.',
+    'bufon-explorador':     'Libertad y humor al cuadrado. Son el par más espontáneo de los 12 arquetipos. El desafío es la profundidad: ambos tienden a evitar conversaciones difíciles.',
+    'bufon-forajido':       'Dos rebeldes que se entienden sin explicaciones. Alta energía, alta autenticidad. El riesgo es la falta de estructura que ambos necesitan aunque no lo admitan.',
+    'bufon-gobernante':     'El Gobernante necesita orden, el Bufón lo rompe. Pueden complementarse si el Gobernante aprende a soltar el control y el Bufón aprende cuándo ser serio.',
+    'bufon-heroe':          'Energía y espontaneidad. El Héroe motiva, el Bufón descomprime. Funciona cuando el Héroe no exige demasiada seriedad al Bufón.',
+    'bufon-inocente':       'Alegría fácil y conexión ligera. Ambos ven el lado positivo. El riesgo es que cuando llegue el conflicto real, ninguno sepa manejarlo.',
+    'bufon-mago':           'El Mago ve el potencial del Bufón que nadie más ve. El Bufón hace aterrizar al Mago con humor. Una dinámica interesante que puede profundizar o quedarse en superficie.',
+    'bufon-sabio':          'El Sabio quiere profundidad, el Bufón la evita. Pueden enriquecerse mutuamente si el Sabio aprende a reír y el Bufón aprende a pensar antes de actuar.',
+    'corriente-corriente':  'Estabilidad y confianza total. Sin drama, sin poses. El riesgo es el estancamiento: ninguno empuja al otro a crecer.',
+    'corriente-creador':    'El Corriente da estabilidad que el Creador necesita pero no sabe pedir. El Creador da profundidad que el Corriente no se permite buscar. Complementariedad real si se respetan.',
+    'corriente-cuidador':   'Uno de los vínculos más sólidos posibles. Estabilidad, empatía, confianza. El riesgo es la comodidad excesiva que impide el crecimiento individual.',
+    'corriente-explorador': 'El Explorador puede sentirse atrapado por la rutina del Corriente. El Corriente puede sentirse abandonado por la necesidad de libertad del Explorador. Requiere mucha negociación.',
+    'corriente-forajido':   'El Forajido puede ver al Corriente como conformista. El Corriente puede ver al Forajido como inestable. Una combinación que exige respeto activo hacia la diferencia.',
+    'corriente-gobernante': 'Dos personas que valoran la estructura. Se entienden bien. El Gobernante puede dominar si el Corriente no aprende a defender su espacio.',
+    'corriente-heroe':      'El Héroe lidera, el Corriente apoya. Un equipo sólido si el Corriente no pierde su identidad y el Héroe no lo da por sentado.',
+    'corriente-inocente':   'Calidez, confianza y conexión fácil. Dos personas sin poses. El riesgo es que eviten los temas difíciles por no querer el conflicto.',
+    'corriente-mago':       'El Mago puede sentir que el Corriente no lo entiende en profundidad. El Corriente puede sentir que el Mago vive en las nubes. Necesitan encontrar terreno común concreto.',
+    'corriente-sabio':      'El Sabio aporta profundidad, el Corriente aporta calidez. Un vínculo balanceado si el Sabio no se vuelve condescendiente.',
+    'creador-creador':      'Dos Creadores pueden inspirarse profundamente o competir silenciosamente. Depende de si pueden celebrar el éxito del otro sin sentirse opacados.',
+    'creador-cuidador':     'El Cuidador nutre al Creador. El Creador da profundidad al Cuidador. Funciona si el Creador no se vuelve completamente egocéntrico en sus procesos creativos.',
+    'creador-explorador':   'Una dupla creativa explosiva. Se inspiran mutuamente y comparten el amor por la autenticidad. El riesgo es que compitan por espacio propio o se dispersen sin concretar.',
+    'creador-forajido':     'La combinación más disruptiva. Creatividad sin filtros, autenticidad radical. Increíbles juntos si tienen algo concreto que construir. Sin dirección, pueden destruirse.',
+    'creador-gobernante':   'El Gobernante quiere resultados, el Creador quiere proceso. Pueden ser extraordinariamente efectivos si aprenden a respetarse, o paralizarse mutuamente en el conflicto.',
+    'creador-heroe':        'Ambición y creatividad. El Héroe ejecuta, el Creador imagina. Pueden ir muy lejos juntos si el Héroe no apresura el proceso creativo del Creador.',
+    'creador-inocente':     'El Inocente admira al Creador con autenticidad. El Creador se siente visto. Un vínculo nutritivo si el Creador no abruma al Inocente con su intensidad creativa.',
+    'creador-mago':         'La combinación más transformadora de los 12. Visión más expresión. Pueden crear cosas que cambian perspectivas. El riesgo: ninguno ancla en lo práctico.',
+    'creador-sabio':        'Profundidad intelectual y creativa. Conversaciones que duran horas. El Sabio puede criticar en exceso al Creador. El Creador puede sentir que el Sabio no siente.',
+    'cuidador-cuidador':    'Dos Cuidadores generan un vínculo de cuidado mutuo profundo. El riesgo mayor es que ninguno sepa recibir cuidado, solo darlo, lo que agota a ambos.',
+    'cuidador-explorador':  'El Explorador puede sentirse sofocado por el cuidado constante del Cuidador. El Cuidador puede sentirse abandonado por la libertad que necesita el Explorador.',
+    'cuidador-forajido':    'El Cuidador quiere proteger, el Forajido rechaza ser protegido. El Cuidador puede sentirse rechazado. El Forajido puede sentirse controlado. Difícil pero posible.',
+    'cuidador-gobernante':  'El Gobernante lidera, el Cuidador nutre. Roles complementarios que funcionan si ninguno usa al otro: el Gobernante no instrumentaliza al Cuidador, y viceversa.',
+    'cuidador-heroe':       'El Héroe protege desde afuera, el Cuidador desde adentro. Complementariedad real. El riesgo es que el Héroe no permita al Cuidador ser vulnerable.',
+    'cuidador-inocente':    'Dos personas que se cuidan sin cálculo. Un vínculo de alta ternura. El riesgo es la co-dependencia donde ninguno enfrenta la realidad difícil.',
+    'cuidador-mago':        'El Mago transforma, el Cuidador sostiene. El Cuidador puede sentirse usado por la energía expansiva del Mago. El Mago necesita valorar ese sostén explícitamente.',
+    'cuidador-sabio':       'El Sabio aporta claridad, el Cuidador aporta calidez. Un vínculo bien balanceado si el Sabio aprende a recibir y no solo a analizar desde afuera.',
+    'explorador-explorador':'Libertad al cuadrado. Dos exploradores pueden ser el par más auténtico posible o nunca construir nada concreto juntos. Su profundidad depende de su madurez individual.',
+    'explorador-forajido':  'Dos rebeldes que se entienden sin explicaciones. Alta autenticidad, alta independencia. Pueden ser un par poderoso o dos personas que nunca se comprometen realmente.',
+    'explorador-gobernante':'El Gobernante necesita control, el Explorador necesita libertad. Tensión estructural. Pueden complementarse si el Gobernante cede en el proceso y el Explorador en el compromiso.',
+    'explorador-heroe':     'Ambos buscan la excelencia y el movimiento. Pueden motivarse mutuamente hacia metas grandes. El riesgo: competir en lugar de colaborar.',
+    'explorador-inocente':  'El Explorador puede desilusionar al Inocente con su impredecibilidad. El Inocente puede parecer ingenuo para el Explorador. Requieren mucho respeto mutuo.',
+    'explorador-mago':      'Chispa intelectual y espiritual de alto nivel. Se potencian de manera natural. El riesgo es perder el ancla en la realidad cotidiana, viviendo perpetuamente en las ideas.',
+    'explorador-sabio':     'Curiosidad más profundidad. Una de las duplas intelectualmente más ricas. Se desafían mutuamente a pensar más lejos. Pueden perder la conexión emocional.',
+    'forajido-forajido':    'Dos Forajidos juntos son explosivos. Pueden ser los más auténticos o los más autodestructivos. Depende de si canalizan esa energía hacia algo o simplemente la queman.',
+    'forajido-gobernante':  'Tensión estructural máxima. El Gobernante impone, el Forajido rompe. Pueden generar grandes cosas si aprenden a respetar que ambos tienen razón en parte.',
+    'forajido-heroe':       'Dos energías intensas con mucho en común: la autenticidad y el coraje. El Héroe canaliza, el Forajido rompe. Poderosos juntos si no chocan sus egos.',
+    'forajido-inocente':    'El Forajido puede destruir la ingenuidad del Inocente o despertarlo. El Inocente puede suavizar al Forajido o frustrarlo. Una dinámica de alto riesgo y alta recompensa.',
+    'forajido-mago':        'Dos visionarios que no aceptan límites. Pueden transformar realidades juntos o quemar todo a su paso. Necesitan propósito compartido para no destruirse.',
+    'forajido-sabio':       'El Forajido actúa, el Sabio analiza. Tensión productiva si el Sabio no paraliza al Forajido con el análisis, y el Forajido no ignora la sabiduría del Sabio.',
+    'gobernante-gobernante':'Dos Gobernantes en el mismo espacio necesitan definir territorio con claridad. Si tienen el mismo objetivo, son formidables. Si compiten, el conflicto es inevitable.',
+    'gobernante-heroe':     'Liderazgo estratégico más ejecución valiente. Una de las combinaciones más efectivas en contextos de logro. El riesgo: ¿quién tiene la última palabra?',
+    'gobernante-inocente':  'El Gobernante puede aplastar la ingenuidad del Inocente sin querer. El Inocente puede parecer irrealista para el Gobernante. Necesitan mucho respeto mutuo.',
+    'gobernante-mago':      'Estructura más visión. Potencialmente imparable si ambos van hacia el mismo horizonte. El conflicto surge cuando el Mago quiere transformar lo que el Gobernante quiere controlar.',
+    'gobernante-sabio':     'Estrategia más análisis. Formidables en proyectos de alto nivel. Ambos valoran el conocimiento y el orden. El riesgo es que quede poco espacio para la emoción.',
+    'heroe-heroe':          'Dos Héroes compiten o se inspiran mutuamente. Si van hacia el mismo objetivo, se potencian. Si compiten por el mismo espacio, el conflicto es permanente.',
+    'heroe-inocente':       'El Héroe protege al Inocente, el Inocente cree en el Héroe. Un vínculo nutritivo si el Héroe no subestima al Inocente y el Inocente no idealiza al Héroe.',
+    'heroe-mago':           'Valentía más visión. El Mago señala el horizonte, el Héroe camina hacia él. Pueden lograr cosas extraordinarias si el Mago no manipula y el Héroe no actúa sin pensar.',
+    'heroe-sabio':          'Acción más reflexión. Uno ejecuta, el otro analiza. Complementariedad real cuando se respetan. El Sabio puede frustrar al Héroe con el análisis excesivo.',
+    'inocente-inocente':    'Un vínculo de alta ternura y confianza mutua. Dos personas que creen en lo bueno del otro. El riesgo es que ambos eviten la realidad difícil indefinidamente.',
+    'inocente-mago':        'El Mago fascina al Inocente con su visión. El Inocente da al Mago una pureza que rara vez encuentra. El riesgo es que el Mago, inconsciente, use esa ingenuidad.',
+    'inocente-sabio':       'El Sabio puede parecer frío para el Inocente. El Inocente puede parecer ingenuo para el Sabio. Con respeto mutuo, el Sabio aporta claridad y el Inocente aporta calidez.',
+    'mago-mago':            'Dos Magos crean una dinámica de alta intensidad intelectual y transformación. El riesgo es que compitan por quién tiene la visión correcta o se pierdan en ideas sin ejecutar.',
+    'sabio-sabio':          'Profundidad intelectual sin límite. Conversaciones transformadoras. El riesgo es que ninguno baje al terreno emocional cuando el vínculo lo necesita.'
+  };
 
-  // Veredicto
-  let veredicto,vtipo,recomendacion;
-  if(compatTotal>=80){veredicto='Compatibilidad excepcional';vtipo='v';}
-  else if(compatTotal>=65){veredicto='Buena compatibilidad con matices';vtipo='a';}
-  else if(compatTotal>=50){veredicto='Compatibilidad moderada — trabajo necesario';vtipo='a';}
-  else{veredicto='Compatibilidad baja — diferencias estructurales';vtipo='r';}
+  // ────────────────────────────────────────────────────────────────
+  // 5. CALCULAR SCORES FINALES
+  // ────────────────────────────────────────────────────────────────
+  const arcA = detectarArquetipo(ansA);
+  const arcB = detectarArquetipo(ansB);
+  const dims = calcDims(ansA, ansB);
+  const A = ARQUETIPOS[arcA];
+  const B = ARQUETIPOS[arcB];
 
-  if(compatTotal>=80){recomendacion=`${nA} y ${nB} tienen una de esas combinaciones que no son frecuentes. Sus arquetipos se complementan de manera orgánica y sus dimensiones clave están alineadas. El trabajo no es construir compatibilidad — ya existe — sino no darla por sentada. El riesgo mayor de los vínculos muy compatibles es la complacencia: cuando todo fluye, se deja de invertir. Si ambos mantienen la intención activa de cuidar el vínculo, esto tiene solidez real.`;}
-  else if(compatTotal>=65){recomendacion=`${nA} y ${nB} tienen una base sólida, pero con diferencias reales que no desaparecen solas. No es una combinación difícil, pero sí una que requiere comunicación explícita y voluntad de adaptarse. Si ambos están dispuestos, funciona.`;}
-  else if(compatTotal>=50){recomendacion=`${nA} y ${nB} pueden funcionar, pero no sin esfuerzo consciente. Sus arquetipos ${A.nombre} y ${B.nombre} tienen diferencias de fondo que no son superficiales. La pregunta no es si hay compatibilidad — la hay — sino si ambos tienen la disposición real de trabajar en ella.`;}
-  else{recomendacion=`${nA} y ${nB} enfrentan diferencias que no son de superficie: son de valores, ritmos y formas de ver la vida. No significa que sea imposible — pero requeriría un nivel de esfuerzo y adaptación que no todos están dispuestos a sostener.`;}
+  // Score base de las 6 dimensiones principales
+  const dimVals = [dims.valores, dims.emocional, dims.comunicacion, dims.ritmo, dims.conflicto, dims.futuro];
+  const baseDims = Math.round(dimVals.reduce((s,v)=>s+v,0) / dimVals.length);
 
-  const tensiones=[];
-  const fortalezas=[];
-  if(dims.emocional<55)tensiones.push('Sus estilos de apego crean ciclos de distancia-cercanía difíciles de romper');
-  if(dims.ritmo<55)tensiones.push('Sus ritmos de vida diferentes generan fricción en la cotidianidad');
-  if(dims.comunicacion<55)tensiones.push('Sus formas de comunicar crean malentendidos frecuentes');
-  if(dims.conflicto<55)tensiones.push('Ante el conflicto reaccionan de formas opuestas, lo que escala las tensiones');
-  if(dims.valores<55)tensiones.push('Sus valores centrales apuntan en direcciones distintas');
-  if(dims.futuro<55)tensiones.push('Sus visiones de futuro no coinciden');
-  if(tensiones.length===0)tensiones.push('El principal riesgo es la complacencia — todo parece fácil hasta que algo los presiona');
-  if(dims.emocional>=70)fortalezas.push('Alta compatibilidad emocional — se sienten seguros el uno con el otro');
-  if(dims.valores>=70)fortalezas.push('Sus valores centrales están alineados — la base más sólida posible');
-  if(dims.comunicacion>=70)fortalezas.push('La comunicación fluye de manera natural entre ellos');
-  if(dims.ritmo>=70)fortalezas.push('Sus ritmos de vida son compatibles — la convivencia es orgánica');
-  if(dims.conflicto>=70)fortalezas.push('Manejan el conflicto de forma complementaria');
-  if(dims.futuro>=70)fortalezas.push('Comparten visión de futuro — van hacia el mismo horizonte');
-  if(afin>=75)fortalezas.push(`La combinación ${A.nombre}/${B.nombre} es una de las más sinérgicas de los arquetipos jungianos`);
-  if(fortalezas.length===0)fortalezas.push('Sus diferencias pueden ser complementarias si ambos lo eligen conscientemente');
+  // Afinidad jungiana entre los dos arquetipos detectados
+  const afinidad = A.afinidad[arcB] || 55;
 
-  // Polaridades
-  const enM={extro_alto:-40,extro_mod:-20,ambivierte:0,intro_mod:20,intro_alto:40};
-  const dcM={analitico:-35,intuitivo:15,emocional:35,mixto:0};
-  const emM={consciente:-20,expresivo:30,supresion:-35,dificultad:10};
-  const rtM={alta:-40,equilibrado:-15,tranquilo:30,impredecible:35};
-  const lmM={asertivo:-35,pasivo:25,acumulador:30,cededor:20};
-  const enLA={extro_alto:'Muy extrovertido/a',extro_mod:'Extrovertido/a',ambivierte:'Ambivierte',intro_mod:'Introvertido/a',intro_alto:'Muy introvertido/a'};
-  const dcLA={analitico:'Analítico/a',intuitivo:'Intuitivo/a',emocional:'Emocional',mixto:'Mixto/a'};
-  const emLA={consciente:'Consciente',expresivo:'Expresivo/a',supresion:'Suprime',dificultad:'Le cuesta'};
-  const rtLA={alta:'Alta intensidad',equilibrado:'Equilibrado/a',tranquilo:'Tranquilo/a',impredecible:'Impredecible'};
-  const lmLA={asertivo:'Asertivo/a',pasivo:'Pasivo/a',acumulador:'Acumula',cededor:'Cede'};
+  // Bonus/malus de preguntas secundarias
+  const bonusTotal = (dims._decBonus || 0) + (dims._enBonus || 0) + (dims._lmBonus || 0) + (dims._exBonus || 0);
 
-  return{
-    compatibilidad_total:compatTotal,veredicto,vtipo,recomendacion,
-    perfil_a:{arquetipo:A.nombre,arquetipo_emoji:A.emoji,descripcion_arquetipo:A.desc,rasgos_positivos:A.rasgos_pos,rasgos_atencion:A.rasgos_neg,score_individual:scoreA},
-    perfil_b:{arquetipo:B.nombre,arquetipo_emoji:B.emoji,descripcion_arquetipo:B.desc,rasgos_positivos:B.rasgos_pos,rasgos_atencion:B.rasgos_neg,score_individual:scoreB},
-    dinamica_arquetipos:dinamica,
-    polaridades:[
-      {dimension:'Energía social',label_a:enLA[ansA.energia?.v]||'—',label_b:enLA[ansB.energia?.v]||'—',pos:(enM[ansA.energia?.v]||0)-(enM[ansB.energia?.v]||0)},
-      {dimension:'Decisiones',label_a:dcLA[ansA.decision?.v]||'—',label_b:dcLA[ansB.decision?.v]||'—',pos:(dcM[ansA.decision?.v]||0)-(dcM[ansB.decision?.v]||0)},
-      {dimension:'Emoción',label_a:emLA[ansA.emociones?.v]||'—',label_b:emLA[ansB.emociones?.v]||'—',pos:(emM[ansA.emociones?.v]||0)-(emM[ansB.emociones?.v]||0)},
-      {dimension:'Ritmo',label_a:rtLA[ansA.ritmo?.v]||'—',label_b:rtLA[ansB.ritmo?.v]||'—',pos:(rtM[ansA.ritmo?.v]||0)-(rtM[ansB.ritmo?.v]||0)},
-      {dimension:'Límites',label_a:lmLA[ansA.limites?.v]||'—',label_b:lmLA[ansB.limites?.v]||'—',pos:(lmM[ansA.limites?.v]||0)-(lmM[ansB.limites?.v]||0)}
+  // Score total ponderado
+  const rawTotal = (baseDims * 0.5) + (afinidad * 0.4) + (bonusTotal * 0.5);
+  const compatTotal = Math.min(97, Math.max(12, Math.round(rawTotal)));
+
+  // Scores individuales (cuánto "encaja" cada uno en la dinámica)
+  const scoreA = Math.min(97, Math.max(15, Math.round((compatTotal * 0.7) + (afinidad * 0.3))));
+  const scoreB = Math.min(97, Math.max(15, Math.round((compatTotal * 0.7) + (B.afinidad[arcA] * 0.3))));
+
+  // Dinámica entre arquetipos
+  const dKey = [arcA, arcB].sort().join('-');
+  const dinamica = DINAMICAS[dKey] || `${A.nombre} y ${B.nombre} forman una dinámica donde sus diferencias pueden ser complementarias o fuente de conflicto, dependiendo de la disposición de ambos para crecer.`;
+
+  // ── Veredicto ─────────────────────────────────────────────────
+  let veredicto, vtipo, recomendacion;
+
+  if (compatTotal >= 82) {
+    veredicto = 'Compatibilidad excepcional';
+    vtipo = 'v';
+    recomendacion = `${nA} y ${nB} tienen una combinación que no es frecuente. Los arquetipos ${A.nombre} y ${B.nombre} se complementan de manera orgánica, y sus dimensiones clave están alineadas. El trabajo no es construir compatibilidad — ya existe — sino no darla por sentada. El riesgo mayor de los vínculos muy compatibles es la complacencia: cuando todo fluye, se deja de invertir. Si ambos mantienen la intención activa de cuidar el vínculo, esto tiene solidez real y potencial de durar.`;
+  } else if (compatTotal >= 68) {
+    veredicto = 'Buena compatibilidad con matices';
+    vtipo = 'a';
+    recomendacion = `${nA} y ${nB} tienen una base sólida, pero con diferencias reales. ${A.nombre} y ${B.nombre} se llevan bien en la superficie, pero hay fricciones de fondo que no desaparecen solas: ${dimVals.map((v,i)=>v<58?['los valores','la parte emocional','la comunicación','el ritmo de vida','ante el conflicto','la visión de futuro'][i]:null).filter(Boolean).join(', ')||'algunos puntos clave'}. No es una combinación difícil, pero sí una que requiere comunicación explícita. Si ambos están dispuestos, funciona y bien.`;
+  } else if (compatTotal >= 52) {
+    veredicto = 'Compatibilidad moderada — trabajo necesario';
+    vtipo = 'a';
+    recomendacion = `${nA} y ${nB} pueden funcionar, pero no sin esfuerzo consciente. Los arquetipos ${A.nombre} y ${B.nombre} tienen diferencias de fondo que no son superficiales. Hay áreas donde convergen, y áreas donde el choque es estructural. La pregunta clave no es si existe compatibilidad — la hay — sino si ambos tienen la disposición real y sostenida de trabajar en las diferencias. Sin esa voluntad activa, las diferencias terminan pesando más que las similitudes.`;
+  } else {
+    veredicto = 'Compatibilidad baja — diferencias estructurales';
+    vtipo = 'r';
+    recomendacion = `${nA} y ${nB} enfrentan diferencias que no son de superficie: son de valores, ritmos y formas de ver la vida. Los arquetipos ${A.nombre} y ${B.nombre} tienen fricciones naturales que se hacen más evidentes con el tiempo. Esto no significa que sea imposible — nada lo es — pero sí que requeriría un nivel de esfuerzo y adaptación que no todos están dispuestos a sostener. Si el vínculo importa, la clave es aceptar las diferencias como parte permanente de la dinámica, no como problemas a resolver.`;
+  }
+
+  // ── Tensiones y fortalezas ────────────────────────────────────
+  const tensiones = [];
+  const fortalezas = [];
+
+  const dimLabels = {valores:'valores centrales',emocional:'estilos emocionales',comunicacion:'estilos de comunicación',ritmo:'ritmos de vida',conflicto:'manejo del conflicto',futuro:'visión de futuro'};
+  Object.entries({valores:dims.valores,emocional:dims.emocional,comunicacion:dims.comunicacion,ritmo:dims.ritmo,conflicto:dims.conflicto,futuro:dims.futuro}).forEach(([k,v])=>{
+    if (v >= 72) fortalezas.push(`Sus ${dimLabels[k]} son altamente compatibles — punto de unión real`);
+    else if (v <= 48) tensiones.push(`Diferencia significativa en ${dimLabels[k]} — fuente de conflicto recurrente`);
+  });
+
+  // Tensiones específicas por combinación de respuestas
+  if (ansA.apego?.v === 'ansioso' && ansB.apego?.v === 'evitativo')
+    tensiones.unshift('El patrón ansioso-evitativo es uno de los más dolorosos: uno persigue, el otro huye');
+  if (ansA.ritmo?.v === 'alta' && ansB.ritmo?.v === 'tranquilo')
+    tensiones.unshift('Sus ritmos de vida son casi opuestos — la cotidianidad puede volverse fuente de fricción constante');
+  if (ansA.valores?.v === 'libertad' && ansB.valores?.v === 'seguridad')
+    tensiones.unshift('La tensión libertad-seguridad es profunda: uno necesita lo que el otro teme');
+  if (ansA.conflicto?.v === 'reactivo' && ansB.conflicto?.v === 'evitador')
+    tensiones.unshift('Cuando hay conflicto, uno explota y el otro desaparece — un ciclo difícil de romper');
+
+  if (afinidad >= 80) fortalezas.push(`La combinación ${A.nombre}/${B.nombre} es una de las más sinérgicas en la teoría jungiana`);
+  if (tensiones.length === 0) tensiones.push('El principal riesgo en vínculos compatibles es la complacencia — todo fluye hasta que algo los presiona');
+  if (fortalezas.length === 0) fortalezas.push('Su diferencia puede ser su mayor riqueza si ambos eligen verla así conscientemente');
+
+  // ── Polaridades ───────────────────────────────────────────────
+  const polMaps = {
+    energia: {
+      labels: {extro_alto:'Muy extrovertido/a',extro_mod:'Extrovertido/a',ambivierte:'Ambivierte',intro_mod:'Introvertido/a',intro_alto:'Muy introvertido/a'},
+      pos:    {extro_alto:-45,extro_mod:-22,ambivierte:0,intro_mod:22,intro_alto:45}
+    },
+    decision: {
+      labels: {analitico:'Analítico/a',intuitivo:'Intuitivo/a',emocional:'Emocional',mixto:'Mixto/a'},
+      pos:    {analitico:-38,intuitivo:18,emocional:38,mixto:0}
+    },
+    emociones: {
+      labels: {consciente:'Consciente',expresivo:'Expresivo/a',supresion:'Suprime',dificultad:'Le cuesta'},
+      pos:    {consciente:-20,expresivo:32,supresion:-38,dificultad:12}
+    },
+    ritmo: {
+      labels: {alta:'Alta intensidad',equilibrado:'Equilibrado/a',tranquilo:'Tranquilo/a',impredecible:'Impredecible'},
+      pos:    {alta:-42,equilibrado:-15,tranquilo:32,impredecible:38}
+    },
+    limites: {
+      labels: {asertivo:'Asertivo/a',pasivo:'Pasivo/a',acumulador:'Acumula',cededor:'Cede'},
+      pos:    {asertivo:-38,pasivo:28,acumulador:32,cededor:22}
+    }
+  };
+
+  const polaridades = Object.entries(polMaps).map(([dim, cfg])=>({
+    dimension: {energia:'Energía social',decision:'Toma de decisiones',emociones:'Gestión emocional',ritmo:'Ritmo de vida',limites:'Límites'}[dim],
+    label_a: cfg.labels[ansA[dim]?.v] || '—',
+    label_b: cfg.labels[ansB[dim]?.v] || '—',
+    pos: (cfg.pos[ansA[dim]?.v] || 0) - (cfg.pos[ansB[dim]?.v] || 0)
+  }));
+
+  // ── Retorno final ─────────────────────────────────────────────
+  return {
+    compatibilidad_total: compatTotal,
+    veredicto,
+    vtipo,
+    recomendacion,
+    perfil_a: {
+      arquetipo:             A.nombre,
+      arquetipo_emoji:       A.emoji,
+      descripcion_arquetipo: A.desc,
+      deseo:                 A.deseo,
+      sombra:                A.sombra,
+      rasgos_positivos:      A.rasgos_pos,
+      rasgos_atencion:       A.rasgos_neg,
+      score_individual:      scoreA
+    },
+    perfil_b: {
+      arquetipo:             B.nombre,
+      arquetipo_emoji:       B.emoji,
+      descripcion_arquetipo: B.desc,
+      deseo:                 B.deseo,
+      sombra:                B.sombra,
+      rasgos_positivos:      B.rasgos_pos,
+      rasgos_atencion:       B.rasgos_neg,
+      score_individual:      scoreB
+    },
+    dinamica_arquetipos: dinamica,
+    polaridades,
+    dimensiones: [
+      {label:'Valores compartidos',     valor: dims.valores},
+      {label:'Compatibilidad emocional',valor: dims.emocional},
+      {label:'Estilos de comunicación', valor: dims.comunicacion},
+      {label:'Ritmo y estilo de vida',  valor: dims.ritmo},
+      {label:'Gestión del conflicto',   valor: dims.conflicto},
+      {label:'Visión de futuro',        valor: dims.futuro}
     ],
-    dimensiones:[
-      {label:'Valores compartidos',valor:dims.valores},
-      {label:'Compatibilidad emocional',valor:dims.emocional},
-      {label:'Estilos de comunicación',valor:dims.comunicacion},
-      {label:'Ritmo y estilo de vida',valor:dims.ritmo},
-      {label:'Gestión del conflicto',valor:dims.conflicto},
-      {label:'Visión de futuro',valor:dims.futuro}
-    ],
-    puntos_tension:tensiones.slice(0,3).join('. ')+'.',
-    puntos_fuerza:fortalezas.slice(0,3).join('. ')+'.'
+    puntos_tension:  tensiones.slice(0,3).join('. ')+'.',
+    puntos_fuerza:   fortalezas.slice(0,3).join('. ')+'.'
   };
 }
-
-// ─── RENDER RESULT ────────────────────────────────────────────────────────────
 function renderResult(d){
   const wrap=document.getElementById('resWrap');
   const compat=d.compatibilidad_total;
