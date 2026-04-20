@@ -8,26 +8,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#08060d;
-  --surface:#110d1a;
-  --surface2:#1a1426;
-  --surface3:#221932;
-  --fuchsia:#E91E8C;
-  --fuchsia-dim:rgba(233,30,140,0.11);
-  --gold:#C9A96E;
-  --gold-pale:#e8d5a8;
-  --teal:#1de5c8;
-  --teal-dim:rgba(29,229,200,0.1);
+  --bg:#08060d;--surface:#110d1a;--surface2:#1a1426;--surface3:#221932;
+  --fuchsia:#E91E8C;--fuchsia-dim:rgba(233,30,140,0.11);
+  --gold:#C9A96E;--gold-pale:#e8d5a8;
+  --teal:#1de5c8;--teal-dim:rgba(29,229,200,0.1);
   --violet:#9b6dff;
-  --text:#f2eaf8;
-  --muted:#7a6a8a;
-  --muted2:#2e2240;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'DM Sans',sans-serif;
-  --r:14px;
+  --text:#f2eaf8;--muted:#7a6a8a;--muted2:#2e2240;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'DM Sans',sans-serif;--r:14px;
 }
 html,body{height:100%;min-height:100dvh;background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;}
-
 canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
 .orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
@@ -37,14 +26,12 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 @keyframes o1{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,60px)}}
 @keyframes o2{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,-50px)}}
 @keyframes o3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-45%,-55%)}}
-
 .app{position:relative;z-index:10;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:60px;}
 .screen{width:100%;max-width:600px;display:none;flex-direction:column;align-items:center;animation:sIn .55s cubic-bezier(.22,1,.36,1) forwards;}
 .screen.active{display:flex;}
 .screen.leaving{animation:sOut .3s ease forwards;pointer-events:none;}
 @keyframes sIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes sOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-18px)}}
-
 .progress-bar{width:100%;max-width:600px;position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:50;padding:0 20px;}
 .progress-inner{height:2px;background:var(--muted2);border-radius:0 0 2px 2px;overflow:hidden;}
 .progress-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.22,1,.36,1);}
@@ -52,13 +39,10 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .progress-fill.pb{background:linear-gradient(90deg,var(--teal),#0d9982);}
 .progress-meta{display:flex;justify-content:space-between;padding:10px 0 6px;font-size:.62rem;color:var(--muted);letter-spacing:.5px;}
 .progress-meta b{font-weight:500;}
-
 .logo{font-family:var(--serif);font-size:.82rem;letter-spacing:5px;color:var(--gold);margin-bottom:40px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
 .logo::before,.logo::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,.2),transparent);max-width:50px;}
-
 .intro-title{font-family:var(--serif);font-size:clamp(1.9rem,7vw,2.8rem);font-weight:300;line-height:1.2;text-align:center;margin-bottom:14px;letter-spacing:-.5px;}
 .intro-sub{font-size:.8rem;color:var(--muted);line-height:1.9;text-align:center;max-width:380px;margin-bottom:36px;font-weight:300;}
-
 .dual-setup{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
 .profile-setup-card{background:var(--surface);border-radius:var(--r);padding:18px 14px;border:1px solid var(--muted2);display:flex;flex-direction:column;gap:10px;}
 .profile-setup-card.sca{border-top:2px solid var(--fuchsia);}
@@ -69,23 +53,19 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .name-inp{background:rgba(0,0,0,.25);border:1px solid var(--muted2);border-radius:8px;padding:9px 12px;font-family:var(--sans);font-size:.84rem;color:var(--text);outline:none;width:100%;transition:border-color .2s;}
 .name-inp.a:focus{border-color:rgba(233,30,140,.4);}
 .name-inp.b:focus{border-color:rgba(29,229,200,.4);}
-
 .type-grid-sm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .type-opt{padding:12px 8px;border:1px solid var(--muted2);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;}
 .type-opt:hover{border-color:rgba(233,30,140,.3);background:var(--fuchsia-dim);}
 .type-opt.sel{border-color:var(--fuchsia);background:var(--fuchsia-dim);box-shadow:0 0 0 1px var(--fuchsia);}
-
 .q-phase-header{width:100%;display:flex;align-items:center;gap:12px;margin-bottom:18px;}
 .phase-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:600;flex-shrink:0;}
 .phase-av.a{background:var(--fuchsia-dim);border:1px solid rgba(233,30,140,.3);color:var(--fuchsia);}
 .phase-av.b{background:var(--teal-dim);border:1px solid rgba(29,229,200,.3);color:var(--teal);}
 .phase-nm{font-size:.82rem;font-weight:500;}
 .phase-sub{display:block;font-size:.62rem;color:var(--muted);margin-top:1px;}
-
 .q-card{width:100%;background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.4);}
 .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,.2),transparent);}
 .q-card.bphase::before{background:linear-gradient(to right,transparent,rgba(29,229,200,.18),transparent);}
-
 .q-num{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .q-num.qa{color:var(--fuchsia);}
 .q-num.qb{color:var(--teal);}
@@ -95,7 +75,6 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .q-cat{font-size:.52rem;color:var(--muted);padding:2px 8px;border-radius:99px;border:1px solid var(--muted2);letter-spacing:.5px;}
 .q-txt{font-family:var(--serif);font-size:clamp(1.15rem,4vw,1.45rem);font-weight:300;line-height:1.45;margin-bottom:8px;}
 .q-hint{font-size:.7rem;color:var(--muted);line-height:1.7;margin-bottom:24px;font-style:italic;}
-
 .opts{display:flex;flex-direction:column;gap:8px;}
 .opt{border:1px solid var(--muted2);border-radius:10px;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .18s;background:transparent;text-align:left;width:100%;font-family:var(--sans);color:var(--text);font-size:.85rem;animation:optIn .4s cubic-bezier(.22,1,.36,1) both;}
 .opt:nth-child(1){animation-delay:.04s}.opt:nth-child(2){animation-delay:.09s}.opt:nth-child(3){animation-delay:.14s}.opt:nth-child(4){animation-delay:.19s}.opt:nth-child(5){animation-delay:.24s}.opt:nth-child(6){animation-delay:.29s}
@@ -114,7 +93,6 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .opt-em{font-size:.95rem;flex-shrink:0;}
 .opt-tx{flex:1;line-height:1.4;}
 .opt-sub{display:block;font-size:.68rem;color:var(--muted);margin-top:2px;}
-
 .sl-wrap{padding:4px 0 18px;}
 .sl-disp{text-align:center;margin-bottom:16px;}
 .sl-val{font-family:var(--serif);font-size:3.5rem;font-weight:300;line-height:1;}
@@ -127,12 +105,10 @@ input[type=range].ra{background:linear-gradient(to right,var(--fuchsia) var(--pc
 input[type=range].rb{background:linear-gradient(to right,var(--teal) var(--pct,50%),var(--surface2) var(--pct,50%));}
 input[type=range].ra::-webkit-slider-thumb{-webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:var(--fuchsia);border:3px solid var(--bg);cursor:pointer;}
 input[type=range].rb::-webkit-slider-thumb{-webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:var(--teal);border:3px solid var(--bg);cursor:pointer;}
-
 textarea.q-inp{width:100%;min-height:100px;background:rgba(0,0,0,.25);border:1px solid var(--muted2);border-radius:10px;padding:13px;font-family:var(--sans);font-size:.84rem;color:var(--text);resize:none;outline:none;line-height:1.65;transition:border-color .2s;}
 textarea.q-inp.ta:focus{border-color:rgba(233,30,140,.4);}
 textarea.q-inp.tb:focus{border-color:rgba(29,229,200,.4);}
 textarea.q-inp::placeholder{color:var(--muted);}
-
 .q-nav{display:flex;gap:10px;margin-top:16px;align-items:center;width:100%;}
 .btn-nxt{flex:1;border:none;border-radius:99px;padding:13px 24px;font-family:var(--sans);font-weight:500;font-size:.86rem;color:#fff;cursor:pointer;letter-spacing:.4px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
 .btn-nxt.a{background:linear-gradient(135deg,var(--fuchsia),#b81070);box-shadow:0 6px 22px rgba(233,30,140,.22);}
@@ -143,12 +119,10 @@ textarea.q-inp::placeholder{color:var(--muted);}
 .btn-bk{background:transparent;border:1px solid var(--muted2);border-radius:99px;width:42px;height:42px;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .btn-bk:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
 .btn-bk:disabled{opacity:.2;cursor:not-allowed;}
-
 .btn-main{border:none;border-radius:99px;padding:14px 44px;font-family:var(--sans);font-weight:500;font-size:.88rem;color:#fff;cursor:pointer;letter-spacing:.5px;transition:all .2s;background:linear-gradient(135deg,var(--fuchsia),#b81070);box-shadow:0 8px 28px rgba(233,30,140,.28);}
 .btn-main:hover{transform:translateY(-2px);}
 .btn-ghost{background:transparent;border:1px solid var(--muted2);border-radius:99px;padding:10px 24px;font-family:var(--sans);font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-
 .ld-wrap{text-align:center;padding:16px 0;}
 .ld-orb{width:80px;height:80px;border-radius:50%;margin:0 auto 22px;background:conic-gradient(from 0deg,var(--fuchsia),var(--teal),var(--violet),var(--fuchsia));animation:spin 3s linear infinite;display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;}
 .ld-orb::before{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--bg);}
@@ -162,24 +136,21 @@ textarea.q-inp::placeholder{color:var(--muted);}
 .ls.active .ls-dot{background:var(--fuchsia);animation:dp .8s ease-in-out infinite;}
 .ls.done .ls-dot{background:var(--gold);}
 @keyframes dp{0%,100%{opacity:1}50%{opacity:.2}}
-
+/* RESULT STYLES */
 .res-wrap{width:100%;padding-bottom:40px;}
-
 .compat-card{background:var(--surface);border:1px solid rgba(155,109,255,.15);border-radius:var(--r);padding:26px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
 .compat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(155,109,255,.35),transparent);}
 .compat-lbl{font-size:.58rem;letter-spacing:2px;color:var(--violet);text-transform:uppercase;margin-bottom:14px;}
 .compat-big{font-family:var(--serif);font-size:4.5rem;font-weight:300;line-height:1;margin-bottom:6px;}
 .compat-bar{width:100%;height:6px;background:var(--muted2);border-radius:3px;overflow:hidden;margin-bottom:14px;}
-.compat-fill{height:100%;border-radius:3px;transition:width 2s cubic-bezier(.22,1,.36,1);}
+.compat-fill{height:100%;border-radius:3px;width:0%;transition:width 2s cubic-bezier(.22,1,.36,1);}
 .vtag{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:5px 16px;border-radius:99px;display:inline-block;margin-bottom:12px;font-weight:500;}
 .vtag.v{background:rgba(0,220,130,.1);color:#00dc82;border:1px solid rgba(0,220,130,.3);}
 .vtag.a{background:rgba(255,184,0,.1);color:#ffb800;border:1px solid rgba(255,184,0,.3);}
 .vtag.r{background:rgba(255,68,80,.1);color:#ff4450;border:1px solid rgba(255,68,80,.3);}
 .vmain{font-family:var(--serif);font-size:1.05rem;font-weight:300;line-height:1.6;color:var(--text);opacity:0;transition:opacity .6s .8s;max-width:480px;margin:0 auto;}
 .vmain.show{opacity:1;}
-
-.dual-sc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;position:relative;}
-.dual-sc::before{content:'✦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.8rem;color:var(--gold);z-index:2;background:var(--bg);padding:0 6px;}
+.dual-sc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .sc-card{background:var(--surface);border:1px solid rgba(201,169,110,.1);border-radius:var(--r);padding:20px 16px;text-align:center;}
 .sc-card.a{border-top:2px solid var(--fuchsia);}
 .sc-card.b{border-top:2px solid var(--teal);}
@@ -189,21 +160,20 @@ textarea.q-inp::placeholder{color:var(--muted);}
 .sc-ring{width:80px;height:80px;margin:0 auto 10px;position:relative;display:flex;align-items:center;justify-content:center;}
 .sc-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);}
 .r-track{fill:none;stroke:var(--surface2);stroke-width:5;}
-.r-fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1);}
+.r-fill{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1);}
 .sc-pct{font-family:var(--serif);font-size:1.55rem;font-weight:300;line-height:1;position:relative;z-index:1;}
 .sc-pct.a{color:var(--fuchsia);}
 .sc-pct.b{color:var(--teal);}
 .sc-arch{font-size:.62rem;color:var(--muted);margin-top:3px;}
-
 .arch-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .arch-card{background:var(--surface);border-radius:var(--r);padding:16px;text-align:center;}
 .arch-card.a{border:1px solid rgba(233,30,140,.2);}
 .arch-card.b{border:1px solid rgba(29,229,200,.2);}
-.arch-type{font-family:var(--serif);font-size:1.4rem;font-weight:300;letter-spacing:2px;margin-bottom:3px;}
+.arch-emoji{font-size:2rem;margin-bottom:6px;}
+.arch-type{font-family:var(--serif);font-size:1.1rem;font-weight:400;letter-spacing:1px;margin-bottom:6px;}
 .arch-type.a{color:var(--fuchsia);}
 .arch-type.b{color:var(--teal);}
-.arch-sub{font-size:.66rem;color:var(--muted);letter-spacing:.3px;line-height:1.5;}
-
+.arch-sub{font-size:.62rem;color:var(--muted);letter-spacing:.3px;line-height:1.55;}
 .pers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .pers-card{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:14px;}
 .pers-card.a{border-top:2px solid var(--fuchsia);}
@@ -218,48 +188,39 @@ textarea.q-inp::placeholder{color:var(--muted);}
 .tpill{font-size:.56rem;padding:3px 7px;border-radius:99px;border:1px solid;}
 .tpill.pos{background:rgba(0,220,130,.07);color:#00dc82;border-color:rgba(0,220,130,.2);}
 .tpill.warn{background:rgba(255,184,0,.07);color:#ffb800;border-color:rgba(255,184,0,.2);}
-
 .rsecs{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:14px;}
 .rsec{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:10px;padding:16px;}
 .rsec-t{font-size:.56rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
 .rsec-t::after{content:'';flex:1;height:1px;background:rgba(201,169,110,.1);}
 .rsec-b{font-size:.78rem;color:var(--text);line-height:1.8;opacity:.88;}
-
 .pol-sec{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+.pol-title{font-size:.56rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
 .pol-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
 .pol-row:last-child{margin-bottom:0;}
-.pol-la{font-size:.6rem;color:var(--fuchsia);flex:1;text-align:left;}
-.pol-lb{font-size:.6rem;color:var(--teal);flex:1;text-align:right;}
-.pol-dim{font-size:.54rem;color:var(--muted);text-align:center;width:80px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase;}
-.pol-track{flex:2;height:5px;background:var(--surface2);border-radius:99px;position:relative;}
-.pol-needle{position:absolute;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;transition:left 1.5s cubic-bezier(.22,1,.36,1);border:2px solid var(--bg);}
-
-.dim-bars{display:flex;flex-direction:column;gap:8px;}
+.pol-la{font-size:.6rem;color:var(--fuchsia);flex:1;text-align:left;min-width:60px;}
+.pol-lb{font-size:.6rem;color:var(--teal);flex:1;text-align:right;min-width:60px;}
+.pol-dim{font-size:.52rem;color:var(--muted);text-align:center;width:70px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase;}
+.pol-track{flex:2;height:5px;background:var(--surface2);border-radius:99px;position:relative;min-width:80px;}
+.pol-needle{position:absolute;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;border:2px solid var(--bg);}
+.dim-sec{background:var(--surface);border:1px solid rgba(201,169,110,.08);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+.dim-title{font-size:.56rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+.dim-bars{display:flex;flex-direction:column;gap:10px;}
 .dim-row{display:flex;align-items:center;gap:8px;}
-.dim-lbl{font-size:.62rem;color:var(--muted);min-width:120px;letter-spacing:.2px;}
-.dim-trk{flex:1;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
-.dim-fill{height:100%;border-radius:2px;transition:width 1.3s cubic-bezier(.22,1,.36,1);}
-.dim-v{font-size:.62rem;color:var(--text);min-width:28px;text-align:right;}
-
+.dim-lbl{font-size:.62rem;color:var(--muted);min-width:130px;letter-spacing:.2px;}
+.dim-trk{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.dim-fill{height:100%;border-radius:2px;width:0%;transition:width 1.3s cubic-bezier(.22,1,.36,1);}
+.dim-v{font-size:.62rem;color:var(--text);min-width:28px;text-align:right;font-weight:500;}
 .rec-card{background:var(--surface);border-radius:var(--r);padding:22px;margin-bottom:14px;position:relative;overflow:hidden;}
 .rec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--fuchsia),var(--violet),var(--teal));}
 .rec-icon{font-size:1.6rem;margin-bottom:10px;text-align:center;}
 .rec-title{font-family:var(--serif);font-size:1.2rem;font-weight:300;text-align:center;margin-bottom:10px;}
-.rec-body{font-size:.78rem;color:var(--text);line-height:1.85;opacity:.9;text-align:center;}
-.rec-score{display:flex;align-items:center;justify-content:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--muted2);}
-.rec-badge{font-size:.65rem;padding:4px 12px;border-radius:99px;font-weight:500;}
-.rec-badge.v{background:rgba(0,220,130,.12);color:#00dc82;border:1px solid rgba(0,220,130,.25);}
-.rec-badge.a{background:rgba(255,184,0,.12);color:#ffb800;border:1px solid rgba(255,184,0,.25);}
-.rec-badge.r{background:rgba(255,68,80,.12);color:#ff4450;border:1px solid rgba(255,68,80,.25);}
-
+.rec-body{font-size:.78rem;color:var(--text);line-height:1.85;opacity:.9;}
 .res-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
-
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px;}
 @media(max-width:500px){
   .app{padding:14px;}.q-card{padding:20px 16px;}
   .dual-setup,.dual-sc,.pers-grid,.arch-row{grid-template-columns:1fr;}
-  .dual-sc::before{display:none;}
 }
 </style>
 </head>
@@ -283,13 +244,12 @@ textarea.q-inp::placeholder{color:var(--muted);}
 <!-- INTRO -->
 <div class="screen active" id="screen-intro">
   <div style="position:fixed;top:14px;right:20px;z-index:100;display:flex;gap:6px;">
-  <button onclick="setLang('es')" id="btnEs" style="background:rgba(233,30,140,.15);border:1px solid var(--fuchsia);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--fuchsia);cursor:pointer;font-weight:500;">ES</button>
-  <button onclick="setLang('en')" id="btnEn" style="background:transparent;border:1px solid var(--muted2);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--muted);cursor:pointer;">EN</button>
-</div>
-<div class="logo">Know Them</div>
+    <button onclick="setLang('es')" id="btnEs" style="background:rgba(233,30,140,.15);border:1px solid var(--fuchsia);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--fuchsia);cursor:pointer;font-weight:500;">ES</button>
+    <button onclick="setLang('en')" id="btnEn" style="background:transparent;border:1px solid var(--muted2);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--muted);cursor:pointer;">EN</button>
+  </div>
+  <div class="logo">Know Them</div>
   <h1 class="intro-title">¿Son compatibles<br><span style="color:var(--fuchsia);font-style:italic">entre sí</span>?</h1>
-  <p class="intro-sub">Perfila dos personas con preguntas de psicología profunda. La IA analiza sus rasgos, arquetipos y genera un veredicto real de compatibilidad.</p>
-
+  <p class="intro-sub">Perfila dos personas con preguntas de psicología profunda. Analiza sus rasgos, arquetipos y genera un veredicto real de compatibilidad.</p>
   <div class="dual-setup">
     <div class="profile-setup-card sca">
       <div class="profile-label-sm la">✦ Persona A</div>
@@ -302,7 +262,6 @@ textarea.q-inp::placeholder{color:var(--muted);}
       <div style="font-size:.6rem;color:var(--muted);line-height:1.6;">Responde desde su perspectiva.</div>
     </div>
   </div>
-
   <div style="width:100%;background:var(--surface);border:1px solid var(--muted2);border-radius:var(--r);padding:16px 18px;margin-bottom:24px;">
     <div style="font-size:.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Tipo de vínculo</div>
     <div class="type-grid-sm" id="typeGrid">
@@ -314,7 +273,6 @@ textarea.q-inp::placeholder{color:var(--muted);}
       <div class="type-opt" onclick="selType('general')" data-t="general"><div style="font-size:1.3rem;margin-bottom:4px;">🔮</div><div style="font-size:.65rem;">General</div></div>
     </div>
   </div>
-
   <button class="btn-main" id="btnStart" onclick="startQuiz()" style="opacity:.3;pointer-events:none;" disabled>Comenzar perfilado →</button>
   <p style="font-size:.62rem;color:var(--muted);margin-top:12px;">13 preguntas por perfil · ~12 minutos en total</p>
 </div>
@@ -370,6 +328,7 @@ textarea.q-inp::placeholder{color:var(--muted);}
 </div><!-- /app -->
 
 <script>
+// ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const Qs=[
   {id:'energia',cat:'Personalidad',text:'¿Cómo describes mejor tu energía social?',hint:'No hay respuesta correcta — define cómo interactúas con el mundo.',type:'options',options:[
     {e:'🎉',t:'Extrovertido/a puro',s:'Me recargo con gente, me aburro solo/a',v:'extro_alto'},
@@ -445,11 +404,13 @@ const Qs=[
   {id:'vision',cat:'Visión',text:'¿Qué es lo más importante que alguien debe saber de ti para conectar contigo de verdad?',hint:'Esta respuesta vale más que todas las anteriores juntas. Sin filtros.',type:'text',placeholder:'Ej: Soy muy leal pero me cuesta confiar. Necesito espacio pero no abandono. Tengo metas grandes y quiero a alguien que también las tenga…',maxLength:350},
 ];
 
+// ─── STATE ────────────────────────────────────────────────────────────────────
 let nA='',nB='',bindType='';
 let ansA={},ansB={};
 let phase='A',curQ=0,reportData=null;
+let currentLang='es';
 
-// BG CANVAS
+// ─── BG CANVAS ───────────────────────────────────────────────────────────────
 (()=>{
   const c=document.getElementById('bg'),ctx=c.getContext('2d');
   function rs(){c.width=innerWidth;c.height=innerHeight;}rs();
@@ -464,6 +425,18 @@ let phase='A',curQ=0,reportData=null;
   })();
 })();
 
+// ─── LANG ─────────────────────────────────────────────────────────────────────
+function setLang(l){
+  currentLang=l;
+  document.getElementById('btnEs').style.background=l==='es'?'rgba(233,30,140,.15)':'transparent';
+  document.getElementById('btnEs').style.borderColor=l==='es'?'var(--fuchsia)':'var(--muted2)';
+  document.getElementById('btnEs').style.color=l==='es'?'var(--fuchsia)':'var(--muted)';
+  document.getElementById('btnEn').style.background=l==='en'?'rgba(29,229,200,.15)':'transparent';
+  document.getElementById('btnEn').style.borderColor=l==='en'?'var(--teal)':'var(--muted2)';
+  document.getElementById('btnEn').style.color=l==='en'?'var(--teal)':'var(--muted)';
+}
+
+// ─── SETUP ───────────────────────────────────────────────────────────────────
 function chkNames(){
   nA=document.getElementById('nameA').value.trim();
   nB=document.getElementById('nameB').value.trim();
@@ -475,21 +448,20 @@ function chkNames(){
 function selType(t){
   bindType=t;
   document.querySelectorAll('.type-opt').forEach(el=>{
-    const s=el.dataset.t===t;
-    el.className='type-opt'+(s?' sel':'');
+    el.className='type-opt'+(el.dataset.t===t?' sel':'');
   });
   chkNames();
 }
 
 function goScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>{s.className=s.id==='screen-'+id?'screen active':'screen';});
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.className=s.id==='screen-'+id?'screen active':'screen';
+  });
 }
 
 function startQuiz(){phase='A';curQ=0;ansA={};ansB={};showProgress();renderQ();}
 
-function showProgress(){
-  document.getElementById('pbar').style.display='block';updateProg();
-}
+function showProgress(){document.getElementById('pbar').style.display='block';updateProg();}
 
 function updateProg(){
   const total=Qs.length*2;
@@ -503,6 +475,7 @@ function updateProg(){
   document.getElementById('pCnt').textContent=(done+1)+'/'+total;
 }
 
+// ─── QUESTION RENDER ─────────────────────────────────────────────────────────
 function renderQ(){
   goScreen('question');
   const q=Qs[curQ];
@@ -551,22 +524,25 @@ function renderQ(){
     const val=ans[q.id]?ans[q.id].v:q.default;
     const pct=((val-q.min)/(q.max-q.min))*100;
     const cls=isB?'b':'a';const rcls=isB?'rb':'ra';
-    card.innerHTML+=`<div class="sl-wrap"><div class="sl-disp"><div class="sl-val ${cls}" id="sv">${val}</div><div class="sl-desc" id="sd">${q.descs[val]||''}</div></div><div class="sl-lbls"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><input type="range" class="${rcls}" min="${q.min}" max="${q.max}" value="${val}" step="1" style="--pct:${pct}%" id="sl"></div>`;
+    const sw=document.createElement('div');
+    sw.className='sl-wrap';
+    sw.innerHTML=`<div class="sl-disp"><div class="sl-val ${cls}" id="sv">${val}</div><div class="sl-desc" id="sd">${q.descs[val]||''}</div></div><div class="sl-lbls"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><input type="range" class="${rcls}" min="${q.min}" max="${q.max}" value="${val}" step="1" style="--pct:${pct}%" id="sl">`;
+    card.appendChild(sw);
     (isB?ansB:ansA)[q.id]={v:val,t:val+'/'+q.max};
     nxt.disabled=false;
-    const sl=card.querySelector('#sl');
+    const sl=sw.querySelector('#sl');
     sl.oninput=function(){
       const v=parseInt(this.value);const p=((v-q.min)/(q.max-q.min))*100;
       this.style.setProperty('--pct',p+'%');
-      card.querySelector('#sv').textContent=v;
-      card.querySelector('#sd').textContent=q.descs[v]||'';
+      sw.querySelector('#sv').textContent=v;
+      sw.querySelector('#sd').textContent=q.descs[v]||'';
       (isB?ansB:ansA)[q.id]={v:v,t:v+'/'+q.max};
     };
   } else if(q.type==='text'){
     const saved=ans[q.id]?ans[q.id].v:'';
     const tcls=isB?'tb':'ta';
     const wrap=document.createElement('div');
-    wrap.innerHTML=`<textarea class="q-inp ${tcls}" placeholder="${q.placeholder}" maxlength="${q.maxLength}" id="ta">${saved}</textarea><div class="char-count" style="text-align:right;font-size:.58rem;color:var(--muted);margin-top:5px;"><span id="cc">${saved.length}</span>/${q.maxLength}</div>`;
+    wrap.innerHTML=`<textarea class="q-inp ${tcls}" placeholder="${q.placeholder}" maxlength="${q.maxLength}" id="ta">${saved}</textarea><div style="text-align:right;font-size:.58rem;color:var(--muted);margin-top:5px;"><span id="cc">${saved.length}</span>/${q.maxLength}</div>`;
     card.appendChild(wrap);
     const ta=wrap.querySelector('#ta');
     ta.oninput=function(){
@@ -619,382 +595,356 @@ async function submitAll(){
     document.getElementById('ls'+i).classList.add('done');
   }
   await wait(400);
-  await callClaude();
+  reportData=analyzeCompatibility();
+  renderResult(reportData);
+  goScreen('result');
 }
 
-function buildSum(ans,name){
-  let s=`\n=== PERFIL: ${name} ===\n`;
-  Qs.forEach(q=>{
-    const a=ans[q.id];
-    if(!a)return;
-    let resp=a.t;
-    if(q.type==='slider'){
-      const desc=q.descs[a.v]||'';
-      resp=`${a.v}/${q.max} — ${desc}`;
-    } else if(q.type==='text'){
-      resp=a.v;
-    }
-    s+=`[${q.cat}] ${q.text}\n→ ${resp}\n`;
-  });
-  return s;
-}
-
+// ─── COMPATIBILITY ENGINE ─────────────────────────────────────────────────────
 function analyzeCompatibility(){
-  // ══════════════════════════════════════════════════════
-  // MOTOR DE COMPATIBILIDAD PSICOLÓGICA — SIN API
-  // Basado en los 12 arquetipos jungianos + 13 dimensiones
-  // ══════════════════════════════════════════════════════
-
-  const ARQUETIPOS = {
-    inocente:  {nombre:'El Inocente',  emoji:'🌸', desc:'Optimista nato que busca seguridad y pureza en todo vínculo.',
-      rasgos_pos:['Optimismo genuino','Lealtad incondicional','Genera confianza','Visión positiva'],
-      rasgos_neg:['Evita conflictos','Idealiza personas','Ingenuo ante señales'],
-      afinidad:{inocente:85,explorador:72,sabio:68,heroe:60,forajido:45,mago:70,corriente:80,amante:88,bufon:75,cuidador:90,creador:65,gobernante:55}},
-    explorador:{nombre:'El Explorador',emoji:'🧭', desc:'Busca libertad y autenticidad, huye de la conformidad a toda costa.',
-      rasgos_pos:['Autenticidad radical','Adaptabilidad','Curiosidad infinita','Independencia'],
-      rasgos_neg:['Compromiso difícil','Inquietud crónica','Evita rutinas'],
-      afinidad:{inocente:72,explorador:65,sabio:78,heroe:70,forajido:82,mago:85,corriente:50,amante:68,bufon:80,cuidador:55,creador:88,gobernante:42}},
-    sabio:     {nombre:'El Sabio',     emoji:'🦉', desc:'Analítico y reflexivo, busca la verdad por encima de cualquier comodidad.',
-      rasgos_pos:['Pensamiento profundo','Objetividad','Consejo certero','Perspectiva lúcida'],
-      rasgos_neg:['Distancia emocional','Análisis paralizante','Crítico excesivo'],
-      afinidad:{inocente:68,explorador:78,sabio:72,heroe:65,forajido:70,mago:88,corriente:60,amante:55,bufon:52,cuidador:62,creador:80,gobernante:75}},
-    heroe:     {nombre:'El Héroe',     emoji:'⚔️', desc:'Competitivo y valiente, necesita demostrar su valía constantemente.',
-      rasgos_pos:['Determinación','Coraje real','Protector','Inspirador'],
-      rasgos_neg:['Ego sensible','Competitivo en exceso','Dificultad para pedir ayuda'],
-      afinidad:{inocente:60,explorador:70,sabio:65,heroe:55,forajido:75,mago:68,corriente:72,amante:70,bufon:60,cuidador:65,creador:62,gobernante:80}},
-    forajido:  {nombre:'El Forajido',  emoji:'🔥', desc:'Rebelde que rompe reglas y teme profundamente la mediocridad.',
-      rasgos_pos:['Autenticidad feroz','Valentía disruptiva','Sin filtros','Lealtad selectiva'],
-      rasgos_neg:['Autodestructivo a veces','Provocador','Resistencia a la autoridad'],
-      afinidad:{inocente:45,explorador:82,sabio:70,heroe:75,forajido:60,mago:78,corriente:40,amante:65,bufon:82,cuidador:48,creador:85,gobernante:35}},
-    mago:      {nombre:'El Mago',      emoji:'✨', desc:'Visionario que transforma la realidad y busca conocimiento profundo.',
-      rasgos_pos:['Visión transformadora','Carisma magnético','Intuición aguda','Cataliza cambios'],
-      rasgos_neg:['Manipulador potencial','Idealista peligroso','Difícil de entender'],
-      afinidad:{inocente:70,explorador:85,sabio:88,heroe:68,forajido:78,mago:70,corriente:55,amante:75,bufon:65,cuidador:68,creador:90,gobernante:62}},
-    corriente: {nombre:'El Hombre Corriente',emoji:'🤝', desc:'Pragmático que quiere pertenecer sin destacar demasiado.',
-      rasgos_pos:['Confiable','Empático con todos','Sin pretensiones','Estabilizador'],
-      rasgos_neg:['Evita destacar','Conformista','Dificultad con cambios'],
-      afinidad:{inocente:80,explorador:50,sabio:60,heroe:72,forajido:40,mago:55,corriente:82,amante:78,bufon:70,cuidador:88,creador:52,gobernante:68}},
-    amante:    {nombre:'El Amante',    emoji:'💫', desc:'Busca conexión profunda e intensa, el abandono es su mayor temor.',
-      rasgos_pos:['Conexión profunda','Pasión genuina','Presencia total','Sensibilidad alta'],
-      rasgos_neg:['Dependencia emocional','Celos potenciales','Necesita confirmación'],
-      afinidad:{inocente:88,explorador:68,sabio:55,heroe:70,forajido:65,mago:75,corriente:78,amante:72,bufon:62,cuidador:85,creador:70,gobernante:58}},
-    bufon:     {nombre:'El Bufón',     emoji:'🎭', desc:'Vive el presente con humor, el aburrimiento es su enemigo existencial.',
-      rasgos_pos:['Humor sanador','Espontaneidad','Descomprime tensiones','Vive el presente'],
-      rasgos_neg:['Evita profundidad','Irresponsable a veces','Huye del dolor'],
-      afinidad:{inocente:75,explorador:80,sabio:52,heroe:60,forajido:82,mago:65,corriente:70,amante:62,bufon:68,cuidador:65,creador:75,gobernante:45}},
-    cuidador:  {nombre:'El Cuidador',  emoji:'🌿', desc:'Altruista y protector, teme el egoísmo propio y el abandono ajeno.',
-      rasgos_pos:['Generosidad real','Empatía profunda','Presencia estable','Apoyo incondicional'],
-      rasgos_neg:['Descuida sus propias necesidades','Mártir potencial','Codependencia'],
-      afinidad:{inocente:90,explorador:55,sabio:62,heroe:65,forajido:48,mago:68,corriente:88,amante:85,bufon:65,cuidador:75,creador:60,gobernante:62}},
-    creador:   {nombre:'El Creador',   emoji:'🎨', desc:'Imaginativo que necesita expresarse, la mediocridad creativa lo destruye.',
-      rasgos_pos:['Originalidad','Visión estética','Expresión auténtica','Innovador'],
-      rasgos_neg:['Perfeccionismo paralizante','Temperamental','Mundo propio'],
-      afinidad:{inocente:65,explorador:88,sabio:80,heroe:62,forajido:85,mago:90,corriente:52,amante:70,bufon:75,cuidador:60,creador:68,gobernante:50}},
-    gobernante:{nombre:'El Gobernante',emoji:'👑', desc:'Líder natural que busca control y orden, el caos lo desestabiliza.',
-      rasgos_pos:['Liderazgo natural','Organización','Visión estratégica','Responsabilidad'],
-      rasgos_neg:['Controlador','Inflexible','Dificultad delegando'],
-      afinidad:{inocente:55,explorador:42,sabio:75,heroe:80,forajido:35,mago:62,corriente:68,amante:58,bufon:45,cuidador:62,creador:50,gobernante:60}}
+  const ARQUETIPOS={
+    inocente:{nombre:'El Inocente',emoji:'🌸',desc:'Optimista nato que busca seguridad y pureza en todo vínculo.',rasgos_pos:['Optimismo genuino','Lealtad incondicional','Genera confianza','Visión positiva'],rasgos_neg:['Evita conflictos','Idealiza personas','Ingenuo ante señales'],afinidad:{inocente:85,explorador:72,sabio:68,heroe:60,forajido:45,mago:70,corriente:80,amante:88,bufon:75,cuidador:90,creador:65,gobernante:55}},
+    explorador:{nombre:'El Explorador',emoji:'🧭',desc:'Busca libertad y autenticidad, huye de la conformidad a toda costa.',rasgos_pos:['Autenticidad radical','Adaptabilidad','Curiosidad infinita','Independencia'],rasgos_neg:['Compromiso difícil','Inquietud crónica','Evita rutinas'],afinidad:{inocente:72,explorador:65,sabio:78,heroe:70,forajido:82,mago:85,corriente:50,amante:68,bufon:80,cuidador:55,creador:88,gobernante:42}},
+    sabio:{nombre:'El Sabio',emoji:'🦉',desc:'Analítico y reflexivo, busca la verdad por encima de cualquier comodidad.',rasgos_pos:['Pensamiento profundo','Objetividad','Consejo certero','Perspectiva lúcida'],rasgos_neg:['Distancia emocional','Análisis paralizante','Crítico excesivo'],afinidad:{inocente:68,explorador:78,sabio:72,heroe:65,forajido:70,mago:88,corriente:60,amante:55,bufon:52,cuidador:62,creador:80,gobernante:75}},
+    heroe:{nombre:'El Héroe',emoji:'⚔️',desc:'Competitivo y valiente, necesita demostrar su valía constantemente.',rasgos_pos:['Determinación','Coraje real','Protector','Inspirador'],rasgos_neg:['Ego sensible','Competitivo en exceso','Dificultad para pedir ayuda'],afinidad:{inocente:60,explorador:70,sabio:65,heroe:55,forajido:75,mago:68,corriente:72,amante:70,bufon:60,cuidador:65,creador:62,gobernante:80}},
+    forajido:{nombre:'El Forajido',emoji:'🔥',desc:'Rebelde que rompe reglas y teme profundamente la mediocridad.',rasgos_pos:['Autenticidad feroz','Valentía disruptiva','Sin filtros','Lealtad selectiva'],rasgos_neg:['Autodestructivo a veces','Provocador','Resistencia a la autoridad'],afinidad:{inocente:45,explorador:82,sabio:70,heroe:75,forajido:60,mago:78,corriente:40,amante:65,bufon:82,cuidador:48,creador:85,gobernante:35}},
+    mago:{nombre:'El Mago',emoji:'✨',desc:'Visionario que transforma la realidad y busca conocimiento profundo.',rasgos_pos:['Visión transformadora','Carisma magnético','Intuición aguda','Cataliza cambios'],rasgos_neg:['Manipulador potencial','Idealista peligroso','Difícil de entender'],afinidad:{inocente:70,explorador:85,sabio:88,heroe:68,forajido:78,mago:70,corriente:55,amante:75,bufon:65,cuidador:68,creador:90,gobernante:62}},
+    corriente:{nombre:'El Hombre Corriente',emoji:'🤝',desc:'Pragmático que quiere pertenecer sin destacar demasiado.',rasgos_pos:['Confiable','Empático con todos','Sin pretensiones','Estabilizador'],rasgos_neg:['Evita destacar','Conformista','Dificultad con cambios'],afinidad:{inocente:80,explorador:50,sabio:60,heroe:72,forajido:40,mago:55,corriente:82,amante:78,bufon:70,cuidador:88,creador:52,gobernante:68}},
+    amante:{nombre:'El Amante',emoji:'💫',desc:'Busca conexión profunda e intensa, el abandono es su mayor temor.',rasgos_pos:['Conexión profunda','Pasión genuina','Presencia total','Sensibilidad alta'],rasgos_neg:['Dependencia emocional','Celos potenciales','Necesita confirmación'],afinidad:{inocente:88,explorador:68,sabio:55,heroe:70,forajido:65,mago:75,corriente:78,amante:72,bufon:62,cuidador:85,creador:70,gobernante:58}},
+    bufon:{nombre:'El Bufón',emoji:'🎭',desc:'Vive el presente con humor, el aburrimiento es su enemigo existencial.',rasgos_pos:['Humor sanador','Espontaneidad','Descomprime tensiones','Vive el presente'],rasgos_neg:['Evita profundidad','Irresponsable a veces','Huye del dolor'],afinidad:{inocente:75,explorador:80,sabio:52,heroe:60,forajido:82,mago:65,corriente:70,amante:62,bufon:68,cuidador:65,creador:75,gobernante:45}},
+    cuidador:{nombre:'El Cuidador',emoji:'🌿',desc:'Altruista y protector, teme el egoísmo propio y el abandono ajeno.',rasgos_pos:['Generosidad real','Empatía profunda','Presencia estable','Apoyo incondicional'],rasgos_neg:['Descuida sus propias necesidades','Mártir potencial','Codependencia'],afinidad:{inocente:90,explorador:55,sabio:62,heroe:65,forajido:48,mago:68,corriente:88,amante:85,bufon:65,cuidador:75,creador:60,gobernante:62}},
+    creador:{nombre:'El Creador',emoji:'🎨',desc:'Imaginativo que necesita expresarse, la mediocridad creativa lo destruye.',rasgos_pos:['Originalidad','Visión estética','Expresión auténtica','Innovador'],rasgos_neg:['Perfeccionismo paralizante','Temperamental','Mundo propio'],afinidad:{inocente:65,explorador:88,sabio:80,heroe:62,forajido:85,mago:90,corriente:52,amante:70,bufon:75,cuidador:60,creador:68,gobernante:50}},
+    gobernante:{nombre:'El Gobernante',emoji:'👑',desc:'Líder natural que busca control y orden, el caos lo desestabiliza.',rasgos_pos:['Liderazgo natural','Organización','Visión estratégica','Responsabilidad'],rasgos_neg:['Controlador','Inflexible','Dificultad delegando'],afinidad:{inocente:55,explorador:42,sabio:75,heroe:80,forajido:35,mago:62,corriente:68,amante:58,bufon:45,cuidador:62,creador:50,gobernante:60}}
   };
 
-  // ── MAPEO DE RESPUESTAS A ARQUETIPOS ─────────────────────────
   function detectarArquetipo(ans){
-    const scores = {inocente:0,explorador:0,sabio:0,heroe:0,forajido:0,mago:0,corriente:0,amante:0,bufon:0,cuidador:0,creador:0,gobernante:0};
-
-    // energía social
-    const en={'extro_alto':{bufon:3,amante:2,heroe:2},'extro_mod':{corriente:3,cuidador:2,amante:1},'ambivierte':{mago:2,sabio:2,creador:2},'intro_mod':{sabio:3,creador:2,gobernante:1},'intro_alto':{forajido:3,sabio:2,creador:2}};
-    if(ans.energia) Object.entries(en[ans.energia.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // conflicto
-    const cn={'directo':{heroe:3,forajido:2,gobernante:2},'reflexivo':{sabio:3,mago:2,creador:1},'evitador':{inocente:3,cuidador:2,corriente:1},'reactivo':{amante:3,forajido:2,bufon:1},'mediador':{corriente:3,cuidador:3,sabio:1}};
-    if(ans.conflicto) Object.entries(cn[ans.conflicto.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // decisión
-    const dc={'analitico':{sabio:4,gobernante:2,heroe:1},'intuitivo':{mago:4,explorador:2,creador:2},'emocional':{amante:4,cuidador:2,inocente:1},'mixto':{corriente:2,sabio:2,mago:1}};
-    if(ans.decision) Object.entries(dc[ans.decision.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // valores
-    const vl={'libertad':{explorador:4,forajido:3,bufon:2},'seguridad':{inocente:4,corriente:3,cuidador:2},'crecimiento':{heroe:3,mago:3,creador:3,explorador:2},'conexion':{amante:4,cuidador:3,corriente:2},'logro':{heroe:4,gobernante:3,forajido:2}};
-    if(ans.valores) Object.entries(vl[ans.valores.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // apego
-    const ap={'seguro':{inocente:3,corriente:3,cuidador:2,amante:2},'ansioso':{amante:4,cuidador:2,inocente:1},'evitativo':{forajido:3,explorador:3,gobernante:2},'desorganizado':{forajido:2,mago:2,creador:2}};
-    if(ans.apego) Object.entries(ap[ans.apego.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // ritmo de vida
-    const rt={'alta':{heroe:3,gobernante:2,forajido:2},'equilibrado':{corriente:3,sabio:2,cuidador:2},'tranquilo':{inocente:3,sabio:2,cuidador:2},'impredecible':{explorador:3,bufon:3,forajido:2}};
-    if(ans.ritmo) Object.entries(rt[ans.ritmo.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // comunicación
-    const cm={'frecuente':{amante:3,cuidador:2,inocente:2},'calidad':{sabio:3,mago:3,creador:2},'flujo':{explorador:3,bufon:2,forajido:2},'directa':{heroe:3,gobernante:3,forajido:2}};
-    if(ans.comunicacion) Object.entries(cm[ans.comunicacion.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // emociones
-    const em={'consciente':{sabio:3,mago:2,creador:2},'expresivo':{amante:3,bufon:2,cuidador:2},'supresion':{heroe:2,gobernante:2,forajido:1},'dificultad':{forajido:2,amante:1,inocente:1}};
-    if(ans.emociones) Object.entries(em[ans.emociones.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // límites
-    const lm={'asertivo':{heroe:3,gobernante:3,forajido:2},'pasivo':{inocente:2,corriente:2,cuidador:1},'acumulador':{forajido:3,amante:2,heroe:1},'cededor':{cuidador:3,inocente:2,amante:1}};
-    if(ans.limites) Object.entries(lm[ans.limites.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // dinero
-    const di={'ahorrador':{gobernante:3,sabio:2,heroe:2},'equilibrado':{corriente:3,sabio:2,cuidador:1},'gastador':{bufon:3,explorador:2,amante:2},'ansioso':{inocente:2,amante:1,cuidador:1}};
-    if(ans.dinero) Object.entries(di[ans.dinero.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // metas
-    const mt={'emprendedor':{creador:3,heroe:3,forajido:2,mago:2},'profesional':{gobernante:3,heroe:2,sabio:2},'nomada':{explorador:4,bufon:3,forajido:2},'estabilidad':{inocente:3,corriente:3,cuidador:2},'indefinido':{mago:2,forajido:1,creador:1}};
-    if(ans.metas) Object.entries(mt[ans.metas.v]||{}).forEach(([k,v])=>scores[k]+=v);
-
-    // exigencia slider — alto = heroe/gobernante/creador, bajo = bufon/inocente
-    if(ans.exigencia){
-      const v=ans.exigencia.v;
-      if(v>=8){scores.heroe+=3;scores.gobernante+=2;scores.creador+=2;}
-      else if(v>=6){scores.heroe+=1;scores.sabio+=1;scores.creador+=1;}
-      else if(v<=3){scores.bufon+=2;scores.inocente+=2;scores.explorador+=1;}
-    }
-
-    // Encontrar el arquetipo dominante
-    const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-    return sorted[0][0];
+    const scores={inocente:0,explorador:0,sabio:0,heroe:0,forajido:0,mago:0,corriente:0,amante:0,bufon:0,cuidador:0,creador:0,gobernante:0};
+    const mapas={
+      energia:{extro_alto:{bufon:3,amante:2,heroe:2},extro_mod:{corriente:3,cuidador:2,amante:1},ambivierte:{mago:2,sabio:2,creador:2},intro_mod:{sabio:3,creador:2,gobernante:1},intro_alto:{forajido:3,sabio:2,creador:2}},
+      conflicto:{directo:{heroe:3,forajido:2,gobernante:2},reflexivo:{sabio:3,mago:2,creador:1},evitador:{inocente:3,cuidador:2,corriente:1},reactivo:{amante:3,forajido:2,bufon:1},mediador:{corriente:3,cuidador:3,sabio:1}},
+      decision:{analitico:{sabio:4,gobernante:2,heroe:1},intuitivo:{mago:4,explorador:2,creador:2},emocional:{amante:4,cuidador:2,inocente:1},mixto:{corriente:2,sabio:2,mago:1}},
+      valores:{libertad:{explorador:4,forajido:3,bufon:2},seguridad:{inocente:4,corriente:3,cuidador:2},crecimiento:{heroe:3,mago:3,creador:3,explorador:2},conexion:{amante:4,cuidador:3,corriente:2},logro:{heroe:4,gobernante:3,forajido:2}},
+      apego:{seguro:{inocente:3,corriente:3,cuidador:2,amante:2},ansioso:{amante:4,cuidador:2,inocente:1},evitativo:{forajido:3,explorador:3,gobernante:2},desorganizado:{forajido:2,mago:2,creador:2}},
+      ritmo:{alta:{heroe:3,gobernante:2,forajido:2},equilibrado:{corriente:3,sabio:2,cuidador:2},tranquilo:{inocente:3,sabio:2,cuidador:2},impredecible:{explorador:3,bufon:3,forajido:2}},
+      comunicacion:{frecuente:{amante:3,cuidador:2,inocente:2},calidad:{sabio:3,mago:3,creador:2},flujo:{explorador:3,bufon:2,forajido:2},directa:{heroe:3,gobernante:3,forajido:2}},
+      emociones:{consciente:{sabio:3,mago:2,creador:2},expresivo:{amante:3,bufon:2,cuidador:2},supresion:{heroe:2,gobernante:2,forajido:1},dificultad:{forajido:2,amante:1,inocente:1}},
+      limites:{asertivo:{heroe:3,gobernante:3,forajido:2},pasivo:{inocente:2,corriente:2,cuidador:1},acumulador:{forajido:3,amante:2,heroe:1},cededor:{cuidador:3,inocente:2,amante:1}},
+      dinero:{ahorrador:{gobernante:3,sabio:2,heroe:2},equilibrado:{corriente:3,sabio:2,cuidador:1},gastador:{bufon:3,explorador:2,amante:2},ansioso:{inocente:2,amante:1,cuidador:1}},
+      metas:{emprendedor:{creador:3,heroe:3,forajido:2,mago:2},profesional:{gobernante:3,heroe:2,sabio:2},nomada:{explorador:4,bufon:3,forajido:2},estabilidad:{inocente:3,corriente:3,cuidador:2},indefinido:{mago:2,forajido:1,creador:1}}
+    };
+    Object.entries(mapas).forEach(([dim,opts])=>{
+      if(ans[dim]){const m=opts[ans[dim].v];if(m)Object.entries(m).forEach(([k,v])=>scores[k]+=v);}
+    });
+    if(ans.exigencia){const v=ans.exigencia.v;if(v>=8){scores.heroe+=3;scores.gobernante+=2;scores.creador+=2;}else if(v>=6){scores.heroe+=1;scores.sabio+=1;scores.creador+=1;}else if(v<=3){scores.bufon+=2;scores.inocente+=2;scores.explorador+=1;}}
+    return Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
   }
 
-  // ── CALCULAR COMPATIBILIDAD ENTRE DOS RESPUESTAS ─────────────
-  function calcDimensiones(aA, aB){
-    const dims = {};
-
-    // 1. Valores compartidos
-    let val=50;
-    if(aA.valores&&aB.valores){
-      const v={libertad:0,seguridad:1,crecimiento:2,conexion:3,logro:4};
-      const diff=Math.abs((v[aA.valores.v]||0)-(v[aB.valores.v]||0));
-      val=diff===0?95:diff===1?78:diff===2?58:diff===3?38:22;
-    }
-    dims.valores=val;
-
-    // 2. Compatibilidad emocional
-    let emo=55;
-    const eA=aA.apego?.v,eB=aB.apego?.v;
-    const emoMap={
-      'seguro-seguro':90,'seguro-ansioso':65,'seguro-evitativo':60,'seguro-desorganizado':55,
-      'ansioso-ansioso':42,'ansioso-evitativo':30,'ansioso-desorganizado':38,
-      'evitativo-evitativo':50,'evitativo-desorganizado':45,'desorganizado-desorganizado':35
-    };
-    const eKey=eA&&eB?[eA,eB].sort().join('-'):null;
-    if(eKey)emo=emoMap[eKey]||55;
-    dims.emocional=emo;
-
-    // 3. Estilos de comunicación
-    let com=55;
-    const cA=aA.comunicacion?.v,cB=aB.comunicacion?.v;
-    const comMap={
-      'frecuente-frecuente':88,'calidad-calidad':85,'flujo-flujo':75,'directa-directa':80,
-      'frecuente-calidad':70,'frecuente-flujo':52,'frecuente-directa':62,
-      'calidad-flujo':65,'calidad-directa':72,'flujo-directa':58
-    };
-    const cKey=cA&&cB?[cA,cB].sort().join('-'):null;
-    if(cKey)com=comMap[cKey]||55;
-    dims.comunicacion=com;
-
-    // 4. Ritmo de vida
-    let rit=55;
-    const rA=aA.ritmo?.v,rB=aB.ritmo?.v;
-    const ritMap={
-      'alta-alta':80,'alta-equilibrado':72,'alta-tranquilo':38,'alta-impredecible':65,
-      'equilibrado-equilibrado':88,'equilibrado-tranquilo':68,'equilibrado-impredecible':60,
-      'tranquilo-tranquilo':85,'tranquilo-impredecible':42,'impredecible-impredecible':70
-    };
-    const rKey=rA&&rB?[rA,rB].sort().join('-'):null;
-    if(rKey)rit=ritMap[rKey]||55;
-    dims.ritmo=rit;
-
-    // 5. Gestión del conflicto
-    let conf=55;
-    const fA=aA.conflicto?.v,fB=aB.conflicto?.v;
-    const confMap={
-      'directo-directo':72,'directo-reflexivo':82,'directo-evitador':52,'directo-reactivo':45,'directo-mediador':80,
-      'reflexivo-reflexivo':78,'reflexivo-evitador':60,'reflexivo-reactivo':55,'reflexivo-mediador':85,
-      'evitador-evitador':48,'evitador-reactivo':35,'evitador-mediador':65,
-      'reactivo-reactivo':38,'reactivo-mediador':55,'mediador-mediador':88
-    };
-    const fKey=fA&&fB?[fA,fB].sort().join('-'):null;
-    if(fKey)conf=confMap[fKey]||55;
-    dims.conflicto=conf;
-
-    // 6. Visión de futuro
-    let fut=55;
-    const mA=aA.metas?.v,mB=aB.metas?.v;
-    const futMap={
-      'emprendedor-emprendedor':85,'emprendedor-profesional':75,'emprendedor-nomada':68,
-      'emprendedor-estabilidad':50,'emprendedor-indefinido':55,
-      'profesional-profesional':82,'profesional-nomada':52,'profesional-estabilidad':72,
-      'profesional-indefinido':58,'nomada-nomada':78,'nomada-estabilidad':42,
-      'nomada-indefinido':65,'estabilidad-estabilidad':88,'estabilidad-indefinido':50,
-      'indefinido-indefinido':55
-    };
-    const mKey=mA&&mB?[mA,mB].sort().join('-'):null;
-    if(mKey)fut=futMap[mKey]||55;
-    dims.futuro=fut;
-
+  function calcDims(aA,aB){
+    const dims={};
+    // Valores
+    const vmap={libertad:0,seguridad:1,crecimiento:2,conexion:3,logro:4};
+    const vdiff=aA.valores&&aB.valores?Math.abs((vmap[aA.valores.v]||0)-(vmap[aB.valores.v]||0)):2;
+    dims.valores=vdiff===0?95:vdiff===1?78:vdiff===2?58:vdiff===3?38:22;
+    // Apego
+    const emoMap={'seguro-seguro':90,'seguro-ansioso':65,'seguro-evitativo':60,'seguro-desorganizado':55,'ansioso-ansioso':42,'ansioso-evitativo':30,'ansioso-desorganizado':38,'evitativo-evitativo':50,'evitativo-desorganizado':45,'desorganizado-desorganizado':35};
+    const eKey=aA.apego&&aB.apego?[aA.apego.v,aB.apego.v].sort().join('-'):null;
+    dims.emocional=eKey?emoMap[eKey]||55:55;
+    // Comunicación
+    const comMap={'frecuente-frecuente':88,'calidad-calidad':85,'flujo-flujo':75,'directa-directa':80,'frecuente-calidad':70,'frecuente-flujo':52,'frecuente-directa':62,'calidad-flujo':65,'calidad-directa':72,'flujo-directa':58};
+    const cKey=aA.comunicacion&&aB.comunicacion?[aA.comunicacion.v,aB.comunicacion.v].sort().join('-'):null;
+    dims.comunicacion=cKey?comMap[cKey]||55:55;
+    // Ritmo
+    const ritMap={'alta-alta':80,'alta-equilibrado':72,'alta-tranquilo':38,'alta-impredecible':65,'equilibrado-equilibrado':88,'equilibrado-tranquilo':68,'equilibrado-impredecible':60,'tranquilo-tranquilo':85,'tranquilo-impredecible':42,'impredecible-impredecible':70};
+    const rKey=aA.ritmo&&aB.ritmo?[aA.ritmo.v,aB.ritmo.v].sort().join('-'):null;
+    dims.ritmo=rKey?ritMap[rKey]||55:55;
+    // Conflicto
+    const confMap={'directo-directo':72,'directo-reflexivo':82,'directo-evitador':52,'directo-reactivo':45,'directo-mediador':80,'reflexivo-reflexivo':78,'reflexivo-evitador':60,'reflexivo-reactivo':55,'reflexivo-mediador':85,'evitador-evitador':48,'evitador-reactivo':35,'evitador-mediador':65,'reactivo-reactivo':38,'reactivo-mediador':55,'mediador-mediador':88};
+    const fKey=aA.conflicto&&aB.conflicto?[aA.conflicto.v,aB.conflicto.v].sort().join('-'):null;
+    dims.conflicto=fKey?confMap[fKey]||55:55;
+    // Futuro
+    const futMap={'emprendedor-emprendedor':85,'emprendedor-profesional':75,'emprendedor-nomada':68,'emprendedor-estabilidad':50,'emprendedor-indefinido':55,'profesional-profesional':82,'profesional-nomada':52,'profesional-estabilidad':72,'profesional-indefinido':58,'nomada-nomada':78,'nomada-estabilidad':42,'nomada-indefinido':65,'estabilidad-estabilidad':88,'estabilidad-indefinido':50,'indefinido-indefinido':55};
+    const mKey=aA.metas&&aB.metas?[aA.metas.v,aB.metas.v].sort().join('-'):null;
+    dims.futuro=mKey?futMap[mKey]||55:55;
     return dims;
   }
 
-  // ── GENERAR TEXTOS DE ANÁLISIS ────────────────────────────────
-  function generarAnalisis(arcA, arcB, dims, tipo){
-    const A=ARQUETIPOS[arcA], B=ARQUETIPOS[arcB];
-    const totalScore=Math.round((dims.valores+dims.emocional+dims.comunicacion+dims.ritmo+dims.conflicto+dims.futuro)/6);
-    const afin=A.afinidad[arcB]||55;
-    const scoreA=Math.round((totalScore*0.6)+(afin*0.4));
-    const scoreB=Math.round((totalScore*0.6)+((100-Math.abs(100-afin))*0.4));
-    const compatTotal=Math.round((totalScore*0.5)+(afin*0.5));
+  const arcA=detectarArquetipo(ansA);
+  const arcB=detectarArquetipo(ansB);
+  const dims=calcDims(ansA,ansB);
+  const A=ARQUETIPOS[arcA],B=ARQUETIPOS[arcB];
+  const totalScore=Math.round(Object.values(dims).reduce((s,v)=>s+v,0)/6);
+  const afin=A.afinidad[arcB]||55;
+  const compatTotal=Math.min(98,Math.round((totalScore*0.55)+(afin*0.45)));
+  const scoreA=Math.min(98,Math.round((totalScore*0.6)+(afin*0.4)));
+  const scoreB=Math.min(98,Math.round((totalScore*0.6)+((A.afinidad[arcB]||55)*0.4)));
 
-    // Textos de dinámica entre arquetipos
-    const dinamicas={
-      'inocente-amante':'Una combinación de alta ternura — el Inocente da pureza, el Amante profundidad. Riesgo: idealización mutua.',
-      'inocente-cuidador':'Dos personas que priorizan el bienestar del otro. Equilibrio casi perfecto si aprenden a recibir también.',
-      'explorador-mago':'Chispa intelectual y espiritual intensa. Se potencian mutuamente pero pueden perder el ancla.',
-      'explorador-creador':'Una dupla creativa explosiva. Se inspiran pero pueden competir por espacio propio.',
-      'explorador-forajido':'Libertad al cuadrado. Pueden ser el par más auténtico o el más inestable dependiendo de su madurez.',
-      'sabio-mago':'Combinación intelectual de altísimo nivel. Conversaciones transformadoras, pero poca tierra emocional.',
-      'heroe-gobernante':'Dos líderes en el mismo espacio. Gran potencia si van hacia el mismo objetivo, guerra si compiten.',
-      'heroe-forajido':'Energía explosiva. Se atraen por la intensidad pero chocan en cómo canalizan esa energía.',
-      'forajido-creador':'La combinación más disruptiva. Creatividad sin filtros, pero necesitan estructuras mínimas.',
-      'mago-creador':'Visión más expresión. Probablemente la pareja más transformadora de los 12 arquetipos.',
-      'corriente-cuidador':'Estabilidad emocional sólida. No el más emocionante, pero sí uno de los más seguros.',
-      'amante-cuidador':'Dos personas diseñadas para el amor profundo. El reto es no perderse en el otro.',
-      'bufon-explorador':'Espontaneidad y libertad en estado puro. Divertidos juntos pero pueden evitar temas serios.',
-      'gobernante-sabio':'Estrategia más análisis. Formidables en proyectos, deben cuidar la calidez emocional.',
-    };
-    const dKey=[arcA,arcB].sort().join('-');
-    const dinamica=dinamicas[dKey]||`${A.nombre} y ${B.nombre} crean una dinámica donde ${arcA==='amante'||arcB==='amante'?'la profundidad emocional':'la complementariedad'} es el hilo conductor. Su compatibilidad depende de cuánto estén dispuestos a ceder en sus diferencias clave.`;
+  // Dinámica
+  const dinamicas={'inocente-amante':'Una combinación de alta ternura — el Inocente da pureza, el Amante profundidad. Riesgo: idealización mutua.','inocente-cuidador':'Dos personas que priorizan el bienestar del otro. Equilibrio casi perfecto si aprenden a recibir también.','explorador-mago':'Chispa intelectual y espiritual intensa. Se potencian mutuamente pero pueden perder el ancla.','explorador-creador':'Una dupla creativa explosiva. Se inspiran pero pueden competir por espacio propio.','explorador-forajido':'Libertad al cuadrado. Pueden ser el par más auténtico o el más inestable dependiendo de su madurez.','sabio-mago':'Combinación intelectual de altísimo nivel. Conversaciones transformadoras, pero poca tierra emocional.','heroe-gobernante':'Dos líderes en el mismo espacio. Gran potencia si van hacia el mismo objetivo, guerra si compiten.','heroe-forajido':'Energía explosiva. Se atraen por la intensidad pero chocan en cómo canalizan esa energía.','forajido-creador':'La combinación más disruptiva. Creatividad sin filtros, pero necesitan estructuras mínimas.','mago-creador':'Visión más expresión. Probablemente la pareja más transformadora de los 12 arquetipos.','corriente-cuidador':'Estabilidad emocional sólida. No el más emocionante, pero sí uno de los más seguros.','amante-cuidador':'Dos personas diseñadas para el amor profundo. El reto es no perderse en el otro.','bufon-explorador':'Espontaneidad y libertad en estado puro. Divertidos juntos pero pueden evitar temas serios.','gobernante-sabio':'Estrategia más análisis. Formidables en proyectos, deben cuidar la calidez emocional.'};
+  const dKey=[arcA,arcB].sort().join('-');
+  const dinamica=dinamicas[dKey]||`${A.nombre} y ${B.nombre} crean una dinámica donde la complementariedad es el hilo conductor. Su compatibilidad depende de cuánto estén dispuestos a ceder en sus diferencias clave.`;
 
-    // Análisis general según tipo de vínculo
-    const tipoTextos={
-      pareja:`Para una relación romántica, ${A.nombre} y ${B.nombre} ${compatTotal>=70?'tienen una base sólida que pocos cruzan':'enfrentan diferencias reales que exigen trabajo consciente'}. ${dims.emocional>=70?'La compatibilidad emocional es su mayor activo.':'El área emocional requiere atención especial.'} ${dims.valores>=70?'Sus valores van en la misma dirección.':'Sus valores difieren y eso se siente en el día a día.'}`,
-      amistad:`Como amigos, ${A.nombre} y ${B.nombre} ${compatTotal>=70?'se complementan de manera natural':'pueden conectar bien en superficie pero con fricción en profundidad'}. ${dims.comunicacion>=70?'La comunicación fluye bien entre ellos.':'Sus estilos de comunicación piden adaptación mutua.'} Una amistad entre estos dos arquetipos ${compatTotal>=60?'tiene potencial real de durar':'requiere que ambos valoren la diferencia como riqueza'}.`,
-      trabajo:`En un contexto laboral, ${A.nombre} y ${B.nombre} ${dims.conflicto>=70?'manejan el conflicto de manera compatible':'pueden tener choques en cómo afrontan problemas'}. ${dims.futuro>=70?'Comparten visión de hacia dónde ir.':'Sus metas profesionales apuntan en direcciones distintas.'} ${compatTotal>=65?'Tienen potencial de equipo sólido.':'Necesitan roles claramente definidos para evitar fricciones.'}`,
-      convivencia:`Vivir juntos como ${A.nombre} y ${B.nombre} ${dims.ritmo>=70?'tiene buenas bases en términos de ritmo de vida':'presenta retos por sus ritmos diferentes'}. ${dims.conflicto>=65?'Su forma de manejar el conflicto es compatible.':'Los conflictos cotidianos pueden escalar si no los atienden.'} La convivencia ${compatTotal>=65?'puede funcionar bien con acuerdos claros':'requiere mucha comunicación explícita'}.`,
-      familia:`El vínculo familiar entre ${A.nombre} y ${B.nombre} ${compatTotal>=70?'tiene una base de afecto genuino':'está marcado por diferencias de fondo que exigen respeto activo'}. ${dims.valores>=65?'Comparten valores centrales que los unen.':'Sus valores difieren, lo que genera tensión en decisiones importantes.'} Con el tiempo, ${compatTotal>=60?'pueden construir un vínculo profundo':'aprenderán a coexistir si priorizan el respeto sobre la compatibilidad'}.`,
-      general:`${A.nombre} y ${B.nombre} son arquetipos ${compatTotal>=75?'naturalmente compatibles':'con diferencias significativas que pueden ser riqueza o fuente de conflicto'}. Su interacción genera ${afin>=75?'sinergia orgánica en la mayoría de contextos':'una dinámica interesante pero que requiere esfuerzo consciente'}. ${dims.valores>=70?'Lo que más los une son sus valores compartidos.':'Sus diferencias de valores son el punto más crítico a trabajar.'}`
-    };
+  // Veredicto
+  let veredicto,vtipo,recomendacion;
+  if(compatTotal>=80){veredicto='Compatibilidad excepcional';vtipo='v';}
+  else if(compatTotal>=65){veredicto='Buena compatibilidad con matices';vtipo='a';}
+  else if(compatTotal>=50){veredicto='Compatibilidad moderada — trabajo necesario';vtipo='a';}
+  else{veredicto='Compatibilidad baja — diferencias estructurales';vtipo='r';}
 
-    // Puntos de tensión
-    const tensiones=[];
-    if(dims.emocional<55)tensiones.push('Sus estilos de apego crean ciclos de distancia-cercanía difíciles de romper');
-    if(dims.ritmo<55)tensiones.push('Sus ritmos de vida diferentes generan fricción en la cotidianidad');
-    if(dims.comunicacion<55)tensiones.push('Sus formas de comunicar crean malentendidos frecuentes');
-    if(dims.conflicto<55)tensiones.push('Ante el conflicto reaccionan de formas opuestas, lo que escala las tensiones');
-    if(dims.valores<55)tensiones.push('Sus valores centrales apuntan en direcciones distintas — fuente de conflicto profundo');
-    if(dims.futuro<55)tensiones.push('Sus visiones de futuro no coinciden, lo que crea divergencia a mediano plazo');
-    if(tensiones.length===0)tensiones.push('El principal riesgo es la complacencia — todo parece fácil hasta que algo los presiona');
-    
-    // Puntos de fortaleza
-    const fortalezas=[];
-    if(dims.emocional>=70)fortalezas.push('Alta compatibilidad emocional — se sienten seguros el uno con el otro');
-    if(dims.valores>=70)fortalezas.push('Sus valores centrales están alineados — la base más sólida posible');
-    if(dims.comunicacion>=70)fortalezas.push('La comunicación fluye de manera natural entre ellos');
-    if(dims.ritmo>=70)fortalezas.push('Sus ritmos de vida son compatibles — la convivencia es orgánica');
-    if(dims.conflicto>=70)fortalezas.push('Manejan el conflicto de forma complementaria — uno equilibra al otro');
-    if(dims.futuro>=70)fortalezas.push('Comparten visión de futuro — van hacia el mismo horizonte');
-    if(afin>=75)fortalezas.push(`La combinación ${A.nombre}/${B.nombre} es una de las más sinérgicas de los arquetipos jungianos`);
-    if(fortalezas.length===0)fortalezas.push('Su principal fortaleza es que las diferencias pueden ser complementarias si ambos lo eligen conscientemente');
+  if(compatTotal>=80){recomendacion=`${nA} y ${nB} tienen una de esas combinaciones que no son frecuentes. Sus arquetipos se complementan de manera orgánica y sus dimensiones clave están alineadas. El trabajo no es construir compatibilidad — ya existe — sino no darla por sentada. El riesgo mayor de los vínculos muy compatibles es la complacencia: cuando todo fluye, se deja de invertir. Si ambos mantienen la intención activa de cuidar el vínculo, esto tiene solidez real.`;}
+  else if(compatTotal>=65){recomendacion=`${nA} y ${nB} tienen una base sólida, pero con diferencias reales que no desaparecen solas. No es una combinación difícil, pero sí una que requiere comunicación explícita y voluntad de adaptarse. Si ambos están dispuestos, funciona.`;}
+  else if(compatTotal>=50){recomendacion=`${nA} y ${nB} pueden funcionar, pero no sin esfuerzo consciente. Sus arquetipos ${A.nombre} y ${B.nombre} tienen diferencias de fondo que no son superficiales. La pregunta no es si hay compatibilidad — la hay — sino si ambos tienen la disposición real de trabajar en ella.`;}
+  else{recomendacion=`${nA} y ${nB} enfrentan diferencias que no son de superficie: son de valores, ritmos y formas de ver la vida. No significa que sea imposible — pero requeriría un nivel de esfuerzo y adaptación que no todos están dispuestos a sostener.`;}
 
-    // Veredicto final
-    let veredicto,recomendacion;
-    if(compatTotal>=80){
-      veredicto='Compatibilidad excepcional';
-      recomendacion=`${nA} y ${nB} tienen una de esas combinaciones que no son frecuentes. Sus arquetipos se complementan de manera orgánica y sus dimensiones clave están alineadas. El trabajo no es construir compatibilidad — ya existe — sino no darla por sentada. El riesgo mayor de los vínculos muy compatibles es la complacencia: cuando todo fluye, se deja de invertir. Si ambos mantienen la intención activa de cuidar el vínculo, esto tiene solidez real.`;
-    } else if(compatTotal>=65){
-      veredicto='Buena compatibilidad con matices';
-      recomendacion=`${nA} y ${nB} tienen una base sólida, pero con diferencias reales que no desaparecen solas. Las dimensiones ${Object.entries(dims).filter(([,v])=>v<60).map(([k])=>({valores:'de valores',emocional:'emocional',comunicacion:'de comunicación',ritmo:'de ritmo',conflicto:'ante conflictos',futuro:'de visión de futuro'})[k]).join(' y ')||'más débiles'} son los puntos donde más trabajo hay. No es una combinación difícil, pero sí una que requiere comunicación explícita y voluntad de adaptarse. Si ambos están dispuestos, funciona.`;
-    } else if(compatTotal>=50){
-      veredicto='Compatibilidad moderada — trabajo necesario';
-      recomendacion=`${nA} y ${nB} pueden funcionar, pero no sin esfuerzo consciente. Sus arquetipos ${A.nombre} y ${B.nombre} tienen diferencias de fondo que no son superficiales. Pueden coexistir bien e incluso complementarse, pero van a necesitar acuerdos explícitos en las áreas donde difieren. La pregunta no es si hay compatibilidad — la hay — sino si ambos tienen la disposición real de trabajar en ella. Sin esa voluntad activa, las diferencias terminan pesando más que las similitudes.`;
-    } else {
-      veredicto='Compatibilidad baja — diferencias estructurales';
-      recomendacion=`${nA} y ${nB} enfrentan diferencias que no son de superficie: son de valores, ritmos y formas de ver la vida. Sus arquetipos ${A.nombre} y ${B.nombre} tienen fricciones naturales que se hacen más evidentes con el tiempo. Esto no significa que sea imposible — pero sí que requeriría un nivel de esfuerzo y adaptación que no todos están dispuestos a sostener. Si el vínculo importa, la clave es aceptar las diferencias como parte permanente de la dinámica, no como problemas a resolver.`;
-    }
+  const tensiones=[];
+  const fortalezas=[];
+  if(dims.emocional<55)tensiones.push('Sus estilos de apego crean ciclos de distancia-cercanía difíciles de romper');
+  if(dims.ritmo<55)tensiones.push('Sus ritmos de vida diferentes generan fricción en la cotidianidad');
+  if(dims.comunicacion<55)tensiones.push('Sus formas de comunicar crean malentendidos frecuentes');
+  if(dims.conflicto<55)tensiones.push('Ante el conflicto reaccionan de formas opuestas, lo que escala las tensiones');
+  if(dims.valores<55)tensiones.push('Sus valores centrales apuntan en direcciones distintas');
+  if(dims.futuro<55)tensiones.push('Sus visiones de futuro no coinciden');
+  if(tensiones.length===0)tensiones.push('El principal riesgo es la complacencia — todo parece fácil hasta que algo los presiona');
+  if(dims.emocional>=70)fortalezas.push('Alta compatibilidad emocional — se sienten seguros el uno con el otro');
+  if(dims.valores>=70)fortalezas.push('Sus valores centrales están alineados — la base más sólida posible');
+  if(dims.comunicacion>=70)fortalezas.push('La comunicación fluye de manera natural entre ellos');
+  if(dims.ritmo>=70)fortalezas.push('Sus ritmos de vida son compatibles — la convivencia es orgánica');
+  if(dims.conflicto>=70)fortalezas.push('Manejan el conflicto de forma complementaria');
+  if(dims.futuro>=70)fortalezas.push('Comparten visión de futuro — van hacia el mismo horizonte');
+  if(afin>=75)fortalezas.push(`La combinación ${A.nombre}/${B.nombre} es una de las más sinérgicas de los arquetipos jungianos`);
+  if(fortalezas.length===0)fortalezas.push('Sus diferencias pueden ser complementarias si ambos lo eligen conscientemente');
 
-    return {
-      compatibilidad_total: compatTotal,
-      veredicto,
-      analisis_general: tipoTextos[tipo]||tipoTextos.general,
-      perfil_a:{
-        arquetipo: A.nombre,
-        arquetipo_emoji: A.emoji,
-        descripcion_arquetipo: A.desc,
-        rasgos_positivos: A.rasgos_pos,
-        rasgos_atencion: A.rasgos_neg,
-        score_individual: scoreA
-      },
-      perfil_b:{
-        arquetipo: B.nombre,
-        arquetipo_emoji: B.emoji,
-        descripcion_arquetipo: B.desc,
-        rasgos_positivos: B.rasgos_pos,
-        rasgos_atencion: B.rasgos_neg,
-        score_individual: scoreB
-      },
-      dinamica_arquetipos: dinamica,
-      polaridades:[
-        {dimension:'Energía social',
-         label_a:{'extro_alto':'Muy extrovertido','extro_mod':'Extrovertido','ambivierte':'Ambivierte','intro_mod':'Introvertido','intro_alto':'Muy introvertido'}[ansA.energia?.v]||'—',
-         label_b:{'extro_alto':'Muy extrovertido','extro_mod':'Extrovertido','ambivierte':'Ambivierte','intro_mod':'Introvertido','intro_alto':'Muy introvertido'}[ansB.energia?.v]||'—',
-         posicion:({'extro_alto':-40,'extro_mod':-20,'ambivierte':0,'intro_mod':20,'intro_alto':40}[ansA.energia?.v]||0)-
-                  ({'extro_alto':-40,'extro_mod':-20,'ambivierte':0,'intro_mod':20,'intro_alto':40}[ansB.energia?.v]||0)},
-        {dimension:'Decisiones',
-         label_a:{'analitico':'Analítico','intuitivo':'Intuitivo','emocional':'Emocional','mixto':'Mixto'}[ansA.decision?.v]||'—',
-         label_b:{'analitico':'Analítico','intuitivo':'Intuitivo','emocional':'Emocional','mixto':'Mixto'}[ansB.decision?.v]||'—',
-         posicion:({'analitico':-35,'intuitivo':15,'emocional':35,'mixto':0}[ansA.decision?.v]||0)-
-                  ({'analitico':-35,'intuitivo':15,'emocional':35,'mixto':0}[ansB.decision?.v]||0)},
-        {dimension:'Emoción',
-         label_a:{'consciente':'Consciente','expresivo':'Expresivo','supresion':'Suprime','dificultad':'Le cuesta'}[ansA.emociones?.v]||'—',
-         label_b:{'consciente':'Consciente','expresivo':'Expresivo','supresion':'Suprime','dificultad':'Le cuesta'}[ansB.emociones?.v]||'—',
-         posicion:({'consciente':-20,'expresivo':30,'supresion':-35,'dificultad':10}[ansA.emociones?.v]||0)-
-                  ({'consciente':-20,'expresivo':30,'supresion':-35,'dificultad':10}[ansB.emociones?.v]||0)},
-        {dimension:'Ritmo',
-         label_a:{'alta':'Alta intensidad','equilibrado':'Equilibrado','tranquilo':'Tranquilo','impredecible':'Impredecible'}[ansA.ritmo?.v]||'—',
-         label_b:{'alta':'Alta intensidad','equilibrado':'Equilibrado','tranquilo':'Tranquilo','impredecible':'Impredecible'}[ansB.ritmo?.v]||'—',
-         posicion:({'alta':-40,'equilibrado':-15,'tranquilo':30,'impredecible':35}[ansA.ritmo?.v]||0)-
-                  ({'alta':-40,'equilibrado':-15,'tranquilo':30,'impredecible':35}[ansB.ritmo?.v]||0)},
-        {dimension:'Límites',
-         label_a:{'asertivo':'Asertivo','pasivo':'Pasivo','acumulador':'Acumula','cededor':'Cede'}[ansA.limites?.v]||'—',
-         label_b:{'asertivo':'Asertivo','pasivo':'Pasivo','acumulador':'Acumula','cededor':'Cede'}[ansB.limites?.v]||'—',
-         posicion:({'asertivo':-35,'pasivo':25,'acumulador':30,'cededor':20}[ansA.limites?.v]||0)-
-                  ({'asertivo':-35,'pasivo':25,'acumulador':30,'cededor':20}[ansB.limites?.v]||0)}
-      ],
-      dimensiones:[
-        {label:'Valores compartidos',valor:dims.valores},
-        {label:'Compatibilidad emocional',valor:dims.emocional},
-        {label:'Estilos de comunicación',valor:dims.comunicacion},
-        {label:'Ritmo y estilo de vida',valor:dims.ritmo},
-        {label:'Gestión del conflicto',valor:dims.conflicto},
-        {label:'Visión de futuro',valor:dims.futuro}
-      ],
-      puntos_tension: tensiones.slice(0,3).join('. ')+'.',
-      puntos_fuerza: fortalezas.slice(0,3).join('. ')+'.',
-      recomendacion_final: recomendacion
-    };
-  }
+  // Polaridades
+  const enM={extro_alto:-40,extro_mod:-20,ambivierte:0,intro_mod:20,intro_alto:40};
+  const dcM={analitico:-35,intuitivo:15,emocional:35,mixto:0};
+  const emM={consciente:-20,expresivo:30,supresion:-35,dificultad:10};
+  const rtM={alta:-40,equilibrado:-15,tranquilo:30,impredecible:35};
+  const lmM={asertivo:-35,pasivo:25,acumulador:30,cededor:20};
+  const enLA={extro_alto:'Muy extrovertido/a',extro_mod:'Extrovertido/a',ambivierte:'Ambivierte',intro_mod:'Introvertido/a',intro_alto:'Muy introvertido/a'};
+  const dcLA={analitico:'Analítico/a',intuitivo:'Intuitivo/a',emocional:'Emocional',mixto:'Mixto/a'};
+  const emLA={consciente:'Consciente',expresivo:'Expresivo/a',supresion:'Suprime',dificultad:'Le cuesta'};
+  const rtLA={alta:'Alta intensidad',equilibrado:'Equilibrado/a',tranquilo:'Tranquilo/a',impredecible:'Impredecible'};
+  const lmLA={asertivo:'Asertivo/a',pasivo:'Pasivo/a',acumulador:'Acumula',cededor:'Cede'};
 
-  // ── EJECUTAR ──────────────────────────────────────────────────
-  const arcA = detectarArquetipo(ansA);
-  const arcB = detectarArquetipo(ansB);
-  const dims = calcDimensiones(ansA, ansB);
-  return generarAnalisis(arcA, arcB, dims, bindType||'general');
+  return{
+    compatibilidad_total:compatTotal,veredicto,vtipo,recomendacion,
+    perfil_a:{arquetipo:A.nombre,arquetipo_emoji:A.emoji,descripcion_arquetipo:A.desc,rasgos_positivos:A.rasgos_pos,rasgos_atencion:A.rasgos_neg,score_individual:scoreA},
+    perfil_b:{arquetipo:B.nombre,arquetipo_emoji:B.emoji,descripcion_arquetipo:B.desc,rasgos_positivos:B.rasgos_pos,rasgos_atencion:B.rasgos_neg,score_individual:scoreB},
+    dinamica_arquetipos:dinamica,
+    polaridades:[
+      {dimension:'Energía social',label_a:enLA[ansA.energia?.v]||'—',label_b:enLA[ansB.energia?.v]||'—',pos:(enM[ansA.energia?.v]||0)-(enM[ansB.energia?.v]||0)},
+      {dimension:'Decisiones',label_a:dcLA[ansA.decision?.v]||'—',label_b:dcLA[ansB.decision?.v]||'—',pos:(dcM[ansA.decision?.v]||0)-(dcM[ansB.decision?.v]||0)},
+      {dimension:'Emoción',label_a:emLA[ansA.emociones?.v]||'—',label_b:emLA[ansB.emociones?.v]||'—',pos:(emM[ansA.emociones?.v]||0)-(emM[ansB.emociones?.v]||0)},
+      {dimension:'Ritmo',label_a:rtLA[ansA.ritmo?.v]||'—',label_b:rtLA[ansB.ritmo?.v]||'—',pos:(rtM[ansA.ritmo?.v]||0)-(rtM[ansB.ritmo?.v]||0)},
+      {dimension:'Límites',label_a:lmLA[ansA.limites?.v]||'—',label_b:lmLA[ansB.limites?.v]||'—',pos:(lmM[ansA.limites?.v]||0)-(lmM[ansB.limites?.v]||0)}
+    ],
+    dimensiones:[
+      {label:'Valores compartidos',valor:dims.valores},
+      {label:'Compatibilidad emocional',valor:dims.emocional},
+      {label:'Estilos de comunicación',valor:dims.comunicacion},
+      {label:'Ritmo y estilo de vida',valor:dims.ritmo},
+      {label:'Gestión del conflicto',valor:dims.conflicto},
+      {label:'Visión de futuro',valor:dims.futuro}
+    ],
+    puntos_tension:tensiones.slice(0,3).join('. ')+'.',
+    puntos_fuerza:fortalezas.slice(0,3).join('. ')+'.'
+  };
 }
 
-async function callClaude(){
-  reportData = analyzeCompatibility();
-  renderResult();
-  goScreen('result');
+// ─── RENDER RESULT ────────────────────────────────────────────────────────────
+function renderResult(d){
+  const wrap=document.getElementById('resWrap');
+  const compat=d.compatibilidad_total;
+  const gradColor=compat>=70?'linear-gradient(90deg,#00dc82,#00b368)':compat>=50?'linear-gradient(90deg,#ffb800,#e09400)':'linear-gradient(90deg,#ff4450,#cc2030)';
+
+  wrap.innerHTML=`
+    <!-- SCORE PRINCIPAL -->
+    <div class="compat-card">
+      <div class="compat-lbl">✦ Compatibilidad total</div>
+      <div class="compat-big" style="background:${gradColor};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${compat}%</div>
+      <div class="compat-bar"><div class="compat-fill" id="cf" style="background:${gradColor}"></div></div>
+      <div class="vtag ${d.vtipo}">${d.veredicto}</div>
+      <div class="vmain" id="vm">${d.recomendacion}</div>
+    </div>
+
+    <!-- SCORES INDIVIDUALES -->
+    <div class="dual-sc">
+      <div class="sc-card a">
+        <div class="sc-nm a">${nA}</div>
+        <div class="sc-ring">
+          <svg viewBox="0 0 80 80"><circle class="r-track" cx="40" cy="40" r="35"/><circle class="r-fill" id="ra" cx="40" cy="40" r="35" stroke="var(--fuchsia)"/></svg>
+          <div><div class="sc-pct a" id="spa">0%</div><div class="sc-arch">${d.perfil_a.arquetipo_emoji} ${d.perfil_a.arquetipo}</div></div>
+        </div>
+      </div>
+      <div class="sc-card b">
+        <div class="sc-nm b">${nB}</div>
+        <div class="sc-ring">
+          <svg viewBox="0 0 80 80"><circle class="r-track" cx="40" cy="40" r="35"/><circle class="r-fill" id="rb" cx="40" cy="40" r="35" stroke="var(--teal)"/></svg>
+          <div><div class="sc-pct b" id="spb">0%</div><div class="sc-arch">${d.perfil_b.arquetipo_emoji} ${d.perfil_b.arquetipo}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARQUETIPOS -->
+    <div class="arch-row">
+      <div class="arch-card a">
+        <div class="arch-emoji">${d.perfil_a.arquetipo_emoji}</div>
+        <div class="arch-type a">${d.perfil_a.arquetipo}</div>
+        <div class="arch-sub">${d.perfil_a.descripcion_arquetipo}</div>
+      </div>
+      <div class="arch-card b">
+        <div class="arch-emoji">${d.perfil_b.arquetipo_emoji}</div>
+        <div class="arch-type b">${d.perfil_b.arquetipo}</div>
+        <div class="arch-sub">${d.perfil_b.descripcion_arquetipo}</div>
+      </div>
+    </div>
+
+    <!-- RASGOS -->
+    <div class="pers-grid">
+      <div class="pers-card a">
+        <div class="pers-head"><div class="pers-av a">${nA.charAt(0).toUpperCase()}</div><div class="pers-nm">${nA}</div></div>
+        <div class="trait-type">Fortalezas</div>
+        <div class="trait-list">${d.perfil_a.rasgos_positivos.map(r=>`<span class="tpill pos">${r}</span>`).join('')}</div>
+        <div class="trait-type" style="margin-top:8px;">Puntos de atención</div>
+        <div class="trait-list">${d.perfil_a.rasgos_atencion.map(r=>`<span class="tpill warn">${r}</span>`).join('')}</div>
+      </div>
+      <div class="pers-card b">
+        <div class="pers-head"><div class="pers-av b">${nB.charAt(0).toUpperCase()}</div><div class="pers-nm">${nB}</div></div>
+        <div class="trait-type">Fortalezas</div>
+        <div class="trait-list">${d.perfil_b.rasgos_positivos.map(r=>`<span class="tpill pos">${r}</span>`).join('')}</div>
+        <div class="trait-type" style="margin-top:8px;">Puntos de atención</div>
+        <div class="trait-list">${d.perfil_b.rasgos_atencion.map(r=>`<span class="tpill warn">${r}</span>`).join('')}</div>
+      </div>
+    </div>
+
+    <!-- DINÁMICA -->
+    <div class="rsecs">
+      <div class="rsec">
+        <div class="rsec-t">Dinámica entre arquetipos</div>
+        <div class="rsec-b">${d.dinamica_arquetipos}</div>
+      </div>
+    </div>
+
+    <!-- POLARIDADES -->
+    <div class="pol-sec">
+      <div class="pol-title">✦ Polaridades de personalidad</div>
+      ${d.polaridades.map(p=>{
+        const pct=Math.max(5,Math.min(95,50+(p.pos*0.6)));
+        const col=Math.abs(p.pos)<15?'var(--gold)':p.pos<0?'var(--fuchsia)':'var(--teal)';
+        return`<div class="pol-row">
+          <span class="pol-la">${p.label_a}</span>
+          <span class="pol-dim">${p.dimension}</span>
+          <div class="pol-track"><div class="pol-needle" style="left:calc(${pct}% - 5px);background:${col};"></div></div>
+          <span class="pol-lb">${p.label_b}</span>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- DIMENSIONES -->
+    <div class="dim-sec">
+      <div class="dim-title">✦ Compatibilidad por dimensión</div>
+      <div class="dim-bars">
+        ${d.dimensiones.map(dim=>{
+          const col=dim.valor>=70?'#00dc82':dim.valor>=50?'#ffb800':'#ff4450';
+          return`<div class="dim-row">
+            <span class="dim-lbl">${dim.label}</span>
+            <div class="dim-trk"><div class="dim-fill dim-fill-anim" style="background:${col};" data-val="${dim.valor}"></div></div>
+            <span class="dim-v">${dim.valor}%</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- TENSIONES Y FORTALEZAS -->
+    <div class="rsecs">
+      <div class="rsec">
+        <div class="rsec-t" style="color:#ff4450;">⚡ Puntos de tensión</div>
+        <div class="rsec-b">${d.puntos_tension}</div>
+      </div>
+      <div class="rsec">
+        <div class="rsec-t" style="color:#00dc82;">✓ Fortalezas del vínculo</div>
+        <div class="rsec-b">${d.puntos_fuerza}</div>
+      </div>
+    </div>
+
+    <!-- VEREDICTO FINAL -->
+    <div class="rec-card">
+      <div class="rec-icon">🔮</div>
+      <div class="rec-title">Veredicto final</div>
+      <div class="rec-body">${d.recomendacion}</div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="res-actions">
+      <button class="btn-ghost" onclick="copiarResultado()">📋 Copiar resultado</button>
+      <button class="btn-ghost" onclick="resetAll()">↺ Nuevo análisis</button>
+    </div>
+  `;
+
+  // Animar después de insertar
+  requestAnimationFrame(()=>{
+    // Barra principal
+    const cf=document.getElementById('cf');
+    if(cf)setTimeout(()=>{cf.style.width=compat+'%';},100);
+    // Rings
+    const circ=220;
+    const ra=document.getElementById('ra');
+    const rb=document.getElementById('rb');
+    const spa=document.getElementById('spa');
+    const spb=document.getElementById('spb');
+    if(ra){
+      const offsetA=circ-(circ*(d.perfil_a.score_individual/100));
+      setTimeout(()=>{
+        ra.style.strokeDashoffset=offsetA;
+        animCount(spa,d.perfil_a.score_individual,1800,'%');
+      },300);
+    }
+    if(rb){
+      const offsetB=circ-(circ*(d.perfil_b.score_individual/100));
+      setTimeout(()=>{
+        rb.style.strokeDashoffset=offsetB;
+        animCount(spb,d.perfil_b.score_individual,1800,'%');
+      },500);
+    }
+    // Barras dimensiones
+    document.querySelectorAll('.dim-fill-anim').forEach((el,i)=>{
+      setTimeout(()=>{el.style.width=el.dataset.val+'%';},400+(i*100));
+    });
+    // Veredicto fade
+    setTimeout(()=>{const vm=document.getElementById('vm');if(vm)vm.classList.add('show');},900);
+  });
+}
+
+function animCount(el,target,duration,suffix){
+  if(!el)return;
+  const start=performance.now();
+  function step(now){
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(ease*target)+(suffix||'');
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function copiarResultado(){
+  if(!reportData)return;
+  const d=reportData;
+  const txt=`KNOW THEM — Análisis de Compatibilidad\n${'─'.repeat(40)}\n${nA} × ${nB}\nCompatibilidad: ${d.compatibilidad_total}% — ${d.veredicto}\n\nArquetipo de ${nA}: ${d.perfil_a.arquetipo_emoji} ${d.perfil_a.arquetipo}\nArquetipo de ${nB}: ${d.perfil_b.arquetipo_emoji} ${d.perfil_b.arquetipo}\n\nDinámica: ${d.dinamica_arquetipos}\n\nVeredicto: ${d.recomendacion}\n\nAnálisis generado en knowthem.app`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.querySelector('.res-actions button');
+    const orig=btn.textContent;btn.textContent='✓ Copiado';
+    setTimeout(()=>btn.textContent=orig,2000);
+  }).catch(()=>alert('No se pudo copiar automáticamente.'));
 }
 
 function resetAll(){
   nA='';nB='';bindType='';ansA={};ansB={};phase='A';curQ=0;reportData=null;
   document.getElementById('nameA').value='';document.getElementById('nameB').value='';
   document.querySelectorAll('.type-opt').forEach(el=>el.className='type-opt');
-  const btn=document.getElementById('btnStart');
-  btn.style.opacity='.3';btn.style.pointerEvents='none';btn.disabled=true;
+  const btn=document.getElementById('btnStart');btn.style.opacity='.3';btn.style.pointerEvents='none';btn.disabled=true;
   document.getElementById('pbar').style.display='none';
+  // Reset loading steps
+  for(let i=0;i<6;i++){const ls=document.getElementById('ls'+i);if(ls){ls.classList.remove('active','done');}}
   goScreen('intro');
 }
 </script>
