@@ -807,12 +807,12 @@ function analyzeCompatibility(){
     };
 
     // ENERGÍA SOCIAL
-    const enM = {
-      extro_alto:   {bufon:4, amante:3, heroe:2, corriente:1},
-      extro_mod:    {corriente:4, cuidador:3, amante:2, inocente:1},
-      ambivierte:   {mago:3, sabio:3, creador:3, heroe:1},
-      intro_mod:    {sabio:4, creador:3, gobernante:2, mago:1},
-      intro_alto:   {forajido:4, sabio:3, creador:2, mago:2}
+   const enM = {
+      extro_alto:   {bufon:5, amante:4, heroe:3, corriente:2, gobernante:1, forajido:1},
+      extro_mod:    {corriente:5, cuidador:4, amante:3, inocente:2, heroe:1, bufon:1},
+      ambivierte:   {mago:4, sabio:4, creador:4, heroe:2, explorador:2, amante:1},
+      intro_mod:    {sabio:5, creador:4, gobernante:3, mago:2, explorador:1},
+      intro_alto:   {forajido:5, sabio:4, creador:3, mago:3, explorador:2}
     };
     if (ans.energia) apply(s, enM[ans.energia.v]);
 
@@ -935,36 +935,36 @@ function analyzeCompatibility(){
 
     // ── VALORES (25 combinaciones únicas) ────────────────────────
     const valMap = {
-      'libertad-libertad':     92,
-      'libertad-seguridad':    28,
-      'libertad-crecimiento':  78,
-      'libertad-conexion':     55,
-      'libertad-logro':        65,
-      'seguridad-seguridad':   88,
-      'seguridad-crecimiento': 45,
-      'seguridad-conexion':    72,
-      'seguridad-logro':       52,
-      'crecimiento-crecimiento': 85,
-      'crecimiento-conexion':  68,
-      'crecimiento-logro':     80,
-      'conexion-conexion':     90,
-      'conexion-logro':        58,
-      'logro-logro':           75
+      'libertad-libertad':       94,
+      'libertad-seguridad':      24,
+      'libertad-crecimiento':    80,
+      'libertad-conexion':       52,
+      'libertad-logro':          62,
+      'seguridad-seguridad':     90,
+      'seguridad-crecimiento':   42,
+      'seguridad-conexion':      75,
+      'seguridad-logro':         50,
+      'crecimiento-crecimiento': 87,
+      'crecimiento-conexion':    65,
+      'crecimiento-logro':       82,
+      'conexion-conexion':       92,
+      'conexion-logro':          55,
+      'logro-logro':             78
     };
     dims.valores = pairScore(valMap, aA.valores?.v, aB.valores?.v, 55);
 
     // ── APEGO (10 combinaciones únicas) ──────────────────────────
-    const apegoMap = {
-      'ansioso-ansioso':           35,
-      'ansioso-desorganizado':     38,
-      'ansioso-evitativo':         22,
-      'ansioso-seguro':            60,
-      'desorganizado-desorganizado': 32,
-      'desorganizado-evitativo':   42,
-      'desorganizado-seguro':      52,
-      'evitativo-evitativo':       50,
-      'evitativo-seguro':          58,
-      'seguro-seguro':             92
+   const apegoMap = {
+      'ansioso-ansioso':             32,  // espiral de confirmación mutua
+      'ansioso-desorganizado':       35,  // caos emocional amplificado
+      'ansioso-evitativo':           18,  // el patrón más doloroso: persigue/huye
+      'ansioso-seguro':              65,  // el seguro puede calmar al ansioso
+      'desorganizado-desorganizado': 28,  // imprevisibilidad al cuadrado
+      'desorganizado-evitativo':     38,  // distancia con picos de intensidad
+      'desorganizado-seguro':        55,  // el seguro ancla al desorganizado
+      'evitativo-evitativo':         48,  // coexistencia fría, poco conflicto
+      'evitativo-seguro':            62,  // el seguro no persigue, eso ayuda
+      'seguro-seguro':               95   // la combinación óptima
     };
     dims.emocional = pairScore(apegoMap, aA.apego?.v, aB.apego?.v, 50);
 
@@ -1078,16 +1078,16 @@ function analyzeCompatibility(){
 
     // ── LÍMITES — bonus/malus ─────────────────────────────────────
     const lmBonus = {
-      'asertivo-asertivo':    3,
-      'asertivo-pasivo':     -2,
-      'asertivo-acumulador':  1,
-      'asertivo-cededor':    -1,
-      'pasivo-pasivo':       -4,
-      'pasivo-acumulador':   -3,
-      'pasivo-cededor':      -2,
-      'acumulador-acumulador':-5,
-      'acumulador-cededor':  -3,
-      'cededor-cededor':     -2
+      'asertivo-asertivo':    4,   // respeto mutuo, claridad máxima
+      'asertivo-pasivo':     -3,   // el asertivo frustra, el pasivo se resiente
+      'asertivo-acumulador':  0,   // neutro — el asertivo puede desactivar al acumulador
+      'asertivo-cededor':    -2,   // el cededor pierde identidad con el asertivo
+      'pasivo-pasivo':       -5,   // nadie dice nada, todo se pudre
+      'pasivo-acumulador':   -4,   // silencio + explosión = ciclo tóxico
+      'pasivo-cededor':      -3,   // dos personas que no se dicen lo que necesitan
+      'acumulador-acumulador':-6,  // dos bombas de tiempo — el peor combo
+      'acumulador-cededor':  -4,   // el cededor aguanta hasta que el acumulador explota
+      'cededor-cededor':     -3    // resentimiento mutuo silencioso
     };
     const lKey = [aA.limites?.v, aB.limites?.v].filter(Boolean).sort().join('-');
     dims._lmBonus = lmBonus[lKey] || 0;
