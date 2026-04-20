@@ -282,7 +282,11 @@ textarea.q-inp::placeholder{color:var(--muted);}
 
 <!-- INTRO -->
 <div class="screen active" id="screen-intro">
-  <div class="logo">Know Them</div>
+  <div style="position:fixed;top:14px;right:20px;z-index:100;display:flex;gap:6px;">
+  <button onclick="setLang('es')" id="btnEs" style="background:rgba(233,30,140,.15);border:1px solid var(--fuchsia);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--fuchsia);cursor:pointer;font-weight:500;">ES</button>
+  <button onclick="setLang('en')" id="btnEn" style="background:transparent;border:1px solid var(--muted2);border-radius:99px;padding:4px 12px;font-family:var(--sans);font-size:.65rem;color:var(--muted);cursor:pointer;">EN</button>
+</div>
+<div class="logo">Know Them</div>
   <h1 class="intro-title">¿Son compatibles<br><span style="color:var(--fuchsia);font-style:italic">entre sí</span>?</h1>
   <p class="intro-sub">Perfila dos personas con preguntas de psicología profunda. La IA analiza sus rasgos, arquetipos y genera un veredicto real de compatibilidad.</p>
 
@@ -642,25 +646,42 @@ async function callClaude(){
 ${buildSum(ansA,nA)}
 ${buildSum(ansB,nB)}
 
+ARQUETIPOS JUNGIANOS — asigna el más preciso, NO el más genérico. Los 12 disponibles:
+1. El Inocente — optimista, busca seguridad, evita conflicto
+2. El Explorador — busca libertad y autenticidad, huye de la conformidad
+3. El Sabio — analítico, busca la verdad, teme el engaño
+4. El Héroe — competitivo, valiente, necesita demostrar su valía
+5. El Forajido — rebelde, rompe reglas, teme la mediocridad
+6. El Mago — visionario, transforma la realidad, busca conocimiento profundo
+7. El Hombre Corriente — pragmático, quiere pertenecer, evita destacar demasiado
+8. El Amante — busca conexión profunda, pasional, teme la soledad
+9. El Bufón — usa el humor, vive el presente, teme el aburrimiento
+10. El Cuidador — altruista, protector, teme el egoísmo y el abandono
+11. El Creador — imaginativo, necesita expresarse, teme la mediocridad creativa
+12. El Gobernante — líder natural, busca control y orden, teme el caos
+
 Responde SOLO con JSON válido, sin backticks, sin texto adicional:
 {
   "compatibilidad_total": número 0-100,
   "veredicto": "Una frase directa y memorable del resultado de compatibilidad",
   "analisis_general": "Análisis de 3-4 frases evaluando la dinámica general entre ambos perfiles",
   "perfil_a": {
-    "arquetipo": "Nombre del arquetipo psicológico (2-4 palabras)",
-    "descripcion_arquetipo": "Una frase sobre su patrón de personalidad dominante",
-    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3"],
-    "rasgos_atencion": ["rasgo1","rasgo2"],
+    "arquetipo": "Nombre exacto del arquetipo jungiano de la lista",
+    "arquetipo_emoji": "Un emoji que represente visualmente ese arquetipo",
+    "descripcion_arquetipo": "Una frase precisa sobre cómo este arquetipo se manifiesta en esta persona",
+    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3","rasgo4"],
+    "rasgos_atencion": ["rasgo1","rasgo2","rasgo3"],
     "score_individual": número 0-100
   },
   "perfil_b": {
-    "arquetipo": "Nombre del arquetipo psicológico (2-4 palabras)",
-    "descripcion_arquetipo": "Una frase sobre su patrón de personalidad dominante",
-    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3"],
-    "rasgos_atencion": ["rasgo1","rasgo2"],
+    "arquetipo": "Nombre exacto del arquetipo jungiano de la lista",
+    "arquetipo_emoji": "Un emoji que represente visualmente ese arquetipo",
+    "descripcion_arquetipo": "Una frase precisa sobre cómo este arquetipo se manifiesta en esta persona",
+    "rasgos_positivos": ["rasgo1","rasgo2","rasgo3","rasgo4"],
+    "rasgos_atencion": ["rasgo1","rasgo2","rasgo3"],
     "score_individual": número 0-100
   },
+  "dinamica_arquetipos": "Una frase sobre cómo interactúan estos dos arquetipos — su tensión o sinergia natural",
   "polaridades": [
     {"dimension":"Energía social","label_a":"texto corto","label_b":"texto corto","posicion": número -50 a 50},
     {"dimension":"Toma de decisiones","label_a":"texto","label_b":"texto","posicion": número},
@@ -676,9 +697,9 @@ Responde SOLO con JSON válido, sin backticks, sin texto adicional:
     {"label":"Gestión del conflicto","valor": número},
     {"label":"Visión de futuro","valor": número}
   ],
-  "puntos_tension": "Las 2-3 áreas de mayor tensión potencial entre ambos",
-  "puntos_fuerza": "Las 2-3 fortalezas o puntos de convergencia más importantes",
-  "recomendacion_final": "Consejo directo y psicológicamente fundamentado. Sin rodeos. Di si deben o no proceder y por qué."
+  "puntos_tension": "Las 2-3 áreas de mayor tensión potencial, siendo específico",
+  "puntos_fuerza": "Las 2-3 fortalezas o puntos de convergencia más importantes, siendo específico",
+  "recomendacion_final": "Consejo directo y psicológicamente fundamentado. Sin rodeos. Di si deben o no proceder y por qué. Mínimo 3 frases."
 }`;
 
   try{
@@ -718,7 +739,7 @@ function renderResult(){
         <svg viewBox="0 0 88 88"><circle class="r-track" cx="44" cy="44" r="40"/><circle class="r-fill" id="rfA" cx="44" cy="44" r="40" stroke="var(--fuchsia)" stroke-dasharray="251.3" stroke-dashoffset="251.3"/></svg>
         <div class="sc-pct a" id="pA">0%</div>
       </div>
-      <div class="sc-arch">${rA.arquetipo}</div>
+      <div class="sc-arch">${(rA.arquetipo_emoji||"")+" "+rA.arquetipo}</div>
     </div>
     <div class="sc-card b">
       <div class="sc-nm b">${nB}</div>
@@ -726,22 +747,25 @@ function renderResult(){
         <svg viewBox="0 0 88 88"><circle class="r-track" cx="44" cy="44" r="40"/><circle class="r-fill" id="rfB" cx="44" cy="44" r="40" stroke="var(--teal)" stroke-dasharray="251.3" stroke-dashoffset="251.3"/></svg>
         <div class="sc-pct b" id="pB">0%</div>
       </div>
-      <div class="sc-arch">${rB.arquetipo}</div>
+      <div class="sc-arch">${(rB.arquetipo_emoji||"")+" "+rB.arquetipo}</div>
     </div>
   </div>
 
   <div class="arch-row">
     <div class="arch-card a">
       <div class="sc-nm a" style="margin-bottom:8px;">${nA}</div>
+      <div style="font-size:2rem;margin-bottom:4px;">${rA.arquetipo_emoji||"✦"}</div>
       <div class="arch-type a">${rA.arquetipo}</div>
       <div class="arch-sub">${rA.descripcion_arquetipo}</div>
     </div>
     <div class="arch-card b">
       <div class="sc-nm b" style="margin-bottom:8px;">${nB}</div>
+      <div style="font-size:2rem;margin-bottom:4px;">${rB.arquetipo_emoji||"✦"}</div>
       <div class="arch-type b">${rB.arquetipo}</div>
       <div class="arch-sub">${rB.descripcion_arquetipo}</div>
     </div>
   </div>
+  <div class="rsec" style="margin-bottom:14px;border-color:rgba(155,109,255,.15)"><div class="rsec-t" style="color:var(--violet)">Dinámica entre arquetipos</div><div class="rsec-b" style="font-style:italic;">${r.dinamica_arquetipos||""}</div></div>
 
   <div class="pers-grid">
     <div class="pers-card a">
@@ -802,9 +826,9 @@ function renderResult(){
   </div>
 
   <div class="res-actions">
-    <button class="btn-main" onclick="resetAll()">Nuevo análisis</button>
-    <button class="btn-ghost" onclick="copyResult()">📋 Copiar veredicto</button>
-    <button class="btn-ghost" onclick="window.print()">Guardar PDF</button>
+    <button class="btn-main" onclick="resetAll()" id="btnNuevo">Nuevo análisis</button>
+    <button class="btn-ghost" onclick="shareCard()" id="btnShare">🖼 Card para stories</button>
+    <button class="btn-ghost" onclick="copyResult()" id="btnCopy">📋 Copiar veredicto</button>
   </div>`;
 
   document.getElementById('resWrap').innerHTML=html;
@@ -823,6 +847,134 @@ function renderResult(){
     },300);
     setTimeout(()=>{r.dimensiones.forEach((_,i)=>{const el=document.getElementById('df'+i);if(el)el.style.width=r.dimensiones[i].valor+'%';});},500);
   },100);
+}
+
+// ── LANGUAGE SYSTEM ──────────────────────────────────────────────
+let lang='es';
+const T={
+  es:{
+    title:'¿Son compatibles entre sí?',
+    sub:'Perfila dos personas con preguntas de psicología profunda. La IA analiza sus rasgos, arquetipos y genera un veredicto real de compatibilidad.',
+    personaA:'✦ Persona A',personaB:'✦ Persona B',
+    hintA:'Puedes ser tú mismo/a.',hintB:'Responde desde su perspectiva.',
+    vinculo:'Tipo de vínculo',
+    tipos:{pareja:'Pareja',amistad:'Amistad',trabajo:'Trabajo',convivencia:'Convivencia',familia:'Familia',general:'General'},
+    start:'Comenzar perfilado →',
+    mins:'13 preguntas por perfil · ~12 minutos en total',
+    nuevo:'Nuevo análisis',share:'🖼 Card para stories',copy:'📋 Copiar veredicto',
+  },
+  en:{
+    title:'Are they compatible?',
+    sub:'Profile two people with deep psychology questions. AI analyzes their traits, archetypes and generates a real compatibility verdict.',
+    personaA:'✦ Person A',personaB:'✦ Person B',
+    hintA:'This can be you.',hintB:'Answer from their perspective.',
+    vinculo:'Type of bond',
+    tipos:{pareja:'Romantic',amistad:'Friendship',trabajo:'Work',convivencia:'Roommates',familia:'Family',general:'General'},
+    start:'Start profiling →',
+    mins:'13 questions per profile · ~12 minutes total',
+    nuevo:'New analysis',share:'🖼 Share card',copy:'📋 Copy verdict',
+  }
+};
+function setLang(l){
+  lang=l;
+  document.getElementById('btnEs').style.background=l==='es'?'rgba(233,30,140,.15)':'transparent';
+  document.getElementById('btnEs').style.color=l==='es'?'var(--fuchsia)':'var(--muted)';
+  document.getElementById('btnEs').style.borderColor=l==='es'?'var(--fuchsia)':'var(--muted2)';
+  document.getElementById('btnEn').style.background=l==='en'?'rgba(29,229,200,.15)':'transparent';
+  document.getElementById('btnEn').style.color=l==='en'?'var(--teal)':'var(--muted)';
+  document.getElementById('btnEn').style.borderColor=l==='en'?'var(--teal)':'var(--muted2)';
+  const t=T[l];
+  document.querySelector('.intro-title').innerHTML=t.title.replace('entre sí','<span style="color:var(--fuchsia);font-style:italic">entre sí</span>').replace('compatible?','compatible<span style="color:var(--fuchsia);font-style:italic">?</span>');
+  document.querySelector('.intro-sub').textContent=t.sub;
+  document.querySelector('.profile-label-sm.la').textContent=t.personaA;
+  document.querySelector('.profile-label-sm.lb').textContent=t.personaB;
+  const hints=document.querySelectorAll('.profile-setup-card div[style]');
+  if(hints[0])hints[0].textContent=t.hintA;
+  if(hints[1])hints[1].textContent=t.hintB;
+  document.getElementById('btnStart').textContent=t.start;
+  document.querySelector('#btnNuevo')&&(document.querySelector('#btnNuevo').textContent=t.nuevo);
+  document.querySelector('#btnShare')&&(document.querySelector('#btnShare').textContent=t.share);
+  document.querySelector('#btnCopy')&&(document.querySelector('#btnCopy').textContent=t.copy);
+}
+
+// ── SHARE CARD ────────────────────────────────────────────────────
+function shareCard(){
+  if(!reportData)return;
+  const r=reportData;
+  const s=r.compatibilidad_total;
+  const colMain=s>=70?'#00dc82':s>=45?'#ffb800':'#ff4450';
+  const rA=r.perfil_a,rB=r.perfil_b;
+
+  const canvas=document.createElement('canvas');
+  canvas.width=1080;canvas.height=1920;
+  const ctx=canvas.getContext('2d');
+
+  // BG
+  const grad=ctx.createLinearGradient(0,0,1080,1920);
+  grad.addColorStop(0,'#08060d');grad.addColorStop(1,'#110d1a');
+  ctx.fillStyle=grad;ctx.fillRect(0,0,1080,1920);
+
+  // Top accent line
+  const tl=ctx.createLinearGradient(0,0,1080,0);
+  tl.addColorStop(0,'transparent');tl.addColorStop(.5,'#E91E8C');tl.addColorStop(1,'transparent');
+  ctx.strokeStyle=tl;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,6);ctx.lineTo(1080,6);ctx.stroke();
+
+  // KNOW THEM label
+  ctx.font='500 38px DM Sans, sans-serif';ctx.fillStyle='rgba(201,169,110,0.7)';ctx.textAlign='center';
+  ctx.letterSpacing='8px';ctx.fillText('KNOW THEM',540,120);
+
+  // Names
+  ctx.font='300 90px Cormorant Garamond, Georgia, serif';ctx.fillStyle='#f2eaf8';
+  ctx.fillText(nA+' × '+nB,540,240);
+
+  // Score
+  ctx.font='300 220px Cormorant Garamond, Georgia, serif';ctx.fillStyle=colMain;
+  ctx.fillText(s+'%',540,520);
+
+  // Verdict label
+  ctx.font='400 44px DM Sans, sans-serif';ctx.fillStyle='rgba(242,234,248,0.75)';
+  ctx.fillText(r.veredicto,540,600);
+
+  // Divider
+  ctx.strokeStyle='rgba(201,169,110,0.2)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(140,660);ctx.lineTo(940,660);ctx.stroke();
+
+  // Archetypes
+  ctx.font='500 36px DM Sans, sans-serif';ctx.fillStyle='#E91E8C';ctx.textAlign='left';
+  ctx.fillText(nA,140,730);
+  ctx.font='300 52px Cormorant Garamond, Georgia, serif';ctx.fillStyle='#f2eaf8';
+  ctx.fillText((rA.arquetipo_emoji||'✦')+' '+rA.arquetipo,140,800);
+
+  ctx.font='500 36px DM Sans, sans-serif';ctx.fillStyle='#1de5c8';ctx.textAlign='right';
+  ctx.fillText(nB,940,730);
+  ctx.font='300 52px Cormorant Garamond, Georgia, serif';ctx.fillStyle='#f2eaf8';
+  ctx.fillText(rB.arquetipo+(rB.arquetipo_emoji?' '+rB.arquetipo_emoji:''),940,800);
+
+  // Divider 2
+  ctx.strokeStyle='rgba(201,169,110,0.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(140,850);ctx.lineTo(940,850);ctx.stroke();
+
+  // Verdict text (wrapped)
+  ctx.font='300 40px Cormorant Garamond, Georgia, serif';ctx.fillStyle='rgba(242,234,248,0.85)';ctx.textAlign='center';
+  const words=r.recomendacion_final.split(' ');let line='';let y=940;
+  words.forEach(w=>{
+    const test=line+w+' ';
+    if(ctx.measureText(test).width>860&&line){
+      ctx.fillText(line.trim(),540,y);line=w+' ';y+=60;
+    } else line=test;
+  });
+  if(line.trim())ctx.fillText(line.trim(),540,y);
+
+  // Bottom
+  ctx.font='400 32px DM Sans, sans-serif';ctx.fillStyle='rgba(201,169,110,0.4)';ctx.textAlign='center';
+  ctx.fillText('johaareales.github.io/knowthem',540,1860);
+
+  // Download
+  canvas.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='knowthem-'+nA+'-'+nB+'.png';
+    a.click();URL.revokeObjectURL(url);
+  });
 }
 
 function copyResult(){
